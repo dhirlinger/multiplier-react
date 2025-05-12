@@ -39,11 +39,6 @@ export default function App() {
   fetchData();
  }, []);
 
-//  useEffect(() => {
-//   freqObjRef.current = filterData(data, freqIdRef.current, 'array_id');
-//   console.log('useEff: ' + freqIdRef.current);
-//  }, []);
-
 const handleSelect = (e) => {
   freqIdRef.current = e.target.value;
   freqObjRef.current = filterData(data, freqIdRef.current, 'array_id');
@@ -62,7 +57,7 @@ const createFreqArray = () => {
     for(let i = 1.0; i < 9; i++){
       arr.push(obj.base_freq * i * obj.multiplier);
     }
-    console.log('internal: ' + arr);
+    //console.log('internal: ' + arr);
     setFreqArray(arr);
 }
   return (
@@ -82,8 +77,8 @@ const createFreqArray = () => {
       <option key={item.array_id} value={item.array_id}>{item.array_name}</option>
     ))}
     </select>
-    <p><span style={{fontWeight: "bold"}}>In Hertz: </span>{freqArray.join(', ')}</p>
-
+    <p><span style={{fontWeight: "bold"}}>In Hertz: </span>{freqArray ? freqArray.join(', ') : 'Loading frequency array...'}</p>
+   
       
     </>
   );
