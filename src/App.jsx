@@ -60,7 +60,6 @@ const createFreqArray = () => {
     for(let i = 1.0; i < 9; i++){
       arr.push(obj.base_freq * i * obj.multiplier);
     }
-    //console.log('internal: ' + arr);
     setFreqArray(arr);
 }
   return (
@@ -76,7 +75,9 @@ const createFreqArray = () => {
       </ul>
       <label htmlFor="freqId">Frequency Array:</label>
   <select ref={freqIdRef} name="freqId" id="freqId" onChange={handleSelect} style={{marginLeft: "10px"}}>
-    {data.map(item => (
+    <option value={1}>DEFAULT</option>
+    {data.map(item => 
+    item.array_id > 1 && (
       <option key={item.array_id} value={item.array_id}>{item.array_name}</option>
     ))}
     </select>
