@@ -15,7 +15,10 @@ export default function App() {
  useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/');
+      const initResponse = await fetch('http://localhost:8888/wp-json/wp/v2/users');
+      if (!initResponse.ok) throw new Error(`Initial HHTP error. status: ${initResponse.status}`);
+      const userData = await initResponse.json();
+      const response = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/${userData[0].id}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -64,7 +67,7 @@ const createFreqArray = () => {
     <>
       <h1>Multiplier API Dev</h1>
       {loading && '<p>Loading...</p>'}
-      {error && '<p>Error: {error.message}</p>'} 
+      {error && <p>Error: {error.message}</p>} 
       <ul>
         {data.map(item => (
           <li key={item.array_id}>Preset: {item.array_id}, Base Frequency: {item.base_freq}, Multiplier: {item.multiplier}</li>
