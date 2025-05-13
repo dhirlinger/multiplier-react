@@ -5,29 +5,45 @@ import Sequencer1 from "./assets/components/Sequencer1";
 export default function App() {
  
  const [freqData, setFreqData] = useState([]);
+ const [indexData, setIndexData] = useState([]);
+ const [presetData, setPresetData] = useState([]);
  const [loading, setLoading] = useState(true);
  const [error, setError] = useState(null);
  const [freqArray, setFreqArray] = useState();
+ const [indexArray, setIndexArray] = useState();
  const freqIdRef = useRef(0);
  const freqObjRef = useRef(null);
  const defaultFreqData = useRef(null);
+ const indexIdRef = useRef(0);
+ const indexObjRef = useRef(null);
  
  useEffect(() => {
   const fetchData = async () => {
     try {
+      //get default freq from user 1
       const defaultFreqResponse = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/1`);
       if (!defaultFreqResponse.ok) throw new Error(`Default frequency array request Error. status: ${defaultFreqResponse.status}`)
       const defaultFreqJSON = await defaultFreqResponse.json();
       defaultFreqData.current = defaultFreqJSON;
-
+      //get user id for current user
       const userResponse = await fetch('http://localhost:8888/wp-json/wp/v2/users');
       if (!userResponse.ok) throw new Error(`User data request error. status: ${userResponse.status}`);
       const userData = await userResponse.json();
-      
+      //get freq arrays for current user
       const freqResponse = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/${userData[0].id}`);
       if (!freqResponse.ok) throw new Error(`User frequency arrays request error! status: ${freqResponse.status}`);
       const freqArrJSON = await freqResponse.json();
       setFreqData(freqArrJSON);
+      //get index arrays for current user
+      const indexResponse = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/${userData[0].id}`);
+      if (!indexResponse.ok) throw new Error(`User index array request error! status: ${indexResponse.status}`);
+      const indexArrJSON = await indexResponse.json();
+      setIndexData(indexArrJSON);
+      //get presets for current user
+      const presetResponse = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/presets/${userData[0].id}`);
+      if (!presetResponse.ok) throw new Error(`User presets request error! status: ${presetResponse.status}`);
+      const presetArrJSON = await presetResponse.json();
+      setPresetData(presetArrJSON);
 
       //calculate freq array after data loads
       if (defaultFreqJSON.length > 0) {
@@ -70,6 +86,10 @@ const createFreqArray = () => {
     }
     setFreqArray(arr);
 }
+
+//console.log(`index data: ${indexData}`);
+//console.log(`preset data: ${presetData}`);
+
   return (
     <>
       <h1>Multiplier API Dev</h1>
@@ -90,7 +110,8 @@ const createFreqArray = () => {
     ))}
     </select>
     <p><span style={{fontWeight: "bold"}}>In Hertz: </span>{freqArray ? freqArray.join(', ') : 'Loading frequency array...'}</p>
-   
+    <p>Index Array: </p>
+    <p>Preset Data: </p>
       
     </>
   );
