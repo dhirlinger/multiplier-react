@@ -10,13 +10,16 @@ export default function App() {
  const [freqArray, setFreqArray] = useState();
  const freqIdRef = useRef(0);
  const freqObjRef = useRef(null);
+ const defaultFreqData = useRef(null);
  
  useEffect(() => {
   const fetchData = async () => {
     try {
       const defaultFreqResponse = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/1`);
       if (!defaultFreqResponse.ok) throw new Error(`Default frequency array request Error. status: ${defaultFreqResponse.status}`)
-      
+      const defaultFreqJSON = await defaultFreqResponse.json();
+      defaultFreqData.current = defaultFreqJSON;
+
       const userResponse = await fetch('http://localhost:8888/wp-json/wp/v2/users');
       if (!userResponse.ok) throw new Error(`User data request error. status: ${userResponse.status}`);
       const userData = await userResponse.json();
@@ -27,10 +30,10 @@ export default function App() {
       setFreqData(freqArrJSON);
 
       //calculate freq array after data loads
-      if (freqArrJSON.length > 0) {
-        const initialId = freqArrJSON[0].array_id;
+      if (defaultFreqJSON.length > 0) {
+        const initialId = defaultFreqJSON[0].array_id;
         freqIdRef.current = initialId;
-        freqObjRef.current = filterData(freqArrJSON, initialId, 'array_id');
+        freqObjRef.current = filterData(defaultFreqJSON, initialId, 'array_id');
         createFreqArray();
       }
 
@@ -45,8 +48,12 @@ export default function App() {
 
 const handleSelect = (e) => {
   freqIdRef.current = e.target.value;
-  freqObjRef.current = filterData(freqData, freqIdRef.current, 'array_id');
-  console.log(filterData(freqData, freqIdRef.current, 'array_id'));
+  if (e.target.value > 1) {
+    freqObjRef.current = filterData(freqData, freqIdRef.current, 'array_id');
+  } else {
+    freqObjRef.current = filterData(defaultFreqData.current, freqIdRef.current, 'array_id');
+  }
+  //console.log(filterData(freqData, freqIdRef.current, 'array_id'));
   createFreqArray();
 }
 
