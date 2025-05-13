@@ -39,12 +39,13 @@ export default function App() {
       if (!indexResponse.ok) throw new Error(`User index array request error! status: ${indexResponse.status}`);
       const indexArrJSON = await indexResponse.json();
       setIndexData(indexArrJSON);
+      console.log(`upper: ${indexData}`);
       //get presets for current user
       const presetResponse = await fetch(`http://localhost:8888/wp-json/multiplier-api/v1/presets/${userData[0].id}`);
       if (!presetResponse.ok) throw new Error(`User presets request error! status: ${presetResponse.status}`);
       const presetArrJSON = await presetResponse.json();
       setPresetData(presetArrJSON);
-
+      console.log(presetData);
       //calculate freq array after data loads
       if (defaultFreqJSON.length > 0) {
         const initialId = defaultFreqJSON[0].array_id;
@@ -87,9 +88,6 @@ const createFreqArray = () => {
     setFreqArray(arr);
 }
 
-//console.log(`index data: ${indexData}`);
-//console.log(`preset data: ${presetData}`);
-
   return (
     <>
       <h1>Multiplier API Dev</h1>
@@ -110,9 +108,11 @@ const createFreqArray = () => {
     ))}
     </select>
     <p><span style={{fontWeight: "bold"}}>In Hertz: </span>{freqArray ? freqArray.join(', ') : 'Loading frequency array...'}</p>
-    <p>Index Array: </p>
-    <p>Preset Data: </p>
-      
+    
+   
+    <p>Preset Data: </p>    
+     
+    {indexData[0] && <p> Index Array: {indexData[0].index_array}</p>}
     </>
   );
 }
