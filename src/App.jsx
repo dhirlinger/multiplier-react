@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useRef, useState } from "react";
 import Sequencer1 from "./assets/components/Sequencer1";
 import FreqArray from "./components/FreqArray";
+import IndexArray from "./components/IndexArray";
 
 export default function App() {
   const [freqData, setFreqData] = useState([]);
@@ -9,13 +10,11 @@ export default function App() {
   const [presetData, setPresetData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [indexArray, setIndexArray] = useState();
   const freqIdRef = useRef(0);
   const [freqObj, setFreqObj] = useState();
   const defaultFreqData = useRef(null);
   const indexIdRef = useRef(0);
   const [indexObj, setIndexObj] = useState();
-  const indexObjRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +96,11 @@ export default function App() {
     }
   };
 
+  const handleIndexSelect = (e) => {
+    indexIdRef.current = e.target.value;
+    setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
+  };
+
   const filterData = (dataArr, id, key) => {
     const o = dataArr.filter((obj) => obj[key] === id);
     return o[0];
@@ -114,8 +118,13 @@ export default function App() {
         handleSelect={handleFreqSelect}
         freqObj={freqObj}
       />
-      <p>Preset Data: </p>
 
+      <IndexArray
+        indexData={indexData}
+        indexIdRef={indexIdRef}
+        handleSelect={handleIndexSelect}
+        indexObj={indexObj}
+      />
       {indexData[0] && <p> Index Array: {indexData[0].index_array}</p>}
     </>
   );
