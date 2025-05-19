@@ -86,7 +86,7 @@ export default function App() {
     fetchData();
   }, []);
 
-  const handleSelect = (e) => {
+  const handleFreqSelect = (e) => {
     freqIdRef.current = e.target.value;
     if (e.target.value > 1) {
       setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
@@ -111,7 +111,7 @@ export default function App() {
       <FreqArray
         freqData={freqData}
         freqIdRef={freqIdRef}
-        handleSelect={handleSelect}
+        handleSelect={handleFreqSelect}
         freqObj={freqObj}
       />
       <p>Preset Data: </p>
