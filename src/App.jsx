@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
 import Sequencer1 from "./assets/components/Sequencer1";
+import FreqArray from "./components/FreqArray";
 
 export default function App() {
   const [freqData, setFreqData] = useState([]);
@@ -13,6 +14,7 @@ export default function App() {
   const [freqObj, setFreqObj] = useState();
   const defaultFreqData = useRef(null);
   const indexIdRef = useRef(0);
+  const [indexObj, setIndexObj] = useState();
   const indexObjRef = useRef(null);
 
   useEffect(() => {
@@ -100,51 +102,18 @@ export default function App() {
     return o[0];
   };
 
-  const createFreqArray = () => {
-    const arr = [];
-    const obj = freqObj;
-    for (let i = 1.0; i < 9; i++) {
-      arr.push(obj.base_freq * i * obj.multiplier);
-    }
-    return arr;
-  };
-
   return (
     <>
       <h1>Multiplier API Dev</h1>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-      <ul>
-        {freqData.map((item) => (
-          <li key={item.array_id}>
-            Preset: {item.array_id}, Base Frequency: {item.base_freq},
-            Multiplier: {item.multiplier}
-          </li>
-        ))}
-      </ul>
-      <label htmlFor="freqId">Frequency Array:</label>
-      <select
-        ref={freqIdRef}
-        name="freqId"
-        id="freqId"
-        onChange={handleSelect}
-        style={{ marginLeft: "10px" }}
-      >
-        <option value={1}>DEFAULT</option>
-        {freqData.map(
-          (item) =>
-            item.array_id > 1 && (
-              <option key={item.array_id} value={item.array_id}>
-                {item.array_name}
-              </option>
-            )
-        )}
-      </select>
-      <p>
-        <span style={{ fontWeight: "bold" }}>In Hertz: </span>
-        {freqObj ? createFreqArray().join(", ") : "Loading frequency array..."}
-      </p>
 
+      <FreqArray
+        freqData={freqData}
+        freqIdRef={freqIdRef}
+        handleSelect={handleSelect}
+        freqObj={freqObj}
+      />
       <p>Preset Data: </p>
 
       {indexData[0] && <p> Index Array: {indexData[0].index_array}</p>}
