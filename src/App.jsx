@@ -74,7 +74,6 @@ export default function App() {
           const initialId = defaultFreqJSON[0].array_id;
           freqIdRef.current = initialId;
           setFreqObj(filterData(defaultFreqJSON, initialId, "array_id"));
-          // createFreqArray();
         }
       } catch (e) {
         setError(e);
@@ -94,8 +93,6 @@ export default function App() {
         filterData(defaultFreqData.current, freqIdRef.current, "array_id")
       );
     }
-    //console.log(filterData(freqData, freqIdRef.current, 'array_id'));
-    createFreqArray();
   };
 
   const filterData = (dataArr, id, key) => {
