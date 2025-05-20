@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import Seq1Voice from "../Seq1Voice";
+import Seq1Voice from "./Seq1Voice";
 import Seq1ArrInput from "./Seq1ArrInput";
 import LowPassFilter from "./LowPassFilter";
 

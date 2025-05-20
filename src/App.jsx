@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
-import Sequencer1 from "./assets/components/Sequencer1";
+import Sequencer1 from "./components/Sequencer1";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
