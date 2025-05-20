@@ -13,7 +13,7 @@ export default function App() {
   const freqIdRef = useRef(0);
   const [freqObj, setFreqObj] = useState();
   const defaultFreqData = useRef(null);
-  const indexIdRef = useRef(0);
+  const indexIdRef = useRef(1);
   const [indexObj, setIndexObj] = useState();
 
   useEffect(() => {
@@ -74,6 +74,10 @@ export default function App() {
           freqIdRef.current = initialId;
           setFreqObj(filterData(defaultFreqJSON, initialId, "array_id"));
         }
+        if (indexArrJSON.length > 0) {
+          indexIdRef.current = "1";
+          setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
+        }
       } catch (e) {
         setError(e);
       } finally {
@@ -99,8 +103,9 @@ export default function App() {
     setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
   };
 
-  const filterData = (dataArr, id, key) => {
-    const o = dataArr.filter((obj) => obj[key] === id);
+  const filterData = (data, id, key) => {
+    const o = data.filter((obj) => obj[key] === id);
+    console.log(o[0]);
     return o[0];
   };
 
@@ -123,7 +128,6 @@ export default function App() {
         handleSelect={handleIndexSelect}
         indexObj={indexObj}
       />
-      {indexData[0] && <p> Index Array: {indexData[0].index_array}</p>}
     </>
   );
 }
