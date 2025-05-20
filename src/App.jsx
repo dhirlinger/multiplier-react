@@ -145,7 +145,7 @@ export default function App() {
 
       <PresetArray
         presetData={presetData}
-        presetIdRef={presetData}
+        presetIdRef={presetIdRef}
         handleSelect={handlePresetSelect}
         presetObj={presetObj}
       />
