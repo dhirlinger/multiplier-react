@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Sequencer1 from "./assets/components/Sequencer1";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
+import PresetArray from "./components/PresetArray";
 
 export default function App() {
   const [freqData, setFreqData] = useState([]);
@@ -13,8 +14,10 @@ export default function App() {
   const freqIdRef = useRef(0);
   const [freqObj, setFreqObj] = useState();
   const defaultFreqData = useRef(null);
-  const indexIdRef = useRef(1);
+  const indexIdRef = useRef(0);
   const [indexObj, setIndexObj] = useState();
+  const presetIdRef = useRef(0);
+  const [presetObj, setPresetObj] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,6 +81,12 @@ export default function App() {
           indexIdRef.current = "1";
           setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
         }
+        if (presetArrJSON.length > 0) {
+          presetIdRef.current = "1";
+          setPresetObj(
+            filterData(presetArrJSON, presetIdRef.current, "preset_id")
+          );
+        }
       } catch (e) {
         setError(e);
       } finally {
@@ -101,6 +110,11 @@ export default function App() {
   const handleIndexSelect = (e) => {
     indexIdRef.current = e.target.value;
     setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
+  };
+
+  const handlePresetSelect = (e) => {
+    presetIdRef.current = e.target.value;
+    setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
   };
 
   const filterData = (data, id, key) => {
@@ -127,6 +141,13 @@ export default function App() {
         indexIdRef={indexIdRef}
         handleSelect={handleIndexSelect}
         indexObj={indexObj}
+      />
+
+      <PresetArray
+        presetData={presetData}
+        presetIdRef={presetData}
+        handleSelect={handlePresetSelect}
+        presetObj={presetObj}
       />
     </>
   );
