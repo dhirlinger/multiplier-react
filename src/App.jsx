@@ -58,7 +58,6 @@ export default function App() {
           );
         const indexArrJSON = await indexResponse.json();
         setIndexData(indexArrJSON);
-        console.log(`upper: ${indexData}`);
         //get presets for current user
         const presetResponse = await fetch(
           `http://localhost:8888/wp-json/multiplier-api/v1/presets/${userData[0].id}`
@@ -69,7 +68,6 @@ export default function App() {
           );
         const presetArrJSON = await presetResponse.json();
         setPresetData(presetArrJSON);
-        console.log(presetData);
         //calculate freq array after data loads
         if (defaultFreqJSON.length > 0) {
           const initialId = defaultFreqJSON[0].array_id;
