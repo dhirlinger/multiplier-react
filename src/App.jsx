@@ -13,7 +13,6 @@ export default function App() {
   const [error, setError] = useState(null);
   const freqIdRef = useRef(0);
   const [freqObj, setFreqObj] = useState();
-  const defaultFreqData = useRef(null);
   const indexIdRef = useRef(0);
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
@@ -22,28 +21,9 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //get default freq from user 1
-        const defaultFreqResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/1`
-        );
-        if (!defaultFreqResponse.ok)
-          throw new Error(
-            `Default frequency array request Error. status: ${defaultFreqResponse.status}`
-          );
-        const defaultFreqJSON = await defaultFreqResponse.json();
-        defaultFreqData.current = defaultFreqJSON;
-        //get user id for current user
-        const userResponse = await fetch(
-          "http://localhost:8888/wp-json/wp/v2/users"
-        );
-        if (!userResponse.ok)
-          throw new Error(
-            `User data request error. status: ${userResponse.status}`
-          );
-        const userData = await userResponse.json();
-        //get freq arrays for current user
+        //get freq arrays for user 1
         const freqResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/${userData[0].id}`
+          `http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/1`
         );
         if (!freqResponse.ok)
           throw new Error(
@@ -53,7 +33,7 @@ export default function App() {
         setFreqData(freqArrJSON);
         //get index arrays for current user
         const indexResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/${userData[0].id}`
+          `http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/1`
         );
         if (!indexResponse.ok)
           throw new Error(
@@ -63,7 +43,7 @@ export default function App() {
         setIndexData(indexArrJSON);
         //get presets for current user
         const presetResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/presets/${userData[0].id}`
+          `http://localhost:8888/wp-json/multiplier-api/v1/presets/1`
         );
         if (!presetResponse.ok)
           throw new Error(
@@ -72,10 +52,10 @@ export default function App() {
         const presetArrJSON = await presetResponse.json();
         setPresetData(presetArrJSON);
         //calculate freq array after data loads
-        if (defaultFreqJSON.length > 0) {
-          const initialId = defaultFreqJSON[0].array_id;
+        if (freqArrJSON.length > 0) {
+          const initialId = freqArrJSON[0].array_id;
           freqIdRef.current = initialId;
-          setFreqObj(filterData(defaultFreqJSON, initialId, "array_id"));
+          setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
         }
         if (indexArrJSON.length > 0) {
           indexIdRef.current = "1";
@@ -98,13 +78,7 @@ export default function App() {
 
   const handleFreqSelect = (e) => {
     freqIdRef.current = e.target.value;
-    if (e.target.value > 1) {
-      setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
-    } else {
-      setFreqObj(
-        filterData(defaultFreqData.current, freqIdRef.current, "array_id")
-      );
-    }
+    setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
   };
 
   const handleIndexSelect = (e) => {
