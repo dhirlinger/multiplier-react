@@ -20,7 +20,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
         checked={waveshape === "triangle"}
         onChange={handleChange}
       ></input>
-      <label htmlFor="triange">triangle</label>
+      <label htmlFor="triangle">triangle</label>
       <input
         type="radio"
         value="square"

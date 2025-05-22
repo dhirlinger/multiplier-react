@@ -5,6 +5,7 @@ import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
 import WaveShapeSelect from "./components/WaveShapeSelect";
+import SeqArrInput from "./components/SeqArrInput";
 
 export default function App() {
   //preset + rest api related vars
@@ -21,6 +22,7 @@ export default function App() {
   const [presetObj, setPresetObj] = useState();
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
+  const seqArrayRef = useRef([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,6 +105,12 @@ export default function App() {
   };
 
   //audio api + sequencer related func's
+  useEffect(() => {
+    if (indexObj) {
+      seqArrayRef.current = indexObj.index_array.split(",");
+    }
+  }, [indexObj]);
+
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
   };
@@ -134,7 +142,22 @@ export default function App() {
         presetObj={presetObj}
       />
 
+      <h2 style={{ marginBottom: "0", marginTop: "0" }}>Sequencer:</h2>
+      <p style={{ marginTop: "0" }}>
+        There are 8 frequency values accessable from the frequency slider.
+        Sequence up to 8 positions on the slider (1-8). Enter 0 for a rest in
+        the sequence. Empty boxes will result in a shorter sequence.
+      </p>
+
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
+      <SeqArrInput arrIndex={0} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={1} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={2} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={3} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={4} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={5} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
     </>
   );
 }
