@@ -94,8 +94,11 @@ export default function App() {
   };
 
   const handlePresetSelect = (e) => {
-    presetIdRef.current = e.target.value;
-    setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
+    console.log(e);
+    if (e != null) {
+      presetIdRef.current = e.target.value;
+      setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
+    }
   };
 
   const filterData = (data, id, key) => {
@@ -128,13 +131,6 @@ export default function App() {
         freqObj={freqObj}
       />
 
-      <IndexArray
-        indexData={indexData}
-        indexIdRef={indexIdRef}
-        handleSelect={handleIndexSelect}
-        indexObj={indexObj}
-      />
-
       <PresetArray
         presetData={presetData}
         presetIdRef={presetIdRef}
@@ -150,6 +146,14 @@ export default function App() {
       </p>
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
+
+      <IndexArray
+        indexData={indexData}
+        indexIdRef={indexIdRef}
+        handleSelect={handleIndexSelect}
+        indexObj={indexObj}
+      />
+
       <SeqArrInput arrIndex={0} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={1} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={2} array={seqArrayRef} indexObj={indexObj} />
