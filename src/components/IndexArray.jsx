@@ -18,6 +18,7 @@ export default function IndexArray({
         onChange={handleSelect}
         style={{ marginLeft: "10px" }}
       >
+        <option>Choose List Preset</option>
         {indexData.map((item) => (
           <option key={item.array_id} value={item.array_id}>
             {item.array_name}
@@ -27,7 +28,7 @@ export default function IndexArray({
       <p>
         {indexObj
           ? indexObj.index_array.replace(/,/g, ", ")
-          : "error loading array"}
+          : "No List Preset Selected"}
       </p>
     </div>
   );

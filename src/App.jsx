@@ -63,10 +63,10 @@ export default function App() {
           freqIdRef.current = initialId;
           setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
         }
-        if (indexArrJSON.length > 0) {
-          indexIdRef.current = "1";
-          setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
-        }
+        // if (indexArrJSON.length > 0) {
+        //   indexIdRef.current = "1";
+        //   setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
+        // }
         if (presetArrJSON.length > 0) {
           presetIdRef.current = "1";
           setPresetObj(
