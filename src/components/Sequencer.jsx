@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Seq1Voice from "../assets/Seq1Voice";
-import Seq1ArrInput from "./Seq1ArrInput";
+import Seq1ArrInput from "./SeqArrInput";
 import LowPassFilter from "./LowPassFilter";
 
 export default function Sequencer1({

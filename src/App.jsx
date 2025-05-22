@@ -1,11 +1,13 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
-import Sequencer1 from "./components/Sequencer1";
+import Sequencer from "./components/Sequencer";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
+import WaveShapeSelect from "./components/WaveShapeSelect";
 
 export default function App() {
+  //preset + rest api related vars
   const [freqData, setFreqData] = useState([]);
   const [indexData, setIndexData] = useState([]);
   const [presetData, setPresetData] = useState([]);
@@ -17,6 +19,8 @@ export default function App() {
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
+  //audio api + sequencer related vars
+  const [waveshape, setWaveshape] = useState("square");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,6 +80,7 @@ export default function App() {
     fetchData();
   }, []);
 
+  //preset + rest api related func's
   const handleFreqSelect = (e) => {
     freqIdRef.current = e.target.value;
     setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
@@ -95,6 +100,11 @@ export default function App() {
     const o = data.filter((obj) => obj[key] === id);
     console.log(o[0]);
     return o[0];
+  };
+
+  //audio api + sequencer related func's
+  const handleShapeChange = (event) => {
+    setWaveshape(event.target.value);
   };
 
   return (
@@ -123,6 +133,8 @@ export default function App() {
         handleSelect={handlePresetSelect}
         presetObj={presetObj}
       />
+
+      <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
     </>
   );
 }
