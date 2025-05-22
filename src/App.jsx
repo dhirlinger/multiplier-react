@@ -1,11 +1,12 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
-import Sequencer from "./components/Sequencer";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
 import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
+import SeqVoice from "./assets/SeqVoice";
+import LowPassFilter from "./components/LowPassFilter";
 
 export default function App() {
   //preset + rest api related vars
@@ -23,6 +24,11 @@ export default function App() {
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
+  const seqInstance = useRef(null);
+  const [seqTempo, setseqTempo] = useState("600");
+  const [duration, setDuration] = useState("0.05");
+  const [lowPassFreq, setLowPassFreq] = useState("15000");
+  const [lowPassQ, setLowPassQ] = useState("0");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,6 +119,46 @@ export default function App() {
       seqArrayRef.current = indexObj.index_array.split(",");
     }
   }, [indexObj]);
+
+  useEffect(() => {
+    seqInstance.current = new SeqVoice(600);
+  }, []);
+
+  // useEffect(() => {
+  //   seqInstance.current.onBeatCallback = (beatNumber) => {
+  //     // setIndex(beatNumber);
+  //     if (onIndexChange) {
+  //       onIndexChange(beatNumber);
+  //     }
+  //   };
+  // }, [onIndexChange]);
+
+  useEffect(() => {
+    if (seqTempo > 99 && seqTempo < 1001) {
+      seqInstance.current.tempo = seqTempo;
+    }
+  }, [seqTempo]);
+
+  useEffect(() => {
+    seqInstance.current.noteLength = Number(duration);
+  }, [duration]);
+
+  useEffect(() => {
+    seqInstance.current.shape = waveshape;
+  }, [waveshape]);
+
+  useEffect(() => {
+    seqInstance.current.lowPassFreq = lowPassFreq;
+  }, [lowPassFreq]);
+
+  useEffect(() => {
+    seqInstance.current.qValue = lowPassQ;
+  }, [lowPassQ]);
+
+  const handleClick = () => {
+    setSeqIsPlaying(!seqIsPlaying);
+    seqInstance.current.startStop(seqArrayRef.current);
+  };
 
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);

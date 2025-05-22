@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import Seq1Voice from "../assets/SeqVoice";
+import { useRef, useEffect, useState } from "react";
+import SeqVoice from "../assets/SeqVoice";
 import Seq1ArrInput from "./SeqArrInput";
 import LowPassFilter from "./LowPassFilter";
 
@@ -10,18 +10,18 @@ export default function Sequencer1({
   onIndexChange,
 }) {
   const seqArrayRef = useRef([]);
-  const seq1Instance = useRef(null);
-  const [seq1Tempo, setSeq1Tempo] = useState("600");
+  const seqInstance = useRef(null);
+  const [seqTempo, setseqTempo] = useState("600");
   const [duration, setDuration] = useState("0.05");
   const [lowPassFreq, setLowPassFreq] = useState("15000");
   const [lowPassQ, setLowPassQ] = useState("0");
 
   useEffect(() => {
-    seq1Instance.current = new Seq1Voice(600);
+    seqInstance.current = new SeqVoice(600);
   }, []);
 
   useEffect(() => {
-    seq1Instance.current.onBeatCallback = (beatNumber) => {
+    seqInstance.current.onBeatCallback = (beatNumber) => {
       // setIndex(beatNumber);
       if (onIndexChange) {
         onIndexChange(beatNumber);
@@ -30,30 +30,30 @@ export default function Sequencer1({
   }, [onIndexChange]);
 
   useEffect(() => {
-    if (seq1Tempo > 99 && seq1Tempo < 1001) {
-      seq1Instance.current.tempo = seq1Tempo;
+    if (seqTempo > 99 && seqTempo < 1001) {
+      seqInstance.current.tempo = seqTempo;
     }
-  }, [seq1Tempo]);
+  }, [seqTempo]);
 
   useEffect(() => {
-    seq1Instance.current.noteLength = Number(duration);
+    seqInstance.current.noteLength = Number(duration);
   }, [duration]);
 
   useEffect(() => {
-    seq1Instance.current.shape = waveshape;
+    seqInstance.current.shape = waveshape;
   }, [waveshape]);
 
   useEffect(() => {
-    seq1Instance.current.lowPassFreq = lowPassFreq;
+    seqInstance.current.lowPassFreq = lowPassFreq;
   }, [lowPassFreq]);
 
   useEffect(() => {
-    seq1Instance.current.qValue = lowPassQ;
+    seqInstance.current.qValue = lowPassQ;
   }, [lowPassQ]);
 
   const handleClick = () => {
     setSeqIsPlaying(!seqIsPlaying);
-    seq1Instance.current.startStop(seqArrayRef.current);
+    seqInstance.current.startStop(seqArrayRef.current);
   };
 
   return (
@@ -84,10 +84,10 @@ export default function Sequencer1({
           <input
             style={{ marginTop: "10px", marginRight: "10px", width: "50px" }}
             type="number"
-            value={seq1Tempo}
+            value={seqTempo}
             onChange={(e) => {
               const tempo = e.target.value;
-              setSeq1Tempo(tempo);
+              setseqTempo(tempo);
             }}
           ></input>
           <span style={{ width: "100px" }}>duration: </span>
