@@ -17,6 +17,8 @@ export default class SeqVoice {
     this.noteLength = 0.05;
     this.lowPassFreq = 15000;
     this.qValue = 0;
+    this.base = 110;
+    this.multiplier = 2;
   }
 
   nextNote() {
@@ -43,7 +45,9 @@ export default class SeqVoice {
     !this.array[beatNumber]
       ? (this.array[beatNumber] = 0)
       : this.array[beatNumber];
-    osc.frequency.value = this.array[beatNumber] * 110;
+    this.array[beatNumber] === 1
+      ? (osc.frequency.value = this.base)
+      : (osc.frequency.value = this.array[beatNumber] * this.base);
     osc.type = this.shape;
     if (this.onBeatCallback) {
       this.onBeatCallback(this.array[beatNumber]);

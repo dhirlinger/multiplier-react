@@ -9,7 +9,8 @@ export default function FreqArray({
   const createFreqArray = () => {
     const arr = [];
     const obj = freqObj;
-    for (let i = 1.0; i < 9; i++) {
+    arr.push(obj.base_freq);
+    for (let i = 1.0; i < 8; i++) {
       arr.push(obj.base_freq * i * obj.multiplier);
     }
     return arr;

@@ -7,6 +7,7 @@ import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
 import SeqVoice from "./assets/SeqVoice";
 import LowPassFilter from "./components/LowPassFilter";
+import BaseMultiplier from "./components/BaseMultiplier";
 
 export default function App() {
   //preset + rest api related vars
@@ -30,6 +31,9 @@ export default function App() {
   const [lowPassFreq, setLowPassFreq] = useState("15000");
   const [lowPassQ, setLowPassQ] = useState("0");
   const [seqIsPlaying, setSeqIsPlaying] = useState(false);
+  const [base, setBase] = useState("110");
+  const [multiplier, setMultiplier] = useState("2");
+  const [index, setIndex] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,6 +127,9 @@ export default function App() {
 
   useEffect(() => {
     seqInstance.current = new SeqVoice(600);
+    seqInstance.current.onBeatCallback = (beatNumber) => {
+      setIndex(beatNumber);
+    };
   }, []);
 
   // useEffect(() => {
@@ -155,6 +162,14 @@ export default function App() {
   useEffect(() => {
     seqInstance.current.qValue = lowPassQ;
   }, [lowPassQ]);
+
+  useEffect(() => {
+    seqInstance.current.base = base;
+  });
+
+  useEffect(() => {
+    seqInstance.current.multiplier = multiplier;
+  });
 
   const handleClick = () => {
     setSeqIsPlaying(!seqIsPlaying);
@@ -210,6 +225,12 @@ export default function App() {
       <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
 
+      <BaseMultiplier
+        base={base}
+        setBase={setBase}
+        setMultiplier={setMultiplier}
+      />
+
       <div>
         <span style={{ width: "50px" }}>tempo: </span>
         <input
@@ -243,6 +264,7 @@ export default function App() {
         qValue={lowPassQ}
         setQValue={setLowPassQ}
       />
+      <p>{index}</p>
     </>
   );
 }
