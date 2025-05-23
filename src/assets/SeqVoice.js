@@ -1,4 +1,4 @@
-export default class Seq1Voice {
+export default class SeqVoice {
   constructor(tempo = 600) {
     this.audioContext = null;
     this.notesInQueue = []; // notes that have been put into the web audio and may or may not have been played yet {note, time}

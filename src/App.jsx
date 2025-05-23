@@ -1,11 +1,15 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
-import Sequencer1 from "./components/Sequencer1";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
+import WaveShapeSelect from "./components/WaveShapeSelect";
+import SeqArrInput from "./components/SeqArrInput";
+import SeqVoice from "./assets/SeqVoice";
+import LowPassFilter from "./components/LowPassFilter";
 
 export default function App() {
+  //preset + rest api related vars
   const [freqData, setFreqData] = useState([]);
   const [indexData, setIndexData] = useState([]);
   const [presetData, setPresetData] = useState([]);
@@ -17,6 +21,15 @@ export default function App() {
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
+  //audio api + sequencer related vars
+  const [waveshape, setWaveshape] = useState("square");
+  const seqArrayRef = useRef([]);
+  const seqInstance = useRef(null);
+  const [seqTempo, setSeqTempo] = useState("600");
+  const [duration, setDuration] = useState("0.05");
+  const [lowPassFreq, setLowPassFreq] = useState("15000");
+  const [lowPassQ, setLowPassQ] = useState("0");
+  const [seqIsPlaying, setSeqIsPlaying] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,10 +70,10 @@ export default function App() {
           freqIdRef.current = initialId;
           setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
         }
-        if (indexArrJSON.length > 0) {
-          indexIdRef.current = "1";
-          setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
-        }
+        // if (indexArrJSON.length > 0) {
+        //   indexIdRef.current = "1";
+        //   setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
+        // }
         if (presetArrJSON.length > 0) {
           presetIdRef.current = "1";
           setPresetObj(
@@ -76,6 +89,7 @@ export default function App() {
     fetchData();
   }, []);
 
+  //preset + rest api related func's
   const handleFreqSelect = (e) => {
     freqIdRef.current = e.target.value;
     setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
@@ -87,14 +101,68 @@ export default function App() {
   };
 
   const handlePresetSelect = (e) => {
-    presetIdRef.current = e.target.value;
-    setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
+    console.log(e);
+    if (e != null) {
+      presetIdRef.current = e.target.value;
+      setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
+    }
   };
 
   const filterData = (data, id, key) => {
     const o = data.filter((obj) => obj[key] === id);
     console.log(o[0]);
     return o[0];
+  };
+
+  //audio api + sequencer related func's
+  useEffect(() => {
+    if (indexObj) {
+      seqArrayRef.current = indexObj.index_array.split(",");
+    }
+  }, [indexObj]);
+
+  useEffect(() => {
+    seqInstance.current = new SeqVoice(600);
+  }, []);
+
+  // useEffect(() => {
+  //   seqInstance.current.onBeatCallback = (beatNumber) => {
+  //     // setIndex(beatNumber);
+  //     if (onIndexChange) {
+  //       onIndexChange(beatNumber);
+  //     }
+  //   };
+  // }, [onIndexChange]);
+
+  useEffect(() => {
+    if (seqTempo > 99 && seqTempo < 1001) {
+      seqInstance.current.tempo = seqTempo;
+    }
+  }, [seqTempo]);
+
+  useEffect(() => {
+    seqInstance.current.noteLength = Number(duration);
+  }, [duration]);
+
+  useEffect(() => {
+    seqInstance.current.shape = waveshape;
+  }, [waveshape]);
+
+  useEffect(() => {
+    seqInstance.current.lowPassFreq = lowPassFreq;
+  }, [lowPassFreq]);
+
+  useEffect(() => {
+    seqInstance.current.qValue = lowPassQ;
+  }, [lowPassQ]);
+
+  const handleClick = () => {
+    setSeqIsPlaying(!seqIsPlaying);
+    seqInstance.current.startStop(seqArrayRef.current);
+  };
+
+  const handleShapeChange = (event) => {
+    setWaveshape(event.target.value);
   };
 
   return (
@@ -110,6 +178,22 @@ export default function App() {
         freqObj={freqObj}
       />
 
+      <PresetArray
+        presetData={presetData}
+        presetIdRef={presetIdRef}
+        handleSelect={handlePresetSelect}
+        presetObj={presetObj}
+      />
+
+      <h2 style={{ marginBottom: "0", marginTop: "0" }}>Sequencer:</h2>
+      <p style={{ marginTop: "0" }}>
+        There are 8 frequency values accessable from the frequency slider.
+        Sequence up to 8 positions on the slider (1-8). Enter 0 for a rest in
+        the sequence. Empty boxes will result in a shorter sequence.
+      </p>
+
+      <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
+
       <IndexArray
         indexData={indexData}
         indexIdRef={indexIdRef}
@@ -117,11 +201,47 @@ export default function App() {
         indexObj={indexObj}
       />
 
-      <PresetArray
-        presetData={presetData}
-        presetIdRef={presetIdRef}
-        handleSelect={handlePresetSelect}
-        presetObj={presetObj}
+      <SeqArrInput arrIndex={0} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={1} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={2} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={3} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={4} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={5} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
+
+      <div>
+        <span style={{ width: "50px" }}>tempo: </span>
+        <input
+          style={{ marginTop: "10px", marginRight: "10px", width: "50px" }}
+          type="number"
+          value={seqTempo}
+          onChange={(e) => {
+            const tempo = e.target.value;
+            setSeqTempo(tempo);
+          }}
+        ></input>
+        <span style={{ width: "100px" }}>duration: </span>
+        <input
+          type="range"
+          max="1.0"
+          min="0.05"
+          step="0.05"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+        />
+        <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <button onClick={handleClick}>
+          {seqIsPlaying ? "Stop" : "Play Seq"}
+        </button>
+      </div>
+      <LowPassFilter
+        value={lowPassFreq}
+        setValue={setLowPassFreq}
+        qValue={lowPassQ}
+        setQValue={setLowPassQ}
       />
     </>
   );

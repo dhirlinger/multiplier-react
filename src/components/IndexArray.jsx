@@ -1,13 +1,8 @@
 import React from "react";
 
-export default function IndexArray({
-  indexData,
-  indexIdRef,
-  handleSelect,
-  indexObj,
-}) {
+export default function IndexArray({ indexData, indexIdRef, handleSelect }) {
   return (
-    <div style={{ border: "solid 1px", paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
       <label htmlFor="indexId" style={{ fontWeight: "bold" }}>
         Index Array:
       </label>
@@ -18,17 +13,13 @@ export default function IndexArray({
         onChange={handleSelect}
         style={{ marginLeft: "10px" }}
       >
+        <option>Choose List Preset</option>
         {indexData.map((item) => (
           <option key={item.array_id} value={item.array_id}>
-            {item.array_name}
+            {item.array_name}: {item.index_array}
           </option>
         ))}
       </select>
-      <p>
-        {indexObj
-          ? indexObj.index_array.replace(/,/g, ", ")
-          : "error loading array"}
-      </p>
     </div>
   );
 }
