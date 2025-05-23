@@ -45,9 +45,10 @@ export default class SeqVoice {
     !this.array[beatNumber]
       ? (this.array[beatNumber] = 0)
       : this.array[beatNumber];
-    this.array[beatNumber] === 1
+    this.array[beatNumber] == 1
       ? (osc.frequency.value = this.base)
-      : (osc.frequency.value = this.array[beatNumber] * this.base);
+      : (osc.frequency.value =
+          this.multiplier * this.array[beatNumber] * this.base);
     osc.type = this.shape;
     if (this.onBeatCallback) {
       this.onBeatCallback(this.array[beatNumber]);

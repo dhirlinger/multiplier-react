@@ -165,11 +165,11 @@ export default function App() {
 
   useEffect(() => {
     seqInstance.current.base = base;
-  });
+  }, [base]);
 
   useEffect(() => {
     seqInstance.current.multiplier = multiplier;
-  });
+  }, [multiplier]);
 
   const handleClick = () => {
     setSeqIsPlaying(!seqIsPlaying);
@@ -225,11 +225,7 @@ export default function App() {
       <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
 
-      <BaseMultiplier
-        base={base}
-        setBase={setBase}
-        setMultiplier={setMultiplier}
-      />
+      <BaseMultiplier setBase={setBase} setMultiplier={setMultiplier} />
 
       <div>
         <span style={{ width: "50px" }}>tempo: </span>

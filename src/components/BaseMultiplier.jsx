@@ -1,17 +1,17 @@
 import { useState } from "react";
 
 export default function BaseMultiplier({ setBase, setMultiplier }) {
-  const [baseValue, setBaseValue] = useState();
-  const [multiplierValue, setMutliplierValue] = useState();
+  const [baseValue, setBaseValue] = useState("");
+  const [multiplierValue, setMutliplierValue] = useState("");
 
   const handleBaseChange = (e) => {
     let inputValue = e.target.value;
 
-    // Only allow a single digit between 0 and 8
-    if (/^[40-10000]?$/.test(inputValue)) {
-      setBaseValue(inputValue);
-      setBase(inputValue);
-    }
+    // Only allow ints and floats
+    //if (/^-?\d+(\.\d+)?$/.test(inputValue)) {
+    setBaseValue(inputValue);
+    setBase(inputValue);
+    //}
     // If input is invalid, do nothing (no update)
   };
 
@@ -19,10 +19,10 @@ export default function BaseMultiplier({ setBase, setMultiplier }) {
     let inputValue = e.target.value;
 
     // Only allow a single digit between 0 and 8
-    if (/^[0-10]?$/.test(inputValue)) {
-      setMutliplierValue(inputValue);
-      setMultiplier(inputValue);
-    }
+    //if (/^[0-10]?$/.test(inputValue)) {
+    setMutliplierValue(inputValue);
+    setMultiplier(inputValue);
+    //}
     // If input is invalid, do nothing (no update)
   };
 
@@ -33,8 +33,8 @@ export default function BaseMultiplier({ setBase, setMultiplier }) {
         id="base"
         type="text" // use text to fully control input
         value={baseValue}
-        //   maxLength={1}
-        style={{ width: "50px", fontSize: "36px" }}
+        maxLength={10}
+        style={{ width: "100px", fontSize: "36px" }}
         onChange={handleBaseChange}
       ></input>
 
