@@ -25,10 +25,11 @@ export default function App() {
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
   const seqInstance = useRef(null);
-  const [seqTempo, setseqTempo] = useState("600");
+  const [seqTempo, setSeqTempo] = useState("600");
   const [duration, setDuration] = useState("0.05");
   const [lowPassFreq, setLowPassFreq] = useState("15000");
   const [lowPassQ, setLowPassQ] = useState("0");
+  const [seqIsPlaying, setSeqIsPlaying] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -208,6 +209,40 @@ export default function App() {
       <SeqArrInput arrIndex={5} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
+
+      <div>
+        <span style={{ width: "50px" }}>tempo: </span>
+        <input
+          style={{ marginTop: "10px", marginRight: "10px", width: "50px" }}
+          type="number"
+          value={seqTempo}
+          onChange={(e) => {
+            const tempo = e.target.value;
+            setSeqTempo(tempo);
+          }}
+        ></input>
+        <span style={{ width: "100px" }}>duration: </span>
+        <input
+          type="range"
+          max="1.0"
+          min="0.05"
+          step="0.05"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+        />
+        <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <button onClick={handleClick}>
+          {seqIsPlaying ? "Stop" : "Play Seq"}
+        </button>
+      </div>
+      <LowPassFilter
+        value={lowPassFreq}
+        setValue={setLowPassFreq}
+        qValue={lowPassQ}
+        setQValue={setLowPassQ}
+      />
     </>
   );
 }
