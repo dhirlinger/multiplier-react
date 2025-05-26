@@ -93,6 +93,11 @@ export default function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    freqObj && setBase(freqObj.base_freq);
+    freqObj && setMultiplier(freqObj.multiplier);
+  }, [freqObj]);
+
   //preset + rest api related func's
   const handleFreqSelect = (e) => {
     freqIdRef.current = e.target.value;
@@ -225,7 +230,12 @@ export default function App() {
       <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
 
-      <BaseMultiplier setBase={setBase} setMultiplier={setMultiplier} />
+      <BaseMultiplier
+        base={base}
+        setBase={setBase}
+        multiplier={multiplier}
+        setMultiplier={setMultiplier}
+      />
 
       <div>
         <span style={{ width: "50px" }}>tempo: </span>
