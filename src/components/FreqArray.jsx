@@ -13,19 +13,31 @@ export default function FreqArray({
   const createFreqArray = () => {
     const arr = [];
     if (multiplier === "1") {
-      arr.push(base);
+      arr.push(formatDecimal(base, 3));
+
       for (let i = 2; i < 9; i++) {
-        arr.push(base * i * multiplier);
+        arr.push(formatDecimal(base * i * multiplier, 3));
       }
     } else {
-      arr.push(base);
-      arr.push(base * multiplier);
+      arr.push(formatDecimal(base, 3));
+      arr.push(formatDecimal(base * multiplier, 3));
       for (let i = 2; i < 8; i++) {
-        arr.push(base * i * multiplier);
+        arr.push(formatDecimal(base * i * multiplier, 3));
       }
     }
     return arr;
   };
+
+  function formatDecimal(number, maxDecimalPlaces) {
+    const strNum = String(number);
+    if (strNum.includes(".")) {
+      const parts = strNum.split(".");
+      if (parts[1].length > maxDecimalPlaces) {
+        return Number(number.toFixed(maxDecimalPlaces));
+      }
+    }
+    return number;
+  }
 
   return (
     <div style={{ border: "solid 1px", paddingTop: "10px" }}>
