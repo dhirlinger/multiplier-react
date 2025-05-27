@@ -18,17 +18,6 @@ export default function BaseMultiplier({
     // If input is invalid, do nothing (no update)
   };
 
-  const handleMultiplierChange = (e) => {
-    let inputValue = e.target.value;
-
-    // Only allow a single digit between 0 and 8
-    //if (/^[0-10]?$/.test(inputValue)) {
-    //setMutliplierValue(inputValue);
-    setMultiplier(inputValue);
-    //}
-    // If input is invalid, do nothing (no update)
-  };
-
   return (
     <div style={{ margin: "15px" }}>
       <label htmlFor="base">Base: </label>
@@ -40,16 +29,26 @@ export default function BaseMultiplier({
         style={{ width: "100px", fontSize: "36px" }}
         onChange={handleBaseChange}
       ></input>
-
-      <label htmlFor="multiplier">Multiplier: </label>
       <input
-        id="multiplier"
-        type="text" // use text to fully control input
-        value={multiplier}
-        //   maxLength={1}
-        style={{ width: "50px", fontSize: "36px" }}
-        onChange={handleMultiplierChange}
-      ></input>
+        type="range"
+        max="10000"
+        min="40"
+        step="10"
+        value={base}
+        onChange={(e) => setBase(e.target.value)}
+      />
+      <div>
+        <span style={{ width: "100px" }}>Multiplier: </span>
+        <input
+          type="range"
+          max="10"
+          min="0.1"
+          step="0.1"
+          value={multiplier}
+          onChange={(e) => setMultiplier(e.target.value)}
+        />
+        <span style={{ width: "50px" }}>{Number(multiplier).toFixed(1)}</span>
+      </div>
     </div>
   );
 }
