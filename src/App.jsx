@@ -7,7 +7,6 @@ import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
 import SeqVoice from "./assets/SeqVoice";
 import LowPassFilter from "./components/LowPassFilter";
-import BaseMultiplier from "./components/BaseMultiplier";
 
 export default function App() {
   //preset + rest api related vars
@@ -97,6 +96,12 @@ export default function App() {
     freqObj && setBase(freqObj.base_freq);
     freqObj && setMultiplier(freqObj.multiplier);
   }, [freqObj]);
+
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    isFirstRender.current = false;
+  }, []);
 
   //preset + rest api related func's
   const handleFreqSelect = (e) => {
@@ -194,8 +199,9 @@ export default function App() {
         values by changing the base frequency and multiplier values. The base
         frequency is multiplied by each position number (index) in the array to
         create the frequency array. However, the first value is the base value
-        itself, and the second is the base x multiplier only, and the third
-        through eight are valued at 2-7 respectively.
+        itself, and the second is the base x multiplier only (except if
+        multiplier = 1), and the third through eight are valued at 2-7
+        respectively.
       </p>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}

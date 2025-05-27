@@ -14,13 +14,11 @@ export default function FreqArray({
     const arr = [];
     const obj = freqObj;
     if (obj.multiplier === "1") {
-      console.log("here");
       arr.push(obj.base_freq);
       for (let i = 2; i < 9; i++) {
         arr.push(obj.base_freq * i * obj.multiplier);
       }
     } else {
-      console.log("jeez");
       arr.push(obj.base_freq);
       arr.push(obj.base_freq * obj.multiplier);
       for (let i = 2; i < 8; i++) {
