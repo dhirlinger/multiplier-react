@@ -97,12 +97,6 @@ export default function App() {
     freqObj && setMultiplier(freqObj.multiplier);
   }, [freqObj]);
 
-  const isFirstRender = useRef(true);
-
-  useEffect(() => {
-    isFirstRender.current = false;
-  }, []);
-
   //preset + rest api related func's
   const handleFreqSelect = (e) => {
     freqIdRef.current = e.target.value;
@@ -222,7 +216,6 @@ export default function App() {
         setBase={setBase}
         multiplier={multiplier}
         setMultiplier={setMultiplier}
-        isFirstRender={isFirstRender.current}
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
