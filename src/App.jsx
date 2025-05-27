@@ -187,16 +187,18 @@ export default function App() {
 
   return (
     <>
-      <h1>Multiplier API Dev</h1>
+      <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
+      <p style={{ marginTop: "0" }}>
+        Multiplier is a step sequencer. There are 8 frequencies contained in the
+        frequency array. Sequence the order of the those values and change those
+        values by changing the base frequency and multiplier values. The base
+        frequency is multiplied by each position number (index) in the array to
+        create the frequency array. However, the first value is the base value
+        itself, and the second is the base x multiplier only, and the third
+        through eight are valued at 2-7 respectively.
+      </p>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-
-      <FreqArray
-        freqData={freqData}
-        freqIdRef={freqIdRef}
-        handleSelect={handleFreqSelect}
-        freqObj={freqObj}
-      />
 
       <PresetArray
         presetData={presetData}
@@ -205,12 +207,16 @@ export default function App() {
         presetObj={presetObj}
       />
 
-      <h2 style={{ marginBottom: "0", marginTop: "0" }}>Sequencer:</h2>
-      <p style={{ marginTop: "0" }}>
-        There are 8 frequency values accessable from the frequency slider.
-        Sequence up to 8 positions on the slider (1-8). Enter 0 for a rest in
-        the sequence. Empty boxes will result in a shorter sequence.
-      </p>
+      <FreqArray
+        freqData={freqData}
+        freqIdRef={freqIdRef}
+        handleSelect={handleFreqSelect}
+        freqObj={freqObj}
+        base={base}
+        setBase={setBase}
+        multiplier={multiplier}
+        setMultiplier={setMultiplier}
+      />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
 
@@ -229,13 +235,6 @@ export default function App() {
       <SeqArrInput arrIndex={5} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
       <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
-
-      <BaseMultiplier
-        base={base}
-        setBase={setBase}
-        multiplier={multiplier}
-        setMultiplier={setMultiplier}
-      />
 
       <div>
         <span style={{ width: "50px" }}>tempo: </span>

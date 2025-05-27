@@ -1,10 +1,14 @@
-import React from "react";
+import BaseMultiplier from "./BaseMultiplier";
 
 export default function FreqArray({
   freqData,
   freqIdRef,
   handleSelect,
   freqObj,
+  base,
+  setBase,
+  multiplier,
+  setMultiplier,
 }) {
   const createFreqArray = () => {
     const arr = [];
@@ -62,6 +66,12 @@ export default function FreqArray({
         <span style={{ fontWeight: "bold" }}>In Hertz: </span>
         {freqObj ? createFreqArray().join(", ") : "Loading frequency array..."}
       </p>
+      <BaseMultiplier
+        base={base}
+        setBase={setBase}
+        multiplier={multiplier}
+        setMultiplier={setMultiplier}
+      />
     </div>
   );
 }
