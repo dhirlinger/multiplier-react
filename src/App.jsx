@@ -222,6 +222,7 @@ export default function App() {
         setBase={setBase}
         multiplier={multiplier}
         setMultiplier={setMultiplier}
+        isFirstRender={isFirstRender.current}
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
