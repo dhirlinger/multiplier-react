@@ -12,19 +12,16 @@ export default function FreqArray({
 }) {
   const createFreqArray = () => {
     const arr = [];
-    const obj = freqObj;
-    if (obj.multiplier === "1") {
-      console.log("here");
-      arr.push(obj.base_freq);
+    if (multiplier === "1") {
+      arr.push(base);
       for (let i = 2; i < 9; i++) {
-        arr.push(obj.base_freq * i * obj.multiplier);
+        arr.push(base * i * multiplier);
       }
     } else {
-      console.log("jeez");
-      arr.push(obj.base_freq);
-      arr.push(obj.base_freq * obj.multiplier);
+      arr.push(base);
+      arr.push(base * multiplier);
       for (let i = 2; i < 8; i++) {
-        arr.push(obj.base_freq * i * obj.multiplier);
+        arr.push(base * i * multiplier);
       }
     }
     return arr;
