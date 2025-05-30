@@ -8,7 +8,7 @@ export default function NumberInput({ arrIndex, array, indexObj }) {
     if (indexObj) {
       arr = indexObj.index_array.split(",");
     }
-    arr[arrIndex] && setValue(arr[arrIndex]);
+    arr[arrIndex] ? setValue(arr[arrIndex]) : setValue("");
   }, [indexObj]);
 
   const handleChange = (event) => {
