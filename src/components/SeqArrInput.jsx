@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 export default function NumberInput({ arrIndex, array, indexObj }) {
   const [value, setValue] = useState("");
 
+  //update value on indexObj update.
+  // clear value if no element exists at the index of new obj array.
   useEffect(() => {
     let arr = [];
     if (indexObj) {

@@ -1,4 +1,5 @@
 import BaseMultiplier from "./BaseMultiplier";
+import { Refresh } from "./Icon";
 
 export default function FreqArray({
   freqData,
@@ -49,6 +50,14 @@ export default function FreqArray({
         name="freqId"
         id="freqId"
         onChange={handleSelect}
+        onDoubleClick={(e) => {
+          // let clicks = 1;
+          console.log(e.target.value === freqIdRef.current);
+          // Always call handleSelect on click, even if selection doesn't change
+          // if (e.target.value === freqIdRef.current) {
+          //   handleSelect(e);
+          // }
+        }}
         style={{ marginLeft: "10px" }}
       >
         <option value={1}>DEFAULT</option>
@@ -61,6 +70,7 @@ export default function FreqArray({
             )
         )}
       </select>
+      <button>REFRESH</button>
       <p>
         {freqObj && (
           <>
