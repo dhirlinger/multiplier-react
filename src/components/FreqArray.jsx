@@ -10,6 +10,7 @@ export default function FreqArray({
   setBase,
   multiplier,
   setMultiplier,
+  refreshFreqObj,
 }) {
   const createFreqArray = () => {
     const arr = [];
@@ -42,35 +43,45 @@ export default function FreqArray({
 
   return (
     <div style={{ border: "solid 1px", paddingTop: "10px" }}>
-      <label htmlFor="freqId" style={{ fontWeight: "bold" }}>
-        Frequency Array:
-      </label>
-      <select
-        ref={freqIdRef}
-        name="freqId"
-        id="freqId"
-        onChange={handleSelect}
-        onDoubleClick={(e) => {
-          // let clicks = 1;
-          console.log(e.target.value === freqIdRef.current);
-          // Always call handleSelect on click, even if selection doesn't change
-          // if (e.target.value === freqIdRef.current) {
-          //   handleSelect(e);
-          // }
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        style={{ marginLeft: "10px" }}
       >
-        <option value={1}>DEFAULT</option>
-        {freqData.map(
-          (item) =>
-            item.array_id > 1 && (
-              <option key={item.array_id} value={item.array_id}>
-                {item.array_name}
-              </option>
-            )
-        )}
-      </select>
-      <button>REFRESH</button>
+        <label htmlFor="freqId" style={{ fontWeight: "bold" }}>
+          Frequency Array:
+        </label>
+        <select
+          ref={freqIdRef}
+          name="freqId"
+          id="freqId"
+          onChange={handleSelect}
+          onDoubleClick={(e) => {
+            // let clicks = 1;
+            console.log(e.target.value === freqIdRef.current);
+            // Always call handleSelect on click, even if selection doesn't change
+            // if (e.target.value === freqIdRef.current) {
+            //   handleSelect(e);
+            // }
+          }}
+          style={{ marginLeft: "10px" }}
+        >
+          <option value={1}>DEFAULT</option>
+          {freqData.map(
+            (item) =>
+              item.array_id > 1 && (
+                <option key={item.array_id} value={item.array_id}>
+                  {item.array_name}
+                </option>
+              )
+          )}
+        </select>
+        <button className="refresh" onClick={refreshFreqObj}>
+          <Refresh />
+        </button>
+      </div>
       <p>
         {freqObj && (
           <>

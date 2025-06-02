@@ -55,6 +55,16 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button.refresh {
+  display: inline-flex;
+  width: 20px; 
+  margin: 0 5px;
+  border-radius: 0;
+  border: 1px rgb(133, 133, 133) solid;
+  padding: 0.1em;
+  background-color: rgb(59, 59, 59);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

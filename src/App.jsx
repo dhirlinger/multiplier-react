@@ -108,6 +108,10 @@ export default function App() {
     setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
   };
 
+  const refreshFreqObj = () => {
+    setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
+  };
+
   const handlePresetSelect = (e) => {
     console.log(e);
     if (e != null) {
@@ -216,6 +220,7 @@ export default function App() {
         setBase={setBase}
         multiplier={multiplier}
         setMultiplier={setMultiplier}
+        refreshFreqObj={refreshFreqObj}
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
