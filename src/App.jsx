@@ -109,7 +109,8 @@ export default function App() {
   };
 
   const refreshFreqObj = () => {
-    setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
+    setBase(freqObj.base_freq);
+    setMultiplier(freqObj.multiplier);
   };
 
   const handlePresetSelect = (e) => {
