@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import BaseMultiplier from "./BaseMultiplier";
 import { Refresh } from "./Icon";
 
@@ -12,6 +13,12 @@ export default function FreqArray({
   setMultiplier,
   refreshFreqObj,
 }) {
+  const [freqArray, setFreqArray] = useState();
+
+  useEffect(() => {
+    setFreqArray(createFreqArray().join(", "));
+  }, [freqObj]);
+
   const createFreqArray = () => {
     const arr = [];
     if (multiplier === "1") {
@@ -94,7 +101,7 @@ export default function FreqArray({
       </p>
       <p>
         <span style={{ fontWeight: "bold" }}>In Hertz: </span>
-        {freqObj ? createFreqArray().join(", ") : "Loading frequency array..."}
+        {freqObj ? freqArray : "Loading frequency array..."}
       </p>
       <BaseMultiplier
         base={base}
