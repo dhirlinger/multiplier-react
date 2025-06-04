@@ -124,6 +124,7 @@ export default function App() {
   const refreshIndexObj = () => {
     const refreshedObj = { ...indexObj };
     setIndexObj(refreshedObj);
+    seqArrayRef.current = refreshedObj.index_array;
   };
 
   const filterData = (data, id, key) => {
@@ -185,6 +186,10 @@ export default function App() {
     seqInstance.current.multiplier = multiplier;
   }, [multiplier]);
 
+  useEffect(() => {
+    seqInstance.current.array = seqArrayRef.current;
+  }, [indexObj]);
+
   const handleClick = () => {
     setSeqIsPlaying(!seqIsPlaying);
     seqInstance.current.startStop(seqArrayRef.current);
@@ -239,14 +244,14 @@ export default function App() {
         refreshIndexObj={refreshIndexObj}
       />
 
-      <SeqArrInput arrIndex={0} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={1} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={2} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={3} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={4} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={5} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={6} array={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={7} array={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={0} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={1} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={2} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={3} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={4} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={5} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={6} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <SeqArrInput arrIndex={7} seqArrayRef={seqArrayRef} indexObj={indexObj} />
 
       <div>
         <span style={{ width: "50px" }}>tempo: </span>

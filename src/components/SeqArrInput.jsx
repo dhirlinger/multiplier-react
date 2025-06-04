@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function NumberInput({ arrIndex, array, indexObj }) {
+export default function NumberInput({ arrIndex, seqArrayRef, indexObj }) {
   const [value, setValue] = useState("");
 
   //update value on indexObj update.
@@ -19,9 +19,9 @@ export default function NumberInput({ arrIndex, array, indexObj }) {
     // Only allow a single digit between 0 and 8
     if (/^[0-8]?$/.test(inputValue)) {
       setValue(inputValue);
-      array = array.current;
-      array[arrIndex] = inputValue;
-      console.log(array);
+      seqArrayRef = seqArrayRef.current;
+      seqArrayRef[arrIndex] = inputValue;
+      console.log(seqArrayRef);
     }
     // If input is invalid, do nothing (no update)
   };
