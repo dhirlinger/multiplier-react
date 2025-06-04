@@ -122,7 +122,8 @@ export default function App() {
   };
 
   const refreshIndexObj = () => {
-    setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
+    const refreshedObj = { ...indexObj };
+    setIndexObj(refreshedObj);
   };
 
   const filterData = (data, id, key) => {
