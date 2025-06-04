@@ -65,6 +65,7 @@ button.refresh {
   background-color: rgb(59, 59, 59);
 }
 
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
