@@ -1,8 +1,22 @@
 import React from "react";
+import { Refresh } from "./Icon";
 
-export default function IndexArray({ indexData, indexIdRef, handleSelect }) {
+export default function IndexArray({
+  indexData,
+  indexIdRef,
+  handleSelect,
+  refreshIndexObj,
+}) {
   return (
-    <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+    <div
+      style={{
+        paddingTop: "10px",
+        paddingBottom: "10px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <label htmlFor="indexId" style={{ fontWeight: "bold" }}>
         Index Array:
       </label>
@@ -20,6 +34,9 @@ export default function IndexArray({ indexData, indexIdRef, handleSelect }) {
           </option>
         ))}
       </select>
+      <button className="refresh" onClick={refreshIndexObj}>
+        <Refresh />
+      </button>
     </div>
   );
 }

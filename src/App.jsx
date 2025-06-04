@@ -108,17 +108,21 @@ export default function App() {
     setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
   };
 
-  const refreshFreqObj = () => {
-    setBase(freqObj.base_freq);
-    setMultiplier(freqObj.multiplier);
-  };
-
   const handlePresetSelect = (e) => {
     console.log(e);
     if (e != null) {
       presetIdRef.current = e.target.value;
       setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
     }
+  };
+
+  const refreshFreqObj = () => {
+    setBase(freqObj.base_freq);
+    setMultiplier(freqObj.multiplier);
+  };
+
+  const refreshIndexObj = () => {
+    setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
   };
 
   const filterData = (data, id, key) => {
@@ -231,6 +235,7 @@ export default function App() {
         indexIdRef={indexIdRef}
         handleSelect={handleIndexSelect}
         indexObj={indexObj}
+        refreshIndexObj={refreshIndexObj}
       />
 
       <SeqArrInput arrIndex={0} array={seqArrayRef} indexObj={indexObj} />
