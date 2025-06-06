@@ -124,8 +124,8 @@ export default function App() {
   const refreshIndexObj = () => {
     if (indexObj) {
       const refreshedObj = { ...indexObj };
-      setIndexObj(refreshedObj);
       seqArrayRef.current = refreshedObj.index_array;
+      setIndexObj(refreshedObj);
     }
   };
 
@@ -139,6 +139,7 @@ export default function App() {
   useEffect(() => {
     if (indexObj) {
       seqArrayRef.current = indexObj.index_array.split(",");
+      console.log(`indexObj useEff seqArr = ${seqArrayRef.current}`);
     }
   }, [indexObj]);
 
