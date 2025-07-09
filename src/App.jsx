@@ -33,6 +33,7 @@ export default function App() {
   const [base, setBase] = useState("110");
   const [multiplier, setMultiplier] = useState("2");
   const [index, setIndex] = useState();
+  const [seqVoiceArr, setSeqVoiceArr] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -158,6 +159,12 @@ export default function App() {
   //     }
   //   };
   // }, [onIndexChange]);
+
+  useEffect(() => {
+    seqInstance.current.arrCallback = (array) => {
+      setSeqVoiceArr([...array]);
+    };
+  }, []);
 
   useEffect(() => {
     if (seqTempo > 99 && seqTempo < 1001) {
@@ -290,6 +297,7 @@ export default function App() {
         setQValue={setLowPassQ}
       />
       <p>{index}</p>
+      <p>seqVoiceArr: {seqVoiceArr}</p>
     </>
   );
 }
