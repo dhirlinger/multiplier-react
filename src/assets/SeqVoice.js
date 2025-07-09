@@ -14,6 +14,7 @@ export default class SeqVoice {
     this.array = [];
     this.shape = "square";
     this.onBeatCallback = null;
+    this.arrCallback = null;
     this.noteLength = 0.05;
     this.lowPassFreq = 15000;
     this.qValue = 0;
@@ -68,6 +69,9 @@ export default class SeqVoice {
     osc.type = this.shape;
     if (this.onBeatCallback) {
       this.onBeatCallback(this.array[beatNumber]);
+    }
+    if (this.arrCallback) {
+      this.arrCallback(this.array);
     }
 
     // Manipulate the Biquad filter
