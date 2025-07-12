@@ -34,6 +34,7 @@ export default function App() {
   const [multiplier, setMultiplier] = useState("2");
   const [index, setIndex] = useState();
   const [seqVoiceArr, setSeqVoiceArr] = useState();
+  const [statusCode, setStatusCode] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,14 +126,17 @@ export default function App() {
   const refreshIndexObj = () => {
     if (indexObj) {
       const refreshedObj = { ...indexObj };
-      seqArrayRef.current = refreshedObj.index_array;
+      seqArrayRef.current = refreshedObj.index_array.split(",");
+      console.log("refresh IO: " + JSON.stringify(refreshedObj));
       setIndexObj(refreshedObj);
     }
+    // const refreshedId = indexIdRef.current;
+    // setIndexObj(filterData(indexData, refreshedId, "array_id"));
   };
 
   const filterData = (data, id, key) => {
     const o = data.filter((obj) => obj[key] === id);
-    console.log(o[0]);
+    console.log(`filterData: ${JSON.stringify(o[0])}`);
     return o[0];
   };
 
@@ -148,6 +152,10 @@ export default function App() {
     seqInstance.current = new SeqVoice(600);
     seqInstance.current.onBeatCallback = (beatNumber) => {
       setIndex(beatNumber);
+    };
+    seqInstance.current.statusCallback = (code) => {
+      setStatusCode(code);
+      if (code === 0) setSeqIsPlaying(false);
     };
   }, []);
 
@@ -197,7 +205,8 @@ export default function App() {
   }, [multiplier]);
 
   useEffect(() => {
-    seqInstance.current.array = seqArrayRef.current;
+    seqInstance.current.arrayHold = seqArrayRef.current;
+    console.log(`seqIns Arr: ${seqArrayRef.current}`);
   }, [indexObj]);
 
   const handleClick = () => {
@@ -207,6 +216,15 @@ export default function App() {
 
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
+  };
+
+  const getStatus = () => {
+    switch (statusCode) {
+      case 0:
+        return "Index Array is Empty";
+      case 1:
+        return "OK";
+    }
   };
 
   return (
@@ -298,6 +316,7 @@ export default function App() {
       />
       <p>{index}</p>
       <p>seqVoiceArr: {seqVoiceArr}</p>
+      <p>{getStatus()}</p>
     </>
   );
 }

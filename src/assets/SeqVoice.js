@@ -9,12 +9,14 @@ export default class SeqVoice {
     this.nextNoteTime = 0.0; // when the next note is due
     this.isRunning = false;
     this.intervalID = null;
-    this.beatsPerBar = 8;
+    this.beatsPerBar = 0;
     this.freq = 440;
     this.array = [];
+    this.arrayHold = [];
     this.shape = "square";
     this.onBeatCallback = null;
     this.arrCallback = null;
+    this.statusCallback = null;
     this.noteLength = 0.05;
     this.lowPassFreq = 15000;
     this.qValue = 0;
@@ -30,10 +32,23 @@ export default class SeqVoice {
     this.currentQuarterNote++; // Advance the beat number, wrap to zero
     if (this.currentQuarterNote == this.beatsPerBar) {
       this.currentQuarterNote = 0;
+      console.log("wrap to 0");
     }
   }
 
   scheduleNote(beatNumber, time) {
+    this.array = [...this.arrayHold];
+    //check if array is empty if so tell user with callback
+    if (this.array.length === 0) {
+      this.stop();
+      this.statusCallback(0);
+      return;
+    }
+    //status is ok
+    this.statusCallback(1);
+    console.log(`arrHold: ${this.arrayHold}`);
+    this.beatsPerBar = this.array.length;
+
     // push the note on the queue, even if we're not playing.
     this.notesInQueue.push({ note: beatNumber, time: time });
 
@@ -41,14 +56,29 @@ export default class SeqVoice {
     const osc = this.audioContext.createOscillator();
     const lowpass = this.audioContext.createBiquadFilter();
     const env = this.audioContext.createGain();
+    const val = this.array[beatNumber] ?? 0;
 
-    this.beatsPerBar = this.array.length;
-    !this.array[beatNumber]
-      ? (this.array[beatNumber] = 0)
-      : this.array[beatNumber];
+    console.log(
+      `beatsPerBar: ${this.beatsPerBar} array L: ${this.array.length} val: ${val}`
+    );
+
+    // !this.array[beatNumber]
+    //   ? (this.array[beatNumber] = 0)
+    //   : this.array[beatNumber];
+
+    // if (!this.array[beatNumber]) {
+    //   console.log(`!arr[beatNum]: ${this.array[beatNumber]}`);
+    //   if (beatNumber <= this.array.length) {
+    //     this.array[beatNumber] = 0;
+    //     console.log("assign 0");
+    //   } else {
+    //     this.currentQuarterNote = 1;
+    //     return;
+    //   }
+    // }
 
     //do math for freq but avoid out of range values and errors
-    if (this.array[beatNumber] == 1) {
+    if (val == 1) {
       if (this.base > -22050 && this.base < 22050) {
         osc.frequency.value = this.base;
       } else {
@@ -56,11 +86,10 @@ export default class SeqVoice {
       }
     } else {
       if (
-        this.multiplier * this.array[beatNumber] * this.base > -22050 &&
-        this.multiplier * this.array[beatNumber] * this.base < 22050
+        this.multiplier * val * this.base > -22050 &&
+        this.multiplier * val * this.base < 22050
       ) {
-        osc.frequency.value =
-          this.multiplier * this.array[beatNumber] * this.base;
+        osc.frequency.value = this.multiplier * val * this.base;
       } else {
         osc.frequency.value = 0;
       }
@@ -68,7 +97,7 @@ export default class SeqVoice {
 
     osc.type = this.shape;
     if (this.onBeatCallback) {
-      this.onBeatCallback(this.array[beatNumber]);
+      this.onBeatCallback(val);
     }
     if (this.arrCallback) {
       this.arrCallback(this.array);
