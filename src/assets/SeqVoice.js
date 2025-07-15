@@ -4,7 +4,7 @@ export default class SeqVoice {
     this.notesInQueue = []; // notes that have been put into the web audio and may or may not have been played yet {note, time}
     this.currentQuarterNote = 0;
     this.tempo = tempo;
-    this.lookahead = 25; // How frequently to call scheduling function (in milliseconds)
+    this.lookahead = 50; // How frequently to call scheduling function (in milliseconds)
     this.scheduleAheadTime = 0.1; // How far ahead to schedule audio (sec)
     this.nextNoteTime = 0.0; // when the next note is due
     this.isRunning = false;
@@ -37,7 +37,8 @@ export default class SeqVoice {
   }
 
   scheduleNote(beatNumber, time) {
-    this.array = [...this.arrayHold];
+    this.array = this.arrayHold.filter(Boolean);
+    //this.array = [...this.arrayHold];
     //check if array is empty if so tell user with callback
     if (this.array.length === 0) {
       this.stop();
@@ -49,17 +50,29 @@ export default class SeqVoice {
     console.log(`arrHold: ${this.arrayHold}`);
     this.beatsPerBar = this.array.length;
 
+    //guarding against array being out of bounds
+    if (beatNumber >= this.array.length) {
+      console.warn("Beat number out of bounds", {
+        beatNumber,
+        arrayLength: this.array.length,
+      });
+      beatNumber = this.array[0];
+      this.currentQuarterNote = 0;
+      return;
+    }
+
     // push the note on the queue, even if we're not playing.
-    this.notesInQueue.push({ note: beatNumber, time: time });
+    //this.notesInQueue.push({ note: beatNumber, time: time });
 
     // create oscillator + gain node + low pass filter
     const osc = this.audioContext.createOscillator();
     const lowpass = this.audioContext.createBiquadFilter();
     const env = this.audioContext.createGain();
-    const val = this.array[beatNumber] ?? 0;
+    // if (this.array[beatNumber] === "R" || this.array[beatNumber] === "r")
+    //   this.array[beatNumber] = 0;
 
     console.log(
-      `beatsPerBar: ${this.beatsPerBar} array L: ${this.array.length} val: ${val}`
+      `beatsPerBar: ${this.beatsPerBar} array L: ${this.array.length} beatNum: ${this.array[beatNumber]}`
     );
 
     // !this.array[beatNumber]
@@ -78,7 +91,7 @@ export default class SeqVoice {
     // }
 
     //do math for freq but avoid out of range values and errors
-    if (val == 1) {
+    if (this.array[beatNumber] == 1) {
       if (this.base > -22050 && this.base < 22050) {
         osc.frequency.value = this.base;
       } else {
@@ -86,10 +99,11 @@ export default class SeqVoice {
       }
     } else {
       if (
-        this.multiplier * val * this.base > -22050 &&
-        this.multiplier * val * this.base < 22050
+        this.multiplier * this.array[beatNumber] * this.base > -22050 &&
+        this.multiplier * this.array[beatNumber] * this.base < 22050
       ) {
-        osc.frequency.value = this.multiplier * val * this.base;
+        osc.frequency.value =
+          this.multiplier * this.array[beatNumber] * this.base;
       } else {
         osc.frequency.value = 0;
       }
@@ -97,7 +111,7 @@ export default class SeqVoice {
 
     osc.type = this.shape;
     if (this.onBeatCallback) {
-      this.onBeatCallback(val);
+      this.onBeatCallback(this.array[beatNumber]);
     }
     if (this.arrCallback) {
       this.arrCallback(this.array);
