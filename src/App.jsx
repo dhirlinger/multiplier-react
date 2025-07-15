@@ -51,7 +51,7 @@ export default function App() {
         setFreqData(freqArrJSON);
         //get index arrays for current user
         const indexResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/1`
+          `http://192.168.1.152:8888/wp-json/multiplier-api/v1/index-arrays/1`
         );
         if (!indexResponse.ok)
           throw new Error(

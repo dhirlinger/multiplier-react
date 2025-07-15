@@ -17,7 +17,7 @@ export default function NumberInput({ arrIndex, seqArrayRef, indexObj }) {
     let inputValue = event.target.value;
 
     // Only allow a single digit between 0 and 8
-    if (/^[0-8]?$/.test(inputValue)) {
+    if (/^[0-8Rr]?$/.test(inputValue)) {
       setValue(inputValue);
       seqArrayRef = seqArrayRef.current;
       seqArrayRef[arrIndex] = inputValue;
