@@ -18,6 +18,7 @@ export default function PresetArray({
         onChange={handleSelect}
         style={{ marginLeft: "10px" }}
       >
+        <option>Choose Preset</option>
         {presetData.map((item) => (
           <option key={item.preset_id} value={item.preset_id}>
             {item.preset_id}
@@ -25,6 +26,7 @@ export default function PresetArray({
         ))}
       </select>
       <p>{presetObj ? JSON.stringify(presetObj) : "error preset"}</p>
+      <p>{presetData ? JSON.stringify(presetData) : "error presetData"}</p>
     </div>
   );
 }
