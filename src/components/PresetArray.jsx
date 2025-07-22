@@ -18,9 +18,11 @@ export default function PresetArray({
         onChange={handleSelect}
         style={{ marginLeft: "10px" }}
       >
+        <option>Choose Preset</option>
         {presetData.map((item) => (
           <option key={item.preset_id} value={item.preset_id}>
             {item.preset_id}
+            {item.name ? ": " + item.name : ": NO NAME"}
           </option>
         ))}
       </select>
