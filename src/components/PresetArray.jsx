@@ -22,11 +22,11 @@ export default function PresetArray({
         {presetData.map((item) => (
           <option key={item.preset_id} value={item.preset_id}>
             {item.preset_id}
+            {item.name ? ": " + item.name : ": NO NAME"}
           </option>
         ))}
       </select>
       <p>{presetObj ? JSON.stringify(presetObj) : "error preset"}</p>
-      <p>{presetData ? JSON.stringify(presetData) : "error presetData"}</p>
     </div>
   );
 }
