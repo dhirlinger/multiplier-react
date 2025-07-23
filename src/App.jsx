@@ -266,6 +266,7 @@ export default function App() {
         multiplier={multiplier}
         setMultiplier={setMultiplier}
         refreshFreqObj={refreshFreqObj}
+        presetObj={presetObj}
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />

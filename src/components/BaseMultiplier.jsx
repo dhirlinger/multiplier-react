@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function BaseMultiplier({
   base,
   setBase,
   multiplier,
   setMultiplier,
+  presetObj,
 }) {
   const [multiplierMin, setMultiplierMin] = useState("0.1");
   const [multiplierMax, setMultiplierMax] = useState("10");
@@ -13,6 +14,17 @@ export default function BaseMultiplier({
   const [baseMin, setBaseMin] = useState("40");
   const [baseMax, setBaseMax] = useState("10000");
   const [baseStep, setBaseStep] = useState("10");
+
+  useEffect(() => {
+    if (presetObj) {
+      setMultiplierMin(presetObj.multiplier_min);
+      setMultiplierMax(presetObj.multiplier_max);
+      setMultiplierStep(presetObj.multiplier_step);
+      setBaseMin(presetObj.base_min);
+      setBaseMax(presetObj.base_max);
+      setBaseStep(presetObj.base_step);
+    }
+  }, [presetObj]);
 
   const handleBaseChange = (e) => {
     let inputValue = e.target.value;
