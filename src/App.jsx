@@ -41,7 +41,7 @@ export default function App() {
       try {
         //get freq arrays for user 1
         const freqResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/1`
+          `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/1`
         );
         if (!freqResponse.ok)
           throw new Error(
@@ -51,7 +51,7 @@ export default function App() {
         setFreqData(freqArrJSON);
         //get index arrays for current user
         const indexResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/1`
+          `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/1`
         );
         if (!indexResponse.ok)
           throw new Error(
@@ -61,7 +61,7 @@ export default function App() {
         setIndexData(indexArrJSON);
         //get presets for current user
         const presetResponse = await fetch(
-          `http://localhost:8888/wp-json/multiplier-api/v1/presets/1`
+          `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/1`
         );
         if (!presetResponse.ok)
           throw new Error(
@@ -92,6 +92,22 @@ export default function App() {
       }
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(window.MultiplierAPI); // check if it exists
+    if (!window.MultiplierAPI) return;
+
+    fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "X-WP-Nonce": window.MultiplierAPI.nonce,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("Login Status:", data))
+      .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
