@@ -21,6 +21,7 @@ export default function App() {
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
+  const loginStatusRef = useRef({});
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
@@ -106,7 +107,11 @@ export default function App() {
       },
     })
       .then((res) => res.json())
-      .then((data) => console.log("Login Status:", data))
+      .then((data) => {
+        loginStatusRef.current = data;
+        console.log("Login Status:", data);
+        console.log("ref:", loginStatusRef.current);
+      })
       .catch((err) => console.error(err));
   }, []);
 
