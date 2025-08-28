@@ -51,7 +51,6 @@ export default function App() {
       .then((res) => res.json())
       .then((data) => {
         loginStatusRef.current = data;
-        console.log("Login Status:", data);
         console.log("ref:", loginStatusRef.current);
         fetchPresetData();
       })
@@ -64,7 +63,10 @@ export default function App() {
 
   //  useEffect(() => {
   const fetchPresetData = async () => {
-    const userID = loginStatusRef.current.user_id;
+    //for development assign userID to 1 if there is no user_id
+    const userID = loginStatusRef.current.user_id
+      ? loginStatusRef.current.user_id
+      : 1;
     try {
       //get freq arrays for user 1
       const freqResponse = await fetch(
