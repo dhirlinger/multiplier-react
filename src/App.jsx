@@ -55,15 +55,20 @@ export default function App() {
         console.log("ref:", loginStatusRef.current);
         fetchPresetData();
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        // fetchPresetData();
+        // console.log("default presests loaded without user login");
+      });
   }, []);
 
   //  useEffect(() => {
   const fetchPresetData = async () => {
+    const userID = loginStatusRef.current.user_id;
     try {
       //get freq arrays for user 1
       const freqResponse = await fetch(
-        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/1`
+        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
       );
       if (!freqResponse.ok)
         throw new Error(
@@ -73,7 +78,7 @@ export default function App() {
       setFreqData(freqArrJSON);
       //get index arrays for current user
       const indexResponse = await fetch(
-        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/1`
+        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
       );
       if (!indexResponse.ok)
         throw new Error(
@@ -83,7 +88,7 @@ export default function App() {
       setIndexData(indexArrJSON);
       //get presets for current user
       const presetResponse = await fetch(
-        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/1`
+        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/${userID}`
       );
       if (!presetResponse.ok)
         throw new Error(
