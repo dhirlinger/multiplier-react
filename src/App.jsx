@@ -38,66 +38,8 @@ export default function App() {
   const [statusCode, setStatusCode] = useState(1);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //get freq arrays for user 1
-        const freqResponse = await fetch(
-          `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/1`
-        );
-        if (!freqResponse.ok)
-          throw new Error(
-            `User frequency arrays request error! status: ${freqResponse.status}`
-          );
-        const freqArrJSON = await freqResponse.json();
-        setFreqData(freqArrJSON);
-        //get index arrays for current user
-        const indexResponse = await fetch(
-          `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/1`
-        );
-        if (!indexResponse.ok)
-          throw new Error(
-            `User index array request error! status: ${indexResponse.status}`
-          );
-        const indexArrJSON = await indexResponse.json();
-        setIndexData(indexArrJSON);
-        //get presets for current user
-        const presetResponse = await fetch(
-          `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/1`
-        );
-        if (!presetResponse.ok)
-          throw new Error(
-            `User presets request error! status: ${presetResponse.status}`
-          );
-        const presetArrJSON = await presetResponse.json();
-        setPresetData(presetArrJSON);
-        //calculate freq array after data loads
-        if (freqArrJSON.length > 0) {
-          const initialId = freqArrJSON[0].array_id;
-          freqIdRef.current = initialId;
-          setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
-        }
-        // if (indexArrJSON.length > 0) {
-        //   indexIdRef.current = "1";
-        //   setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
-        // }
-        if (presetArrJSON.length > 0) {
-          presetIdRef.current = "1";
-          setPresetObj(
-            filterData(presetArrJSON, presetIdRef.current, "preset_id")
-          );
-        }
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     console.log(window.MultiplierAPI); // check if it exists
-    if (!window.MultiplierAPI) return;
+    //if (!window.MultiplierAPI) return; comment out for non-WP development
 
     fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
       method: "GET",
@@ -111,9 +53,68 @@ export default function App() {
         loginStatusRef.current = data;
         console.log("Login Status:", data);
         console.log("ref:", loginStatusRef.current);
+        fetchPresetData();
       })
       .catch((err) => console.error(err));
   }, []);
+
+  //  useEffect(() => {
+  const fetchPresetData = async () => {
+    try {
+      //get freq arrays for user 1
+      const freqResponse = await fetch(
+        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/1`
+      );
+      if (!freqResponse.ok)
+        throw new Error(
+          `User frequency arrays request error! status: ${freqResponse.status}`
+        );
+      const freqArrJSON = await freqResponse.json();
+      setFreqData(freqArrJSON);
+      //get index arrays for current user
+      const indexResponse = await fetch(
+        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/1`
+      );
+      if (!indexResponse.ok)
+        throw new Error(
+          `User index array request error! status: ${indexResponse.status}`
+        );
+      const indexArrJSON = await indexResponse.json();
+      setIndexData(indexArrJSON);
+      //get presets for current user
+      const presetResponse = await fetch(
+        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/1`
+      );
+      if (!presetResponse.ok)
+        throw new Error(
+          `User presets request error! status: ${presetResponse.status}`
+        );
+      const presetArrJSON = await presetResponse.json();
+      setPresetData(presetArrJSON);
+      //calculate freq array after data loads
+      if (freqArrJSON.length > 0) {
+        const initialId = freqArrJSON[0].array_id;
+        freqIdRef.current = initialId;
+        setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
+      }
+      // if (indexArrJSON.length > 0) {
+      //   indexIdRef.current = "1";
+      //   setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
+      // }
+      if (presetArrJSON.length > 0) {
+        presetIdRef.current = "1";
+        setPresetObj(
+          filterData(presetArrJSON, presetIdRef.current, "preset_id")
+        );
+      }
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
@@ -165,6 +166,14 @@ export default function App() {
     const o = data.filter((obj) => obj[key] === id);
     console.log(`filterData: ${JSON.stringify(o[0])}`);
     return o[0];
+  };
+
+  const saveIndexPreset = (data) => {
+    if (!loginStatusRef.current) {
+      console.log("You must login via patreon to access this feature");
+      return;
+    }
+    if (loginStatusRef.current.logged_in) console.log(seqArrayRef.current);
   };
 
   //audio api + sequencer related func's
@@ -345,6 +354,7 @@ export default function App() {
       <p>{index}</p>
       <p>seqVoiceArr: {seqVoiceArr}</p>
       <p>{getStatus()}</p>
+      <button onClick={saveIndexPreset}>Save Index Array</button>
     </>
   );
 }
