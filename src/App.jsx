@@ -146,10 +146,10 @@ export default function App() {
       setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
       setFreqObj(filterData(freqData, presetObj.freq_array_id, "array_id"));
       setIndexObj(filterData(indexData, presetObj.index_array_id, "array_id"));
-      setWaveshape(presetObj.waveshape);
-      setDuration(presetObj.duration);
-      setLowPassFreq(presetObj.lowpass_freq);
-      setLowPassQ(presetObj.lowpass_q);
+      setWaveshape(presetObj.params_json.wave_shape);
+      setDuration(presetObj.params_json.duration);
+      setLowPassFreq(presetObj.params_json.lowpass_freq);
+      setLowPassQ(presetObj.params_json.lowpass_q);
     }
   };
 
