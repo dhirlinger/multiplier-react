@@ -39,26 +39,28 @@ export default function App() {
 
   useEffect(() => {
     console.log(window.MultiplierAPI); // check if it exists
-    //if (!window.MultiplierAPI) return; comment out for non-WP development
-
-    fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "X-WP-Nonce": window.MultiplierAPI.nonce,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        loginStatusRef.current = data;
-        console.log("ref:", loginStatusRef.current);
-        fetchPresetData();
+    if (window.MultiplierAPI) {
+      fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "X-WP-Nonce": window.MultiplierAPI.nonce,
+        },
       })
-      .catch((err) => {
-        console.error(err);
-        // fetchPresetData();
-        // console.log("default presests loaded without user login");
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          loginStatusRef.current = data;
+          console.log("ref:", loginStatusRef.current);
+          fetchPresetData();
+        })
+        .catch((err) => {
+          console.error(err);
+          // fetchPresetData();
+          // console.log("default presests loaded without user login");
+        });
+    } else {
+      fetchPresetData();
+    }
   }, []);
 
   //  useEffect(() => {
