@@ -21,6 +21,7 @@ export default function App() {
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
+  const presetSelectedRef = useRef(false);
   const loginStatusRef = useRef({});
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
@@ -38,8 +39,9 @@ export default function App() {
   const [statusCode, setStatusCode] = useState(1);
 
   useEffect(() => {
-    console.log(window.MultiplierAPI); // check if it exists
+    // check if it exists
     if (window.MultiplierAPI) {
+      //get login-status data
       fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
         method: "GET",
         credentials: "include",
@@ -51,6 +53,7 @@ export default function App() {
         .then((data) => {
           loginStatusRef.current = data;
           console.log("ref:", loginStatusRef.current);
+          //get index array, freq array, and preset data
           fetchPresetData();
         })
         .catch((err) => {
@@ -110,12 +113,12 @@ export default function App() {
       //   indexIdRef.current = "1";
       //   setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
       // }
-      if (presetArrJSON.length > 0) {
-        presetIdRef.current = "1";
-        setPresetObj(
-          filterData(presetArrJSON, presetIdRef.current, "preset_id")
-        );
-      }
+      // if (presetArrJSON.length > 0) {
+      //   presetIdRef.current = "1";
+      //   setPresetObj(
+      //     filterData(presetArrJSON, presetIdRef.current, "preset_id")
+      //   );
+      // }
     } catch (e) {
       setError(e);
     } finally {
@@ -145,13 +148,20 @@ export default function App() {
     console.log(e);
     if (e != null) {
       presetIdRef.current = e.target.value;
-      setPresetObj(filterData(presetData, presetIdRef.current, "preset_id"));
-      setFreqObj(filterData(freqData, presetObj.freq_array_id, "array_id"));
-      setIndexObj(filterData(indexData, presetObj.index_array_id, "array_id"));
-      setWaveshape(presetObj.params_json.wave_shape);
-      setDuration(presetObj.params_json.duration);
-      setLowPassFreq(presetObj.params_json.lowpass_freq);
-      setLowPassQ(presetObj.params_json.lowpass_q);
+      const selectedObj = filterData(
+        presetData,
+        presetIdRef.current,
+        "preset_id"
+      );
+      setPresetObj(selectedObj);
+      setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
+      setIndexObj(
+        filterData(indexData, selectedObj.index_array_id, "array_id")
+      );
+      setWaveshape(selectedObj.params_json.wave_shape);
+      setDuration(selectedObj.params_json.duration);
+      setLowPassFreq(selectedObj.params_json.lowpass_freq);
+      setLowPassQ(selectedObj.params_json.lowpass_q);
     }
   };
 

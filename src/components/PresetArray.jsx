@@ -26,7 +26,9 @@ export default function PresetArray({
           </option>
         ))}
       </select>
-      <p>{presetObj ? JSON.stringify(presetObj) : "error preset"}</p>
+      <p style={{ overflowWrap: "anywhere" }}>
+        {presetObj ? JSON.stringify(presetObj) : "no preset selected"}
+      </p>
     </div>
   );
 }

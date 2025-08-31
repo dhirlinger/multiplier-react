@@ -17,12 +17,12 @@ export default function BaseMultiplier({
 
   useEffect(() => {
     if (presetObj) {
-      setMultiplierMin(presetObj.multiplier_min);
-      setMultiplierMax(presetObj.multiplier_max);
-      setMultiplierStep(presetObj.multiplier_step);
-      setBaseMin(presetObj.base_min);
-      setBaseMax(presetObj.base_max);
-      setBaseStep(presetObj.base_step);
+      setMultiplierMin(presetObj.params_json.multiplier_min);
+      setMultiplierMax(presetObj.params_json.multiplier_max);
+      setMultiplierStep(presetObj.params_json.multiplier_step);
+      setBaseMin(presetObj.params_json.base_min);
+      setBaseMax(presetObj.params_json.base_max);
+      setBaseStep(presetObj.params_json.base_step);
     }
   }, [presetObj]);
 
