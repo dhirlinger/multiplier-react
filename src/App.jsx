@@ -21,7 +21,6 @@ export default function App() {
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
-  const presetSelectedRef = useRef(false);
   const loginStatusRef = useRef({});
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
