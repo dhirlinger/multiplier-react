@@ -7,7 +7,11 @@ import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
 import SeqVoice from "./assets/SeqVoice";
 import LowPassFilter from "./components/LowPassFilter";
-import { presetDefault, freqArrDefault, indexArrDefault } from "./assets/default";
+import {
+  presetDefault,
+  freqArrDefault,
+  indexArrDefault,
+} from "./assets/default";
 
 export default function App() {
   //preset + rest api related vars
@@ -125,11 +129,13 @@ export default function App() {
       setLoading(false);
     }
   };
- 
+
   //add default presets to data arrays
   const addDefault = (dataArr, defaultArr) => {
-    defaultArr.map((preset) => {dataArr.unshift(preset)})
-  } 
+    defaultArr.map((preset) => {
+      dataArr.unshift(preset);
+    });
+  };
 
   useEffect(() => {
     if (!loginStatusRef.current.user_id === 1) {
@@ -137,7 +143,7 @@ export default function App() {
       addDefault(freqData, freqArrDefault);
       addDefault(presetData, presetDefault);
     }
-  }, [indexData, freqData, presetData]); 
+  }, [indexData, freqData, presetData]);
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
@@ -296,6 +302,46 @@ export default function App() {
   return (
     <>
       <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
+
+      {!loginStatusRef.current.logged_in && (
+        <p
+          style={{
+            marginBottom: "5px",
+            marginTop: "5px",
+            backgroundColor: "#630c0cff",
+            color: "#fafafaff",
+          }}
+        >
+          To save and recall your own presets and to use MIDI functionality you
+          must be a member of
+          <b>
+            {" "}
+            <a
+              href="https://www.patreon.com/user?u=90105560&amp;utm_source=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post%2F&amp;utm_medium=patreon_wordpress_plugin&amp;utm_campaign=14548621&amp;utm_term=&amp;utm_content=creator_profile_link_in_text_over_interface"
+              target="_blank"
+            >
+              Doug’s Patreon
+            </a>{" "}
+            at $3{" "}
+          </b>{" "}
+          or more.{" "}
+          <a
+            href="http://localhost:8888/patreon-flow/?patreon-unlock-post=8"
+            target="_blank"
+          >
+            Unlock with Patreon
+          </a>{" "}
+          Already a qualifying Patreon member?{" "}
+          <a
+            href="http://localhost:8888/patreon-flow/?patreon-login=yes&amp;patreon-final-redirect=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post"
+            rel="nofollow"
+          >
+            Refresh
+          </a>{" "}
+          to access this content.
+        </p>
+      )}
+
       <p style={{ marginTop: "0" }}>
         Multiplier is a step sequencer. There are 8 frequencies contained in the
         frequency array. Sequence the order of the those values and change those
