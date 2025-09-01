@@ -7,6 +7,7 @@ import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
 import SeqVoice from "./assets/SeqVoice";
 import LowPassFilter from "./components/LowPassFilter";
+import { presetDefault, freqArrDefault, indexArrDefault } from "./assets/default";
 
 export default function App() {
   //preset + rest api related vars
@@ -124,8 +125,19 @@ export default function App() {
       setLoading(false);
     }
   };
-  //   fetchData();
-  // }, []);
+ 
+  //add default presets to data arrays
+  const addDefault = (dataArr, defaultArr) => {
+    defaultArr.map((preset) => {dataArr.unshift(preset)})
+  } 
+
+  useEffect(() => {
+    if (!loginStatusRef.current.user_id === 1) {
+      addDefault(indexData, indexArrDefault);
+      addDefault(freqData, freqArrDefault);
+      addDefault(presetData, presetDefault);
+    }
+  }, [indexData, freqData, presetData]); 
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
