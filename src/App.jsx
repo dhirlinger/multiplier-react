@@ -187,9 +187,9 @@ export default function App() {
     return o[0];
   };
 
-  const saveIndexPreset = (data) => {
-    if (!loginStatusRef.current) {
-      console.log("You must login via patreon to access this feature");
+  const saveIndexPreset = () => {
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
       return;
     }
     if (loginStatusRef.current.logged_in) console.log(seqArrayRef.current);
