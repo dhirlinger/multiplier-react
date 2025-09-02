@@ -3,7 +3,8 @@ import { Refresh } from "./Icon";
 
 export default function FreqArray({
   freqData,
-  freqIdRef,
+  //freqIdRef,
+  freqId,
   handleSelect,
   freqObj,
   base,
@@ -55,29 +56,18 @@ export default function FreqArray({
           Frequency Array:
         </label>
         <select
-          ref={freqIdRef}
+          //ref={freqIdRef}
+          value={freqId}
           name="freqId"
           id="freqId"
           onChange={handleSelect}
-          onDoubleClick={(e) => {
-            // let clicks = 1;
-            console.log(e.target.value === freqIdRef.current);
-            // Always call handleSelect on click, even if selection doesn't change
-            // if (e.target.value === freqIdRef.current) {
-            //   handleSelect(e);
-            // }
-          }}
           style={{ marginLeft: "10px" }}
         >
-          {/* <option value={1}>DEFAULT</option> */}
-          {freqData.map(
-            (item) =>
-              /* item.array_id > 1 && */(
-                <option key={item.array_id} value={item.array_id}>
-                  {item.array_name}
-                </option>
-              )
-          )}
+          {freqData.map((item) => (
+            <option key={item.array_id} value={item.array_id}>
+              {item.array_name}
+            </option>
+          ))}
         </select>
         <button className="refresh" onClick={refreshFreqObj}>
           <Refresh />

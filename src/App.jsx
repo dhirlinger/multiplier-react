@@ -20,7 +20,8 @@ export default function App() {
   const [presetData, setPresetData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const freqIdRef = useRef(0);
+  //const freqIdRef = useRef(0);
+  const [freqId, setFredId] = useState();
   const [freqObj, setFreqObj] = useState();
   const indexIdRef = useRef(0);
   const [indexObj, setIndexObj] = useState();
@@ -111,7 +112,8 @@ export default function App() {
       //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
-        freqIdRef.current = initialId;
+        //freqIdRef.current = initialId;
+        setFredId(initialId);
         setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
         //otherwise setFreqObj (ie load preset) from 1st array of freqArrDefault
       } else {
@@ -147,8 +149,9 @@ export default function App() {
 
   //preset + rest api related func's
   const handleFreqSelect = (e) => {
-    freqIdRef.current = e.target.value;
-    setFreqObj(filterData(freqData, freqIdRef.current, "array_id"));
+    //freqIdRef.current = e.target.value;
+    setFredId(e.target.value);
+    setFreqObj(filterData(freqData, e.target.value, "array_id"));
   };
 
   const handleIndexSelect = (e) => {
@@ -167,6 +170,7 @@ export default function App() {
       );
       setPresetObj(selectedObj);
       setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
+      setFredId(selectedObj.freq_array_id);
       indexIdRef.current = selectedObj.index_array_id;
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
@@ -203,10 +207,11 @@ export default function App() {
       setSeqTempo(selectedObj.params_json.tempo);
       // if presetObj contains freq arr id make necessary copies for synchronous freq array updates
       if (selectedObj.freq_array_id) {
-        freqIdRef.current = selectedObj.freq_array_id;
+        //freqIdRef.current = selectedObj.freq_array_id;
+        setFredId(selectedObj.freq_array_id);
         const refreshedFreqObj = filterData(
           freqData,
-          freqIdRef.current,
+          selectedObj.freq_array_id,
           "array_id"
         );
         setFreqObj(refreshedFreqObj);
@@ -397,7 +402,8 @@ export default function App() {
 
       <FreqArray
         freqData={freqData}
-        freqIdRef={freqIdRef}
+        //freqIdRef={freqIdRef}
+        freqId={freqId}
         handleSelect={handleFreqSelect}
         freqObj={freqObj}
         base={base}
