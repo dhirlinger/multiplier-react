@@ -62,20 +62,19 @@ export default function App() {
         })
         .catch((err) => {
           console.error(err);
-          // fetchPresetData();
-          // console.log("default presests loaded without user login");
         });
     } else {
       fetchPresetData();
     }
   }, []);
 
-  //  useEffect(() => {
+  
   const fetchPresetData = async () => {
     //for development assign userID to 1 if there is no user_id
     const userID = loginStatusRef.current.user_id
       ? loginStatusRef.current.user_id
       : 1;
+      console.log(`user: ${userID}`);
     try {
       //get freq arrays for user 1
       const freqResponse = await fetch(
@@ -86,7 +85,8 @@ export default function App() {
           `User frequency arrays request error! status: ${freqResponse.status}`
         );
       const freqArrJSON = await freqResponse.json();
-      setFreqData(freqArrJSON);
+      //if there are no presets for this user freqData = freqArrDefault
+      freqArrJSON.array_id ? setFreqData(freqArrJSON) : setFreqData(freqArrDefault);
       //get index arrays for current user
       const indexResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
@@ -107,22 +107,15 @@ export default function App() {
         );
       const presetArrJSON = await presetResponse.json();
       setPresetData(presetArrJSON);
-      //calculate freq array after data loads
+      //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
         freqIdRef.current = initialId;
         setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
+        //otherwise setFreqObj (ie load preset) from 1st array of freqArrDefault
+      } else {
+        freqArrDefault && setFreqObj(filterData(freqArrDefault, "1", "array_id"));
       }
-      // if (indexArrJSON.length > 0) {
-      //   indexIdRef.current = "1";
-      //   setIndexObj(filterData(indexArrJSON, indexIdRef.current, "array_id"));
-      // }
-      // if (presetArrJSON.length > 0) {
-      //   presetIdRef.current = "1";
-      //   setPresetObj(
-      //     filterData(presetArrJSON, presetIdRef.current, "preset_id")
-      //   );
-      // }
     } catch (e) {
       setError(e);
     } finally {
@@ -130,13 +123,13 @@ export default function App() {
     }
   };
 
-  //add default presets to data arrays
+  //add default presets to data arrays function
   const addDefault = (dataArr, defaultArr) => {
     defaultArr.map((preset) => {
       dataArr.unshift(preset);
     });
   };
-
+  //add default presets to data arrays - this is only called if the user has data
   useEffect(() => {
     if (!loginStatusRef.current.user_id === 1) {
       addDefault(indexData, indexArrDefault);
@@ -194,8 +187,6 @@ export default function App() {
       console.log("refresh IO: " + JSON.stringify(refreshedObj));
       setIndexObj(refreshedObj);
     }
-    // const refreshedId = indexIdRef.current;
-    // setIndexObj(filterData(indexData, refreshedId, "array_id"));
   };
 
   const filterData = (data, id, key) => {
@@ -231,6 +222,7 @@ export default function App() {
     };
   }, []);
 
+  //save this function for visual sync later
   // useEffect(() => {
   //   seqInstance.current.onBeatCallback = (beatNumber) => {
   //     // setIndex(beatNumber);

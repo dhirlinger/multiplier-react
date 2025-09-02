@@ -69,10 +69,10 @@ export default function FreqArray({
           }}
           style={{ marginLeft: "10px" }}
         >
-          <option value={1}>DEFAULT</option>
+          {/* <option value={1}>DEFAULT</option> */}
           {freqData.map(
             (item) =>
-              item.array_id > 1 && (
+              /* item.array_id > 1 && */(
                 <option key={item.array_id} value={item.array_id}>
                   {item.array_name}
                 </option>
