@@ -1,10 +1,12 @@
 import React from "react";
+import { Refresh } from "./Icon";
 
 export default function PresetArray({
   presetData,
   presetIdRef,
   handleSelect,
   presetObj,
+  refreshPresetObj,
 }) {
   return (
     <div style={{ border: "solid 1px", paddingTop: "10px" }}>
@@ -26,6 +28,9 @@ export default function PresetArray({
           </option>
         ))}
       </select>
+      <button className="refresh" onClick={refreshPresetObj}>
+        <Refresh />
+      </button>
       <p style={{ overflowWrap: "anywhere" }}>
         {presetObj ? JSON.stringify(presetObj) : "no preset selected"}
       </p>

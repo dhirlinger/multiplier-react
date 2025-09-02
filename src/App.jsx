@@ -68,13 +68,12 @@ export default function App() {
     }
   }, []);
 
-  
   const fetchPresetData = async () => {
     //for development assign userID to 1 if there is no user_id
     const userID = loginStatusRef.current.user_id
       ? loginStatusRef.current.user_id
       : 1;
-      console.log(`user: ${userID}`);
+    console.log(`user: ${userID}`);
     try {
       //get freq arrays for user 1
       const freqResponse = await fetch(
@@ -86,7 +85,9 @@ export default function App() {
         );
       const freqArrJSON = await freqResponse.json();
       //if there are no presets for this user freqData = freqArrDefault
-      freqArrJSON.array_id ? setFreqData(freqArrJSON) : setFreqData(freqArrDefault);
+      freqArrJSON.array_id
+        ? setFreqData(freqArrJSON)
+        : setFreqData(freqArrDefault);
       //get index arrays for current user
       const indexResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
@@ -114,7 +115,8 @@ export default function App() {
         setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
         //otherwise setFreqObj (ie load preset) from 1st array of freqArrDefault
       } else {
-        freqArrDefault && setFreqObj(filterData(freqArrDefault, "1", "array_id"));
+        freqArrDefault &&
+          setFreqObj(filterData(freqArrDefault, "1", "array_id"));
       }
     } catch (e) {
       setError(e);
@@ -165,6 +167,7 @@ export default function App() {
       );
       setPresetObj(selectedObj);
       setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
+      indexIdRef.current = selectedObj.index_array_id;
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
       );
@@ -172,6 +175,7 @@ export default function App() {
       setDuration(selectedObj.params_json.duration);
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
       setLowPassQ(selectedObj.params_json.lowpass_q);
+      setSeqTempo(selectedObj.params_json.tempo);
     }
   };
 
@@ -184,8 +188,44 @@ export default function App() {
     if (indexObj) {
       const refreshedObj = { ...indexObj };
       seqArrayRef.current = refreshedObj.index_array.split(",");
-      console.log("refresh IO: " + JSON.stringify(refreshedObj));
       setIndexObj(refreshedObj);
+    }
+  };
+
+  const refreshPresetObj = () => {
+    if (presetObj) {
+      const selectedObj = { ...presetObj };
+      setPresetObj(selectedObj);
+      setWaveshape(selectedObj.params_json.wave_shape);
+      setDuration(selectedObj.params_json.duration);
+      setLowPassFreq(selectedObj.params_json.lowpass_freq);
+      setLowPassQ(selectedObj.params_json.lowpass_q);
+      setSeqTempo(selectedObj.params_json.tempo);
+      // if presetObj contains freq arr id make necessary copies for synchronous freq array updates
+      if (selectedObj.freq_array_id) {
+        freqIdRef.current = selectedObj.freq_array_id;
+        const refreshedFreqObj = filterData(
+          freqData,
+          freqIdRef.current,
+          "array_id"
+        );
+        setFreqObj(refreshedFreqObj);
+        setBase(refreshedFreqObj.base_freq);
+        setMultiplier(refreshedFreqObj.multiplier);
+      }
+      // if presetObj contains index array id create refreshedIndexObj update seqArrayRef and reset indexObj
+      if (selectedObj.index_array_id) {
+        console.log(`ind arr: ${selectedObj.index_array_id}`);
+        const refreshedIndexObj = filterData(
+          indexData,
+          selectedObj.index_array_id,
+          "array_id"
+        );
+        console.log(`refreshed i-obj: ${JSON.stringify(refreshedIndexObj)}`);
+        seqArrayRef.current = refreshedIndexObj.index_array.split(",");
+        console.log(`seqArr: ${seqArrayRef.current}`);
+        setIndexObj({ ...refreshedIndexObj });
+      }
     }
   };
 
@@ -281,7 +321,7 @@ export default function App() {
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
   };
-
+  // status codes/messages from SeqVoice.js
   const getStatus = () => {
     switch (statusCode) {
       case 0:
@@ -352,6 +392,7 @@ export default function App() {
         presetIdRef={presetIdRef}
         handleSelect={handlePresetSelect}
         presetObj={presetObj}
+        refreshPresetObj={refreshPresetObj}
       />
 
       <FreqArray
