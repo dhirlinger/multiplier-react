@@ -3,7 +3,8 @@ import { Refresh } from "./Icon";
 
 export default function IndexArray({
   indexData,
-  indexIdRef,
+  //indexIdRef,
+  indexId,
   handleSelect,
   refreshIndexObj,
 }) {
@@ -21,7 +22,8 @@ export default function IndexArray({
         Index Array:
       </label>
       <select
-        ref={indexIdRef}
+        //ref={indexIdRef}
+        value={indexId}
         name="indexId"
         id="indexId"
         onChange={handleSelect}

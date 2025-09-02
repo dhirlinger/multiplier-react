@@ -23,7 +23,8 @@ export default function App() {
   //const freqIdRef = useRef(0);
   const [freqId, setFredId] = useState();
   const [freqObj, setFreqObj] = useState();
-  const indexIdRef = useRef(0);
+  //const indexIdRef = useRef(0);
+  const [indexId, setIndexId] = useState();
   const [indexObj, setIndexObj] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
@@ -155,8 +156,9 @@ export default function App() {
   };
 
   const handleIndexSelect = (e) => {
-    indexIdRef.current = e.target.value;
-    setIndexObj(filterData(indexData, indexIdRef.current, "array_id"));
+    //indexIdRef.current = e.target.value;
+    setIndexId(e.target.value);
+    setIndexObj(filterData(indexData, e.target.value, "array_id"));
   };
 
   const handlePresetSelect = (e) => {
@@ -171,7 +173,8 @@ export default function App() {
       setPresetObj(selectedObj);
       setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
       setFredId(selectedObj.freq_array_id);
-      indexIdRef.current = selectedObj.index_array_id;
+      //indexIdRef.current = selectedObj.index_array_id;
+      setIndexId(selectedObj.index_array_id);
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
       );
@@ -226,10 +229,9 @@ export default function App() {
           selectedObj.index_array_id,
           "array_id"
         );
-        console.log(`refreshed i-obj: ${JSON.stringify(refreshedIndexObj)}`);
         seqArrayRef.current = refreshedIndexObj.index_array.split(",");
-        console.log(`seqArr: ${seqArrayRef.current}`);
         setIndexObj({ ...refreshedIndexObj });
+        setIndexId(selectedObj.index_array_id);
       }
     }
   };
@@ -418,7 +420,8 @@ export default function App() {
 
       <IndexArray
         indexData={indexData}
-        indexIdRef={indexIdRef}
+        //indexIdRef={indexIdRef}
+        indexId={indexId}
         handleSelect={handleIndexSelect}
         indexObj={indexObj}
         refreshIndexObj={refreshIndexObj}
