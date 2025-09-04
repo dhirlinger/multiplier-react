@@ -10,7 +10,7 @@ export default function IndexArray({
   setIndexPresetName,
 }) {
   const handleName = (e) => {
-    e.key === "Enter" && setIndexPresetName(e.target.value);
+    setIndexPresetName(e.target.value);
   };
   return (
     <div
@@ -46,7 +46,7 @@ export default function IndexArray({
         style={{ display: "block" }}
         name="preset-name"
         value={indexPresetName}
-        onKeyDown={handleName}
+        onChange={handleName}
       />
     </div>
   );

@@ -26,7 +26,7 @@ export default function App() {
   //const indexIdRef = useRef(0);
   const [indexId, setIndexId] = useState();
   const [indexObj, setIndexObj] = useState();
-  const [indexPresetName, setIndexPresetName] = useState();
+  const [indexPresetName, setIndexPresetName] = useState("");
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
@@ -271,6 +271,7 @@ export default function App() {
         });
         const result = await response.json();
         console.log("Success:", result);
+        indexData.unshift(data);
       } catch (error) {
         console.log(`User post index array preset error! status: ${error}`);
       }
