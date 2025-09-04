@@ -3,11 +3,15 @@ import { Refresh } from "./Icon";
 
 export default function IndexArray({
   indexData,
-  //indexIdRef,
   indexId,
   handleSelect,
   refreshIndexObj,
+  indexPresetName,
+  setIndexPresetName,
 }) {
+  const handleName = (e) => {
+    e.key === "Enter" && setIndexPresetName(e.target.value);
+  };
   return (
     <div
       style={{
@@ -22,7 +26,6 @@ export default function IndexArray({
         Index Array:
       </label>
       <select
-        //ref={indexIdRef}
         value={indexId}
         name="indexId"
         id="indexId"
@@ -39,6 +42,12 @@ export default function IndexArray({
       <button className="refresh" onClick={refreshIndexObj}>
         <Refresh />
       </button>
+      <input
+        style={{ display: "block" }}
+        name="preset-name"
+        value={indexPresetName}
+        onKeyDown={handleName}
+      />
     </div>
   );
 }

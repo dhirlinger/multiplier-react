@@ -26,6 +26,7 @@ export default function App() {
   //const indexIdRef = useRef(0);
   const [indexId, setIndexId] = useState();
   const [indexObj, setIndexObj] = useState();
+  const [indexPresetName, setIndexPresetName] = useState();
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
@@ -48,6 +49,7 @@ export default function App() {
     // check if it exists
     if (window.MultiplierAPI) {
       //get login-status data
+      console.log(`first nonce: ${window.MultiplierAPI.nonce}`);
       fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
         method: "GET",
         credentials: "include",
@@ -242,12 +244,37 @@ export default function App() {
     return o[0];
   };
 
-  const saveIndexPreset = () => {
+  const saveIndexPreset = async () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
+    } else {
+      // console.log(seqArrayRef.current);
+      console.log(window.MultiplierAPI.nonce);
+      try {
+        const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/index-arrays/`;
+        const data = JSON.stringify({
+          index_array: seqArrayRef.current.join(),
+          array_name: indexPresetName,
+          preset_number: 2,
+          user_id: loginStatusRef.current.user_id,
+        });
+        console.log(data);
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "X-WP-Nonce": window.MultiplierAPI.nonce,
+            "Content-Type": "application/json",
+          },
+          body: data,
+        });
+        const result = await response.json();
+        console.log("Success:", result);
+      } catch (error) {
+        console.log(`User post index array preset error! status: ${error}`);
+      }
     }
-    if (loginStatusRef.current.logged_in) console.log(seqArrayRef.current);
   };
 
   //audio api + sequencer related func's
@@ -417,7 +444,6 @@ export default function App() {
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
-
       <IndexArray
         indexData={indexData}
         //indexIdRef={indexIdRef}
@@ -425,6 +451,8 @@ export default function App() {
         handleSelect={handleIndexSelect}
         indexObj={indexObj}
         refreshIndexObj={refreshIndexObj}
+        indexPresetName={indexPresetName}
+        setIndexPresetName={setIndexPresetName}
       />
 
       <SeqArrInput arrIndex={0} seqArrayRef={seqArrayRef} indexObj={indexObj} />
