@@ -27,6 +27,7 @@ export default function App() {
   const [indexId, setIndexId] = useState();
   const [indexObj, setIndexObj] = useState();
   const [indexPresetName, setIndexPresetName] = useState("");
+  const [indexPresetNum, setIndexPresetNum] = useState("");
   const presetIdRef = useRef(0);
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
@@ -256,10 +257,9 @@ export default function App() {
         const data = JSON.stringify({
           index_array: seqArrayRef.current.join(),
           array_name: indexPresetName,
-          preset_number: 2,
+          preset_number: indexPresetNum,
           user_id: loginStatusRef.current.user_id,
         });
-        console.log(data);
         const response = await fetch(url, {
           method: "POST",
           credentials: "include",
@@ -270,13 +270,28 @@ export default function App() {
           body: data,
         });
         const result = await response.json();
-        console.log("Success:", result);
-        indexData.unshift(data);
+        console.log("Result:", result);
+        setIndexData([...result.updated_data]);
+        //sortArr(indexData, setIndexData);
       } catch (error) {
         console.log(`User post index array preset error! status: ${error}`);
       }
     }
   };
+  //keep data in order by preset_number
+  const sortArr = (data, setData) => {
+    const sortedArr = [...data];
+    sortedArr.sort((a, b) => a.preset_number - b.preset_number);
+    setData(sortedArr);
+  };
+
+  // useEffect(() => {
+  //   freqData.sort((a, b) => a.preset_number - b.preset_number);
+  // }, [freqData]);
+
+  // useEffect(() => {
+  //   presetData.sort((a, b) => a.preset_number - b.preset_number);
+  // }, [presetData]);
 
   //audio api + sequencer related func's
   useEffect(() => {
@@ -454,6 +469,8 @@ export default function App() {
         refreshIndexObj={refreshIndexObj}
         indexPresetName={indexPresetName}
         setIndexPresetName={setIndexPresetName}
+        indexPresetNum={indexPresetNum}
+        setIndexPresetNum={setIndexPresetNum}
       />
 
       <SeqArrInput arrIndex={0} seqArrayRef={seqArrayRef} indexObj={indexObj} />
@@ -502,6 +519,7 @@ export default function App() {
       <p>seqVoiceArr: {seqVoiceArr}</p>
       <p>{getStatus()}</p>
       <button onClick={saveIndexPreset}>Save Index Array</button>
+      <p>{JSON.stringify(indexData)}</p>
     </>
   );
 }

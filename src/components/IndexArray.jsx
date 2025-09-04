@@ -8,6 +8,8 @@ export default function IndexArray({
   refreshIndexObj,
   indexPresetName,
   setIndexPresetName,
+  indexPresetNum,
+  setIndexPresetNum,
 }) {
   const handleName = (e) => {
     setIndexPresetName(e.target.value);
@@ -47,6 +49,14 @@ export default function IndexArray({
         name="preset-name"
         value={indexPresetName}
         onChange={handleName}
+      />
+      <input
+        style={{ display: "block" }}
+        name="preset-num"
+        value={indexPresetNum}
+        onChange={(e) => {
+          setIndexPresetNum(e.target.value);
+        }}
       />
     </div>
   );
