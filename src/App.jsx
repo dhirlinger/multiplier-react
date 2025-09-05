@@ -382,7 +382,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <div>
       <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
 
       {!loginStatusRef.current.logged_in && (
@@ -520,6 +520,6 @@ export default function App() {
       <p>{getStatus()}</p>
       <button onClick={saveIndexPreset}>Save Index Array</button>
       <p>{JSON.stringify(indexData)}</p>
-    </>
+    </div>
   );
 }

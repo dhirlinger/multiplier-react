@@ -1,22 +1,26 @@
-
-
+@import "tailwindcss";
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /*font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  width: 100%;
+  width: 100%; 
 
-  color-scheme: light dark;
+  color-scheme: light dark; */
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
+  /*
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+*/
 }
-
+/*
 a {
   font-weight: 500;
   color: #646cff;
@@ -80,4 +84,4 @@ button.refresh {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
