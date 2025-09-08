@@ -497,8 +497,8 @@ export default function App() {
         <input
           type="range"
           max="1.0"
-          min="0.05"
-          step="0.05"
+          min="0.01"
+          step="0.01"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
         />
