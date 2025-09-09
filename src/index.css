@@ -4,6 +4,13 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities); */
 
+@theme {
+  /*
+  see theme variable namespaces in documentation
+  also see @apply
+  */
+}
+
 :root {
   /*font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

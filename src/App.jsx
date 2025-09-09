@@ -382,7 +382,7 @@ export default function App() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto">
       <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
 
       {!loginStatusRef.current.logged_in && (
