@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
+import { Arrow } from "./components/Icon";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
@@ -444,6 +445,8 @@ export default function App() {
         presetObj={presetObj}
         refreshPresetObj={refreshPresetObj}
       />
+
+      <div></div>
 
       <FreqArray
         freqData={freqData}

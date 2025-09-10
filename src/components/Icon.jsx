@@ -14,3 +14,19 @@ export const Refresh = () => {
     </svg>
   );
 };
+
+export const Arrow = () => {
+  <svg
+    width="200"
+    height="200"
+    viewBox="0 0 200 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="200" height="200" fill="transparent" />
+    <path
+      d="M128.8 73.6006H196.1V125.601H128.8V172.2L3.09961 99.5996L128.8 27V73.6006Z"
+      fill="white"
+    />
+  </svg>;
+};

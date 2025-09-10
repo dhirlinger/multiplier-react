@@ -12,6 +12,13 @@
 }
 
 @layer base {
+  button {
+    padding: 20px;
+    border: solid rgb(133, 133, 133) 0.5px;
+    background-color: rgb(59, 59, 59);
+    border-radius: 3px;
+    cursor: pointer;
+  }
   button.refresh {
     display: inline-flex;
     width: 20px;

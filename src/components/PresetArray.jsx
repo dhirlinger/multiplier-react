@@ -11,7 +11,7 @@ export default function PresetArray({
   return (
     <div style={{ border: "solid 1px", paddingTop: "10px" }}>
       <label htmlFor="presetId" style={{ fontWeight: "bold" }}>
-        Preset:
+        Global Preset:
       </label>
       <select
         ref={presetIdRef}
