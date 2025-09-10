@@ -11,6 +11,23 @@
   */
 }
 
+@layer base {
+  button.refresh {
+    display: inline-flex;
+    width: 20px;
+    margin: 0 5px;
+    border-radius: 0;
+    border: 1px rgb(133, 133, 133) solid;
+    padding: 0.1em;
+    background-color: rgb(59, 59, 59);
+  }
+  input,
+  select {
+    border: solid 0.5px;
+    border-radius: 3px;
+  }
+}
+
 :root {
   /*font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

@@ -472,15 +472,48 @@ export default function App() {
         indexPresetNum={indexPresetNum}
         setIndexPresetNum={setIndexPresetNum}
       />
-
-      <SeqArrInput arrIndex={0} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={1} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={2} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={3} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={4} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={5} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={6} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={7} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <div className="flex">
+        <SeqArrInput
+          arrIndex={0}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={1}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={2}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={3}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={4}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={5}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={6}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={7}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+      </div>
 
       <div>
         <span style={{ width: "50px" }}>tempo: </span>
