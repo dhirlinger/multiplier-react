@@ -446,7 +446,17 @@ export default function App() {
         refreshPresetObj={refreshPresetObj}
       />
 
-      <div></div>
+      <div className="flex">
+        <input
+          type="number"
+          className="preset-num w-16 h-10 border border-[#E6A60D] mr-2 text-xl placeholder:text-xs placeholder:text-wrap placeholder:absolute"
+          placeholder="PRESET NUM"
+        ></input>
+        <button className="round">R</button>
+        <button className="round">S</button>
+        <button className="round border-red-600 text-red-600">D</button>
+        <button className="round">M</button>
+      </div>
 
       <FreqArray
         freqData={freqData}

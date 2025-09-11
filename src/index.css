@@ -1,8 +1,8 @@
-@import "tailwindcss";
-/* @layer theme, base, components, utilities;
+/* @import "tailwindcss"; */
+@layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css" layer(utilities); */
+@import "tailwindcss/utilities.css" layer(utilities);
 
 @theme {
   /*
@@ -28,10 +28,18 @@
     padding: 0.1em;
     background-color: rgb(59, 59, 59);
   }
+  button.round {
+    @apply m-0 rounded-3xl w-10 h-10 inline-flex flex-col justify-center text-center p-0 border-[#E6A60D] border;
+  }
   input,
   select {
     border: solid 0.5px;
     border-radius: 3px;
+    background-color: rgb(59, 59, 59);
+  }
+  input.preset-num::placeholder,
+  input.preset::-webkit-input-placeholder {
+    display: inline-flex important!;
   }
 }
 
