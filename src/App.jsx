@@ -449,7 +449,7 @@ export default function App() {
       <div className="flex">
         <input
           type="number"
-          className="preset-num w-16 h-10 border border-[#E6A60D] mr-2 text-xl placeholder:text-xs placeholder:text-wrap placeholder:absolute"
+          className="preset-num w-16 h-10 border border-[#E6A60D] mr-2 text-xl placeholder:text-xs placeholder:text-wrap placeholder:-translate-y-2.5" /*placeholder:absolute*/
           placeholder="PRESET NUM"
         ></input>
         <button className="round">R</button>
