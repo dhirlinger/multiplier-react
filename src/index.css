@@ -4,20 +4,21 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities); */
 
-/*@theme {
+@theme {
   /*
-  see theme variable namespaces in documentation
-  also see @apply
-  */
-/*}*/
+  see theme variable namespaces in documentation */
+  --font-sans: "Helvetica Neue", Arial, "sans-serif";
+  --font-serif: Georgia, "Times New Roman", serif;
+  --color-maxbg: rgb(59, 59, 59);
+}
 
 @layer base {
   button {
     padding: 20px;
     border: solid rgb(133, 133, 133) 0.5px;
-    background-color: rgb(59, 59, 59);
     border-radius: 3px;
     cursor: pointer;
+    @apply text-4xl font-medium bg-maxbg;
   }
   button.refresh {
     display: inline-flex;
@@ -26,16 +27,19 @@
     border-radius: 0;
     border: 1px rgb(133, 133, 133) solid;
     padding: 0.1em;
-    background-color: rgb(59, 59, 59);
+    @apply bg-maxbg;
   }
   button.round {
-    @apply m-0 rounded-3xl w-10 h-10 inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border;
+    @apply m-0 mr-[4px] rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border font-sans;
   }
   input,
   select {
     border: solid 0.5px;
     border-radius: 3px;
     background-color: rgb(59, 59, 59);
+  }
+  svg {
+    width: 100%;
   }
 }
 

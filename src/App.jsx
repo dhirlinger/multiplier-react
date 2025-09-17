@@ -445,17 +445,34 @@ export default function App() {
         presetObj={presetObj}
         refreshPresetObj={refreshPresetObj}
       />
-
-      <div className="flex">
-        <input
-          type="number"
-          className="preset-num w-16 h-10 border border-[#E6A60D] mr-2 text-xl placeholder:text-xs placeholder:text-wrap placeholder:-translate-y-2.5" /*placeholder:absolute*/
-          placeholder="PRESET NUM"
-        ></input>
-        <button className="round">R</button>
-        <button className="round">S</button>
-        <button className="round border-red-600 text-red-600">D</button>
-        <button className="round">M</button>
+      <div className="text-4xl text-center">
+        <h3 className="m-1.5">
+          <span className="bg-maxbg">Global Preset</span>
+        </h3>
+        <div className="flex max-w-sm min-w-xs flex-wrap justify-between p-2">
+          <button className="round">R</button>
+          <button className="round">S</button>
+          <button className="round border-red-600 text-red-600">D</button>
+          <button className="round">M</button>
+          <div className="flex mt-1">
+            <input
+              type="number"
+              className="preset-num w-1/6 aspect-square border border-[#E6A60D] text-xl placeholder:text-xl placeholder:text-justify" //placeholder:text-wrap placeholder:-translate-y-2.5
+              placeholder="50"
+            ></input>
+            <button className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D]">
+              <Arrow />
+            </button>
+            <input
+              type="text"
+              className="preset-name w-1/2 border border-[#E6A60D] text-xl placeholder:text-xl"
+              placeholder="PRESET NAME"
+            ></input>
+            <button className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] scale-x-[-1]">
+              <Arrow />
+            </button>
+          </div>
+        </div>
       </div>
 
       <FreqArray
