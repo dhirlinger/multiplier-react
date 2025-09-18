@@ -30,7 +30,7 @@
     @apply bg-maxbg;
   }
   button.round {
-    @apply m-0 mr-[4px] rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border font-sans;
+    @apply m-0 mr-[4px] rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border text-lg font-sans;
   }
   input,
   select {

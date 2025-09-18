@@ -21,12 +21,15 @@ export default function PresetArray({
         style={{ marginLeft: "10px" }}
       >
         <option>Choose Preset</option>
-        {presetData.map((item) => (
-          <option key={item.preset_id} value={item.preset_id}>
-            {item.preset_id}
-            {item.name ? ": " + item.name : ": NO NAME"}
-          </option>
-        ))}
+        {presetData.map(
+          (item) =>
+            item && (
+              <option key={item.preset_number} value={item.preset_number}>
+                {item.preset_number}
+                {item.name ? ": " + item.name : ": NO NAME"}
+              </option>
+            )
+        )}
       </select>
       <button className="refresh" onClick={refreshPresetObj}>
         <Refresh />

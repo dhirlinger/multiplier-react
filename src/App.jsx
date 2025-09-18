@@ -113,7 +113,9 @@ export default function App() {
           `User presets request error! status: ${presetResponse.status}`
         );
       const presetArrJSON = await presetResponse.json();
-      setPresetData(presetArrJSON);
+      const normalizedGlobal = normalizePresets(presetArrJSON);
+      addEmptyPresets(normalizedGlobal);
+      setPresetData(normalizedGlobal);
       //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
@@ -153,6 +155,41 @@ export default function App() {
   }, [freqObj]);
 
   //preset + rest api related func's
+  const normalizePresets = (arr, num = 50, key = "preset_number") => {
+    const filled = Array(num).fill(null);
+    arr.forEach((item) => {
+      const slot = item[key]; // usually 1–50
+      if (slot >= 1 && slot <= num) {
+        filled[slot - 1] = item;
+      }
+    });
+    return filled;
+  };
+
+  const addEmptyPresets = (arr) => {
+    const presetNums = [];
+    arr.forEach((item) => {
+      if (item !== null) {
+        presetNums.push(item.preset_number);
+      }
+    });
+    for (let i = 1; i < 51; i++) {
+      if (!presetNums.includes(i.toString())) {
+        const firstNull = arr.findIndex((item) => item === null);
+        if (firstNull !== -1) {
+          arr[firstNull] = {
+            preset_number: i.toString(),
+            name: "EMPTY",
+            params_json: {},
+            index_array_id: null,
+            freq_array_id: null,
+            user_id: null,
+          };
+        }
+      }
+    }
+  };
+
   const handleFreqSelect = (e) => {
     //freqIdRef.current = e.target.value;
     setFredId(e.target.value);
@@ -450,10 +487,10 @@ export default function App() {
           <span className="bg-maxbg">Global Preset</span>
         </h3>
         <div className="flex max-w-sm min-w-xs flex-wrap justify-between p-2">
-          <button className="round">R</button>
-          <button className="round">S</button>
-          <button className="round border-red-600 text-red-600">D</button>
-          <button className="round">M</button>
+          <button className="round">RECALL</button>
+          <button className="round">SAVE</button>
+          <button className="round border-red-600 text-red-600">DELETE</button>
+          <button className="round">MIDI</button>
           <div className="flex mt-1">
             <input
               type="number"
@@ -473,6 +510,9 @@ export default function App() {
             </button>
           </div>
         </div>
+      </div>
+      <div className="max-w-sm">
+        <p style={{ overflowWrap: "anywhere" }}>{JSON.stringify(presetData)}</p>
       </div>
 
       <FreqArray
