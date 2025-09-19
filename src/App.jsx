@@ -13,6 +13,7 @@ import {
   freqArrDefault,
   indexArrDefault,
 } from "./assets/default";
+import GlobalPreset from "./components/GlobalPreset";
 
 export default function App() {
   //preset + rest api related vars
@@ -30,6 +31,8 @@ export default function App() {
   const [indexPresetName, setIndexPresetName] = useState("");
   const [indexPresetNum, setIndexPresetNum] = useState("");
   const presetIdRef = useRef(0);
+  const [globalPresetNum, setGlobalPresetNum] = useState("");
+  const [globalPresetName, setGlobalPresetName] = useState("");
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
   //audio api + sequencer related vars
@@ -51,7 +54,6 @@ export default function App() {
     // check if it exists
     if (window.MultiplierAPI) {
       //get login-status data
-      console.log(`first nonce: ${window.MultiplierAPI.nonce}`);
       fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
         method: "GET",
         credentials: "include",
@@ -84,6 +86,7 @@ export default function App() {
       //get freq arrays for user 1
       const freqResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
+        //`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
       );
       if (!freqResponse.ok)
         throw new Error(
@@ -97,6 +100,7 @@ export default function App() {
       //get index arrays for current user
       const indexResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
+        //`http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
       );
       if (!indexResponse.ok)
         throw new Error(
@@ -107,6 +111,7 @@ export default function App() {
       //get presets for current user
       const presetResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/${userID}`
+        //`http://localhost:8888/wp-json/multiplier-api/v1/presets/${userID}`
       );
       if (!presetResponse.ok)
         throw new Error(
@@ -114,7 +119,7 @@ export default function App() {
         );
       const presetArrJSON = await presetResponse.json();
       const normalizedGlobal = normalizePresets(presetArrJSON);
-      addEmptyPresets(normalizedGlobal);
+      //addEmptyPresets(normalizedGlobal);
       setPresetData(normalizedGlobal);
       //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
@@ -183,7 +188,9 @@ export default function App() {
             params_json: {},
             index_array_id: null,
             freq_array_id: null,
-            user_id: null,
+            user_id: loginStatusRef.current.user_id
+              ? loginStatusRef.current.user_id
+              : null,
           };
         }
       }
@@ -202,19 +209,30 @@ export default function App() {
     setIndexObj(filterData(indexData, e.target.value, "array_id"));
   };
 
-  const handlePresetSelect = (e) => {
-    console.log(e);
-    if (e != null) {
-      presetIdRef.current = e.target.value;
+  const handlePresetSelect = () => {
+    //if (e != null) {
+    console.log(`globalPN ${globalPresetNum}`);
+    if (presetObj && Number(presetObj.preset_number) === globalPresetNum) {
+      refreshPresetObj();
+      return;
+    }
+    const findByPresetNum = presetData.find(
+      (item) => item && Number(item.preset_number) === globalPresetNum
+    );
+    if (findByPresetNum === undefined) {
+      alert("EMPTY PRESET");
+      return;
+    } else {
+      presetIdRef.current = findByPresetNum.preset_id;
       const selectedObj = filterData(
         presetData,
         presetIdRef.current,
         "preset_id"
       );
       setPresetObj(selectedObj);
+      //setGlobalPresetName(selectedObj.name);
       setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
       setFredId(selectedObj.freq_array_id);
-      //indexIdRef.current = selectedObj.index_array_id;
       setIndexId(selectedObj.index_array_id);
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
@@ -225,6 +243,7 @@ export default function App() {
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
     }
+    // }
   };
 
   const refreshFreqObj = () => {
@@ -278,7 +297,7 @@ export default function App() {
   };
 
   const filterData = (data, id, key) => {
-    const o = data.filter((obj) => obj[key] === id);
+    const o = data.filter((obj) => obj && obj[key] === id);
     console.log(`filterData: ${JSON.stringify(o[0])}`);
     return o[0];
   };
@@ -335,7 +354,6 @@ export default function App() {
   useEffect(() => {
     if (indexObj) {
       seqArrayRef.current = indexObj.index_array.split(",");
-      console.log(`indexObj useEff seqArr = ${seqArrayRef.current}`);
     }
   }, [indexObj]);
 
@@ -420,7 +438,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto">
+    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96">
       <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
 
       {!loginStatusRef.current.logged_in && (
@@ -482,38 +500,15 @@ export default function App() {
         presetObj={presetObj}
         refreshPresetObj={refreshPresetObj}
       />
-      <div className="text-4xl text-center">
-        <h3 className="m-1.5">
-          <span className="bg-maxbg">Global Preset</span>
-        </h3>
-        <div className="flex max-w-sm min-w-xs flex-wrap justify-between p-2">
-          <button className="round">RECALL</button>
-          <button className="round">SAVE</button>
-          <button className="round border-red-600 text-red-600">DELETE</button>
-          <button className="round">MIDI</button>
-          <div className="flex mt-1">
-            <input
-              type="number"
-              className="preset-num w-1/6 aspect-square border border-[#E6A60D] text-xl placeholder:text-xl placeholder:text-justify" //placeholder:text-wrap placeholder:-translate-y-2.5
-              placeholder="50"
-            ></input>
-            <button className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D]">
-              <Arrow />
-            </button>
-            <input
-              type="text"
-              className="preset-name w-1/2 border border-[#E6A60D] text-xl placeholder:text-xl"
-              placeholder="PRESET NAME"
-            ></input>
-            <button className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] scale-x-[-1]">
-              <Arrow />
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="max-w-sm">
-        <p style={{ overflowWrap: "anywhere" }}>{JSON.stringify(presetData)}</p>
-      </div>
+
+      <GlobalPreset
+        presetData={presetData}
+        globalPresetNum={globalPresetNum}
+        globalPresetName={globalPresetName}
+        setGlobalPresetNum={setGlobalPresetNum}
+        setGlobalPresetName={setGlobalPresetName}
+        handlePresetSelect={handlePresetSelect}
+      />
 
       <FreqArray
         freqData={freqData}
@@ -622,7 +617,7 @@ export default function App() {
       <p>seqVoiceArr: {seqVoiceArr}</p>
       <p>{getStatus()}</p>
       <button onClick={saveIndexPreset}>Save Index Array</button>
-      <p>{JSON.stringify(indexData)}</p>
+      {/* <p>{JSON.stringify(indexData)}</p> */}
     </div>
   );
 }

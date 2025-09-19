@@ -10,6 +10,8 @@
   --font-sans: "Helvetica Neue", Arial, "sans-serif";
   --font-serif: Georgia, "Times New Roman", serif;
   --color-maxbg: rgb(59, 59, 59);
+  --color-inherit: inherit;
+  --color-mix: color-mix(in oklab, currentcolor 50%, transparent);
 }
 
 @layer base {
@@ -38,6 +40,7 @@
     border-radius: 3px;
     background-color: rgb(59, 59, 59);
   }
+
   svg {
     width: 100%;
   }
