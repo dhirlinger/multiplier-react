@@ -34,19 +34,29 @@ export default function GlobalPreset({
   };
 
   const handlePresetNum = (e) => {
-    if (/^(?:[1-9]|[1-4][0-9]|50)$/.test(e.target.value)) {
+    const value = e.target.value;
+    // allow empty string
+    if (!value) {
+      setGlobalPresetNum("");
+      return;
+    }
+    if (/^(?:[1-9]|[1-4][0-9]|50)$/.test(value)) {
       //handlePresetSelect(e);
       setInputRecalled(false);
-      setGlobalPresetNum(e.target.value);
-      const findByPresetNum = presetData.find(
-        (item) => item && item.preset_number === e.target.value
-      );
-      if (findByPresetNum === undefined) {
-        setGlobalPresetName("-EMPTY-");
-        return;
-      } else {
-        setGlobalPresetName(findByPresetNum.name);
-      }
+      setGlobalPresetNum(Number(value));
+
+      //const presetNum = Number(value);
+
+      //   const findByPresetNum = presetData.find(
+      //     (item) => item && item.preset_number === value
+      //   );
+      //   console.log(`findBY: ${JSON.stringify(findByPresetNum)}`);
+      //   if (findByPresetNum === undefined) {
+      //     setGlobalPresetName("-EMPTY-");
+      //     return;
+      //   } else {
+      //     setGlobalPresetName(findByPresetNum.name);
+      //   }
     }
   };
 
@@ -85,12 +95,14 @@ export default function GlobalPreset({
           <button className="round">MIDI</button>
           <div className="flex mt-1">
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               className={
                 "preset-num w-1/6 aspect-square border border-[#E6A60D] text-xl placeholder:text-xl placeholder:text-justify text-center ${inputStyle}"
               }
               placeholder="50"
-              min={1}
+              //min={1}
               max={50}
               maxLength={2}
               value={globalPresetNum}
