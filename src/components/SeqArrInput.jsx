@@ -33,6 +33,7 @@ export default function NumberInput({ arrIndex, seqArrayRef, indexObj }) {
       value={value}
       maxLength={1}
       style={{ width: "22px", fontSize: "36px" }}
+      className="mr-2"
       onChange={handleChange}
     ></input>
   );

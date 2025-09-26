@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
+import { Arrow } from "./components/Icon";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
 import PresetArray from "./components/PresetArray";
@@ -12,6 +13,7 @@ import {
   freqArrDefault,
   indexArrDefault,
 } from "./assets/default";
+import GlobalPreset from "./components/GlobalPreset";
 
 export default function App() {
   //preset + rest api related vars
@@ -29,6 +31,8 @@ export default function App() {
   const [indexPresetName, setIndexPresetName] = useState("");
   const [indexPresetNum, setIndexPresetNum] = useState("");
   const presetIdRef = useRef(0);
+  const [globalPresetNum, setGlobalPresetNum] = useState("");
+  const [globalPresetName, setGlobalPresetName] = useState("");
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
   //audio api + sequencer related vars
@@ -50,7 +54,6 @@ export default function App() {
     // check if it exists
     if (window.MultiplierAPI) {
       //get login-status data
-      console.log(`first nonce: ${window.MultiplierAPI.nonce}`);
       fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
         method: "GET",
         credentials: "include",
@@ -83,6 +86,7 @@ export default function App() {
       //get freq arrays for user 1
       const freqResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
+        //`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
       );
       if (!freqResponse.ok)
         throw new Error(
@@ -96,6 +100,7 @@ export default function App() {
       //get index arrays for current user
       const indexResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
+        //`http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
       );
       if (!indexResponse.ok)
         throw new Error(
@@ -106,13 +111,16 @@ export default function App() {
       //get presets for current user
       const presetResponse = await fetch(
         `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/${userID}`
+        //`http://localhost:8888/wp-json/multiplier-api/v1/presets/${userID}`
       );
       if (!presetResponse.ok)
         throw new Error(
           `User presets request error! status: ${presetResponse.status}`
         );
       const presetArrJSON = await presetResponse.json();
-      setPresetData(presetArrJSON);
+      const normalizedGlobal = normalizePresets(presetArrJSON);
+      //addEmptyPresets(normalizedGlobal);
+      setPresetData(normalizedGlobal);
       //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
@@ -152,6 +160,43 @@ export default function App() {
   }, [freqObj]);
 
   //preset + rest api related func's
+  const normalizePresets = (arr, num = 50, key = "preset_number") => {
+    const filled = Array(num).fill(null);
+    arr.forEach((item) => {
+      const slot = item[key]; // usually 1–50
+      if (slot >= 1 && slot <= num) {
+        filled[slot - 1] = item;
+      }
+    });
+    return filled;
+  };
+
+  const addEmptyPresets = (arr) => {
+    const presetNums = [];
+    arr.forEach((item) => {
+      if (item !== null) {
+        presetNums.push(item.preset_number);
+      }
+    });
+    for (let i = 1; i < 51; i++) {
+      if (!presetNums.includes(i.toString())) {
+        const firstNull = arr.findIndex((item) => item === null);
+        if (firstNull !== -1) {
+          arr[firstNull] = {
+            preset_number: i.toString(),
+            name: "EMPTY",
+            params_json: {},
+            index_array_id: null,
+            freq_array_id: null,
+            user_id: loginStatusRef.current.user_id
+              ? loginStatusRef.current.user_id
+              : null,
+          };
+        }
+      }
+    }
+  };
+
   const handleFreqSelect = (e) => {
     //freqIdRef.current = e.target.value;
     setFredId(e.target.value);
@@ -164,19 +209,30 @@ export default function App() {
     setIndexObj(filterData(indexData, e.target.value, "array_id"));
   };
 
-  const handlePresetSelect = (e) => {
-    console.log(e);
-    if (e != null) {
-      presetIdRef.current = e.target.value;
+  const handlePresetSelect = () => {
+    //if (e != null) {
+    console.log(`globalPN ${globalPresetNum}`);
+    if (presetObj && Number(presetObj.preset_number) === globalPresetNum) {
+      refreshPresetObj();
+      return;
+    }
+    const findByPresetNum = presetData.find(
+      (item) => item && Number(item.preset_number) === globalPresetNum
+    );
+    if (findByPresetNum === undefined) {
+      alert("EMPTY PRESET");
+      return;
+    } else {
+      presetIdRef.current = findByPresetNum.preset_id;
       const selectedObj = filterData(
         presetData,
         presetIdRef.current,
         "preset_id"
       );
       setPresetObj(selectedObj);
+      //setGlobalPresetName(selectedObj.name);
       setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
       setFredId(selectedObj.freq_array_id);
-      //indexIdRef.current = selectedObj.index_array_id;
       setIndexId(selectedObj.index_array_id);
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
@@ -187,6 +243,7 @@ export default function App() {
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
     }
+    // }
   };
 
   const refreshFreqObj = () => {
@@ -240,7 +297,7 @@ export default function App() {
   };
 
   const filterData = (data, id, key) => {
-    const o = data.filter((obj) => obj[key] === id);
+    const o = data.filter((obj) => obj && obj[key] === id);
     console.log(`filterData: ${JSON.stringify(o[0])}`);
     return o[0];
   };
@@ -297,7 +354,6 @@ export default function App() {
   useEffect(() => {
     if (indexObj) {
       seqArrayRef.current = indexObj.index_array.split(",");
-      console.log(`indexObj useEff seqArr = ${seqArrayRef.current}`);
     }
   }, [indexObj]);
 
@@ -382,7 +438,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96">
       <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
 
       {!loginStatusRef.current.logged_in && (
@@ -445,6 +501,15 @@ export default function App() {
         refreshPresetObj={refreshPresetObj}
       />
 
+      <GlobalPreset
+        presetData={presetData}
+        globalPresetNum={globalPresetNum}
+        globalPresetName={globalPresetName}
+        setGlobalPresetNum={setGlobalPresetNum}
+        setGlobalPresetName={setGlobalPresetName}
+        handlePresetSelect={handlePresetSelect}
+      />
+
       <FreqArray
         freqData={freqData}
         //freqIdRef={freqIdRef}
@@ -472,15 +537,48 @@ export default function App() {
         indexPresetNum={indexPresetNum}
         setIndexPresetNum={setIndexPresetNum}
       />
-
-      <SeqArrInput arrIndex={0} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={1} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={2} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={3} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={4} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={5} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={6} seqArrayRef={seqArrayRef} indexObj={indexObj} />
-      <SeqArrInput arrIndex={7} seqArrayRef={seqArrayRef} indexObj={indexObj} />
+      <div className="flex">
+        <SeqArrInput
+          arrIndex={0}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={1}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={2}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={3}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={4}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={5}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={6}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+        <SeqArrInput
+          arrIndex={7}
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+        />
+      </div>
 
       <div>
         <span style={{ width: "50px" }}>tempo: </span>
@@ -519,7 +617,7 @@ export default function App() {
       <p>seqVoiceArr: {seqVoiceArr}</p>
       <p>{getStatus()}</p>
       <button onClick={saveIndexPreset}>Save Index Array</button>
-      <p>{JSON.stringify(indexData)}</p>
-    </>
+      {/* <p>{JSON.stringify(indexData)}</p> */}
+    </div>
   );
 }

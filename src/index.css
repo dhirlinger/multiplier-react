@@ -1,22 +1,68 @@
+@import "tailwindcss";
+/* @layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities); */
 
+@theme {
+  /*
+  see theme variable namespaces in documentation */
+  --font-sans: "Helvetica Neue", Arial, "sans-serif";
+  --font-serif: Georgia, "Times New Roman", serif;
+  --color-maxbg: rgb(59, 59, 59);
+  --color-inherit: inherit;
+  --color-mix: color-mix(in oklab, currentcolor 50%, transparent);
+}
 
+@layer base {
+  button {
+    padding: 20px;
+    border: solid rgb(133, 133, 133) 0.5px;
+    border-radius: 3px;
+    cursor: pointer;
+    @apply text-4xl font-medium bg-maxbg;
+  }
+  button.refresh {
+    display: inline-flex;
+    width: 20px;
+    margin: 0 5px;
+    border-radius: 0;
+    border: 1px rgb(133, 133, 133) solid;
+    padding: 0.1em;
+    @apply bg-maxbg;
+  }
+  button.round {
+    @apply m-0 mr-[4px] rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border text-lg font-sans;
+  }
+  input,
+  select {
+    border: solid 0.5px;
+    border-radius: 3px;
+    background-color: rgb(59, 59, 59);
+  }
+
+  svg {
+    width: 100%;
+  }
+}
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /*font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  width: 100%;
+  width: 100%; 
 
-  color-scheme: light dark;
+  color-scheme: light dark; */
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
+  /*
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+*/
 }
-
+/*
 a {
   font-weight: 500;
   color: #646cff;
@@ -80,4 +126,4 @@ button.refresh {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

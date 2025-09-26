@@ -19,9 +19,6 @@ export default function IndexArray({
       style={{
         paddingTop: "10px",
         paddingBottom: "10px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <label htmlFor="indexId" style={{ fontWeight: "bold" }}>
@@ -49,14 +46,17 @@ export default function IndexArray({
         name="preset-name"
         value={indexPresetName}
         onChange={handleName}
+        placeholder="PRESET NAME"
       />
       <input
         style={{ display: "block" }}
+        className="w-20"
         name="preset-num"
         value={indexPresetNum}
         onChange={(e) => {
           setIndexPresetNum(e.target.value);
         }}
+        placeholder="P.NUMBER"
       />
     </div>
   );
