@@ -13,7 +13,7 @@ export default function GlobalPreset({
   const [inputRecalled, setInputRecalled] = useState(false);
   const [paramsVisible, setParamsVisible] = useState(false);
 
-  const inputStyle = inputRecalled ? "text-mix" : "text-inherit";
+  //const inputStyle = inputRecalled ? "text-mix" : "text-inherit";
 
   const findByPresetNum = presetData.find(
     (item) => item && Number(item.preset_number) === globalPresetNum
@@ -45,6 +45,7 @@ export default function GlobalPreset({
   };
 
   const handleRightArrow = () => {
+    setInputRecalled(false);
     setGlobalPresetNum((prev) => {
       if (prev === "" || prev >= 50) {
         return 1;
@@ -55,6 +56,7 @@ export default function GlobalPreset({
   };
 
   const handleLeftArrow = () => {
+    setInputRecalled(false);
     setGlobalPresetNum((prev) => {
       if (prev === "" || prev <= 1) {
         return 50;
@@ -71,7 +73,13 @@ export default function GlobalPreset({
           <span className="bg-maxbg px-1.5">Global Preset</span>
         </h3>
         <div className="flex max-w-sm min-w-xs flex-wrap justify-between mb-1.5">
-          <button className="round" onClick={handlePresetSelect}>
+          <button
+            className="round"
+            onClick={() => {
+              setInputRecalled(true);
+              handlePresetSelect();
+            }}
+          >
             RECALL
           </button>
           <button className="round">SAVE</button>
@@ -82,9 +90,9 @@ export default function GlobalPreset({
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
-              className={
-                "preset-num w-1/6 aspect-square border border-[#E6A60D] text-xl placeholder:text-xl placeholder:text-justify text-center ${inputStyle}"
-              }
+              className={`preset-num w-1/6 aspect-square border border-[#E6A60D] text-xl placeholder:text-xl text-center ${
+                inputRecalled ? "text-inherit" : "text-mix"
+              }`}
               placeholder="50"
               //min={1}
               max={50}
@@ -101,7 +109,9 @@ export default function GlobalPreset({
             </button>
             <input
               type="text"
-              className="preset-name w-1/2 border border-[#E6A60D] text-xl placeholder:text-xl text-center"
+              className={`preset-name w-1/2 border border-[#E6A60D] text-xl placeholder:text-xl text-center ${
+                inputRecalled ? "text-inherit" : "text-mix"
+              }`}
               placeholder="PRESET NAME"
               value={globalPresetName}
               onChange={(e) => setGlobalPresetName(e.target.value)}
