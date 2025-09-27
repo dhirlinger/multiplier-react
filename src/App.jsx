@@ -438,20 +438,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96">
+    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
       <PatreonBanner loginStatusRef={loginStatusRef} />
 
       <AppDescription />
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-
-      <PresetArray
-        presetData={presetData}
-        presetIdRef={presetIdRef}
-        handleSelect={handlePresetSelect}
-        presetObj={presetObj}
-        refreshPresetObj={refreshPresetObj}
-      />
 
       <GlobalPreset
         presetData={presetData}

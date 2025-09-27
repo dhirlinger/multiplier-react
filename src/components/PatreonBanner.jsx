@@ -5,9 +5,10 @@ export default function PatreonBanner({ loginStatusRef }) {
 
       {!loginStatusRef.current.logged_in && (
         <p
+          className="my-1.5 px-2.5"
           style={{
-            marginBottom: "5px",
-            marginTop: "5px",
+            // marginBottom: "5px",
+            // marginTop: "5px",
             backgroundColor: "#630c0cff",
             color: "#fafafaff",
           }}

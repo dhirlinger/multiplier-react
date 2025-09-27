@@ -11,15 +11,17 @@ export default function GlobalPreset({
 }) {
   //input color control
   const [inputRecalled, setInputRecalled] = useState(false);
+  const [paramsVisible, setParamsVisible] = useState(false);
+
   const inputStyle = inputRecalled ? "text-mix" : "text-inherit";
+
+  const findByPresetNum = presetData.find(
+    (item) => item && Number(item.preset_number) === globalPresetNum
+  );
 
   //update preset name when preset number is updated
   useEffect(() => {
     if (globalPresetNum === "" || globalPresetNum === null) return;
-
-    const findByPresetNum = presetData.find(
-      (item) => item && Number(item.preset_number) === globalPresetNum
-    );
 
     if (findByPresetNum === undefined) {
       setGlobalPresetName("-EMPTY-");
@@ -27,11 +29,6 @@ export default function GlobalPreset({
       setGlobalPresetName(findByPresetNum.name);
     }
   }, [globalPresetNum, presetData]);
-
-  const handlePresetNumChange = () => {
-    setInputRecalled(true);
-    handlePresetNum();
-  };
 
   const handlePresetNum = (e) => {
     const value = e.target.value;
@@ -44,19 +41,6 @@ export default function GlobalPreset({
       //handlePresetSelect(e);
       setInputRecalled(false);
       setGlobalPresetNum(Number(value));
-
-      //const presetNum = Number(value);
-
-      //   const findByPresetNum = presetData.find(
-      //     (item) => item && item.preset_number === value
-      //   );
-      //   console.log(`findBY: ${JSON.stringify(findByPresetNum)}`);
-      //   if (findByPresetNum === undefined) {
-      //     setGlobalPresetName("-EMPTY-");
-      //     return;
-      //   } else {
-      //     setGlobalPresetName(findByPresetNum.name);
-      //   }
     }
   };
 
@@ -84,9 +68,9 @@ export default function GlobalPreset({
     <>
       <div className="text-4xl text-center">
         <h3 className="m-1.5">
-          <span className="bg-maxbg">Global Preset</span>
+          <span className="bg-maxbg px-1.5">Global Preset</span>
         </h3>
-        <div className="flex max-w-sm min-w-xs flex-wrap justify-between p-2">
+        <div className="flex max-w-sm min-w-xs flex-wrap justify-between mb-1.5">
           <button className="round" onClick={handlePresetSelect}>
             RECALL
           </button>
@@ -130,10 +114,26 @@ export default function GlobalPreset({
             </button>
           </div>
         </div>
+        <div className="text-sm mb-1.5" style={{ overflowWrap: "anywhere" }}>
+          <p
+            className="cursor-pointer p-2.5 bg-maxbg border-solid border-[#E6A60D] border-[0.5px]"
+            onClick={() => setParamsVisible(!paramsVisible)}
+          >
+            PRESET PARAMETERS
+          </p>
+          <p
+            className={`${paramsVisible ? "block" : "hidden"} bg-maxbg py-1.5`}
+          >
+            {findByPresetNum === undefined
+              ? "EMPTY PRESET"
+              : Object.keys(findByPresetNum.params_json).map((key) => (
+                  <span key={key} className="me-1">
+                    | {key}: {String(findByPresetNum.params_json[key])} |
+                  </span>
+                ))}
+          </p>
+        </div>
       </div>
-      {/* <div className="max-w-sm">
-        <p style={{ overflowWrap: "anywhere" }}>{JSON.stringify(presetData)}</p>
-      </div> */}
     </>
   );
 }
