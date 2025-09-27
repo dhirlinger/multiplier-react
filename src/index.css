@@ -41,6 +41,10 @@
     background-color: rgb(59, 59, 59);
   }
 
+  .patreon-text a {
+    @apply text-[#ff1493];
+  }
+
   svg {
     width: 100%;
   }
