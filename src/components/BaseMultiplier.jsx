@@ -6,6 +6,7 @@ export default function BaseMultiplier({
   multiplier,
   setMultiplier,
   presetObj,
+  paramsRef,
 }) {
   const [multiplierMin, setMultiplierMin] = useState("0.1");
   const [multiplierMax, setMultiplierMax] = useState("10");
@@ -16,6 +17,25 @@ export default function BaseMultiplier({
   const [baseStep, setBaseStep] = useState("10");
 
   useEffect(() => {
+    paramsRef.current = {
+      multiplier_min: multiplierMin,
+      multiplier_max: multiplierMax,
+      multiplier_step: multiplierStep,
+      base_min: baseMin,
+      base_max: baseMax,
+      base_step: baseStep,
+    };
+    console.log(`ref: ${JSON.stringify(paramsRef.current)}`);
+  }, [
+    multiplierMin,
+    multiplierMax,
+    multiplierStep,
+    baseMin,
+    baseMax,
+    baseStep,
+  ]);
+
+  useEffect(() => {
     if (presetObj) {
       setMultiplierMin(presetObj.params_json.multiplier_min);
       setMultiplierMax(presetObj.params_json.multiplier_max);
@@ -23,20 +43,56 @@ export default function BaseMultiplier({
       setBaseMin(presetObj.params_json.base_min);
       setBaseMax(presetObj.params_json.base_max);
       setBaseStep(presetObj.params_json.base_step);
+      // paramsRef.current = {
+      //   multiplier_min: presetObj.params_json.multiplier_min,
+      //   multiplier_max: presetObj.params_json.multiplier_max,
+      //   multiplier_step: presetObj.params_json.multiplier_step,
+      //   base_min: presetObj.params_json.base_min,
+      //   base_max: presetObj.params_json.base_max,
+      //   base_step: presetObj.params_json.base_step,
+      // };
     }
   }, [presetObj]);
 
   const handleBaseChange = (e) => {
     let inputValue = e.target.value;
-
-    // Only allow ints and floats
-    //if (/^-?\d+(\.\d+)?$/.test(inputValue)) {
-    //setBaseValue(inputValue);
     setBase(inputValue);
-    //}
-    // If input is invalid, do nothing (no update)
   };
 
+  const handleBaseMinChange = (e) => {
+    let inputValue = e.target.value;
+    setBaseMin(inputValue);
+  };
+
+  const handleBaseMaxChange = (e) => {
+    let inputValue = e.target.value;
+    setBaseMax(inputValue);
+  };
+
+  const handleBaseStepChange = (e) => {
+    let inputValue = e.target.value;
+    setBaseStep(inputValue);
+  };
+
+  const handleMultiplierChange = (e) => {
+    let inputValue = e.target.value;
+    setMultiplier(inputValue);
+  };
+
+  const handleMultiplierMinChange = (e) => {
+    let inputValue = e.target.value;
+    setMultiplierMin(inputValue);
+  };
+
+  const handleMultiplierMaxChange = (e) => {
+    let inputValue = e.target.value;
+    setMultiplierMax(inputValue);
+  };
+
+  const handleMultiplierStepChange = (e) => {
+    let inputValue = e.target.value;
+    setMultiplierStep(inputValue);
+  };
   return (
     <div style={{ margin: "15px" }}>
       <label htmlFor="base">Base: </label>
@@ -65,7 +121,7 @@ export default function BaseMultiplier({
             value={baseMin}
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
-            onChange={(e) => setBaseMin(e.target.value)}
+            onChange={handleBaseMinChange}
           ></input>
           <label htmlFor="base-max">base max: </label>
           <input
@@ -74,7 +130,7 @@ export default function BaseMultiplier({
             value={baseMax}
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
-            onChange={(e) => setBaseMax(e.target.value)}
+            onChange={handleBaseMaxChange}
           ></input>
           <label htmlFor="base-step">base step: </label>
           <input
@@ -83,7 +139,7 @@ export default function BaseMultiplier({
             value={baseStep}
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
-            onChange={(e) => setBaseStep(e.target.value)}
+            onChange={handleBaseStepChange}
           ></input>
         </div>
         <span style={{ width: "100px" }}>Multiplier: </span>
@@ -93,7 +149,7 @@ export default function BaseMultiplier({
           min={multiplierMin}
           step={multiplierStep}
           value={multiplier}
-          onChange={(e) => setMultiplier(e.target.value)}
+          onChange={handleMultiplierChange}
         />
         <span style={{ width: "50px" }}>{Number(multiplier).toFixed(3)}</span>
         <div>
@@ -104,7 +160,7 @@ export default function BaseMultiplier({
             value={multiplierMin}
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
-            onChange={(e) => setMultiplierMin(e.target.value)}
+            onChange={handleMultiplierMinChange}
           ></input>
           <label htmlFor="multi-max">multiplier max: </label>
           <input
@@ -113,7 +169,7 @@ export default function BaseMultiplier({
             value={multiplierMax}
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
-            onChange={(e) => setMultiplierMax(e.target.value)}
+            onChange={handleMultiplierMaxChange}
           ></input>
           <label htmlFor="multi-step">multiplier step: </label>
           <input
@@ -122,7 +178,7 @@ export default function BaseMultiplier({
             value={multiplierStep}
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
-            onChange={(e) => setMultiplierStep(e.target.value)}
+            onChange={handleMultiplierStepChange}
           ></input>
         </div>
       </div>

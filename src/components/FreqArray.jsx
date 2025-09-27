@@ -3,7 +3,7 @@ import { Refresh } from "./Icon";
 
 export default function FreqArray({
   freqData,
-  //freqIdRef,
+  baseMultiplierParamsRef,
   freqId,
   handleSelect,
   freqObj,
@@ -93,6 +93,7 @@ export default function FreqArray({
         multiplier={multiplier}
         setMultiplier={setMultiplier}
         presetObj={presetObj}
+        paramsRef={baseMultiplierParamsRef}
       />
     </div>
   );

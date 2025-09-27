@@ -8,12 +8,12 @@ export default function GlobalPreset({
   globalPresetName,
   setGlobalPresetName,
   handlePresetSelect,
+  saveGlobalPreset,
 }) {
   //input color control
   const [inputRecalled, setInputRecalled] = useState(false);
+  //parameters view
   const [paramsVisible, setParamsVisible] = useState(false);
-
-  //const inputStyle = inputRecalled ? "text-mix" : "text-inherit";
 
   const findByPresetNum = presetData.find(
     (item) => item && Number(item.preset_number) === globalPresetNum
@@ -42,6 +42,15 @@ export default function GlobalPreset({
       setInputRecalled(false);
       setGlobalPresetNum(Number(value));
     }
+  };
+
+  const handlePresetNameChange = (e) => {
+    const value = e.target.value;
+    if (value === "-EMPTY-") {
+      alert("-EMPTY- is a forbidden preset name.");
+      return;
+    }
+    setGlobalPresetName(value);
   };
 
   const handleRightArrow = () => {
@@ -82,7 +91,9 @@ export default function GlobalPreset({
           >
             RECALL
           </button>
-          <button className="round">SAVE</button>
+          <button className="round" onClick={saveGlobalPreset}>
+            SAVE
+          </button>
           <button className="round border-red-600 text-red-600">DELETE</button>
           <button className="round">MIDI</button>
           <div className="flex mt-1">
@@ -114,7 +125,8 @@ export default function GlobalPreset({
               }`}
               placeholder="PRESET NAME"
               value={globalPresetName}
-              onChange={(e) => setGlobalPresetName(e.target.value)}
+              onChange={handlePresetNameChange}
+              maxLength={15}
             ></input>
             <button
               className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] scale-x-[-1]"

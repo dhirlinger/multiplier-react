@@ -1,9 +1,7 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
-import { Arrow } from "./components/Icon";
 import FreqArray from "./components/FreqArray";
 import IndexArray from "./components/IndexArray";
-import PresetArray from "./components/PresetArray";
 import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
 import SeqVoice from "./assets/SeqVoice";
@@ -27,6 +25,7 @@ export default function App() {
   //const freqIdRef = useRef(0);
   const [freqId, setFredId] = useState();
   const [freqObj, setFreqObj] = useState();
+
   //const indexIdRef = useRef(0);
   const [indexId, setIndexId] = useState();
   const [indexObj, setIndexObj] = useState();
@@ -37,6 +36,7 @@ export default function App() {
   const [globalPresetName, setGlobalPresetName] = useState("");
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
+  const baseMultiplierParamsRef = useRef({});
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
@@ -304,6 +304,51 @@ export default function App() {
     return o[0];
   };
 
+  const saveGlobalPreset = async () => {
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    } else {
+      try {
+        const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/presets`;
+        const data = JSON.stringify({
+          name: globalPresetName,
+          preset_number: globalPresetNum,
+          index_array_id: indexId,
+          freq_array_id: freqId,
+          user_id: loginStatusRef.current.user_id,
+          params_json: {
+            tempo: seqTempo,
+            duration: duration,
+            lowpass_q: lowPassQ,
+            wave_shape: waveshape,
+            lowpass_freq: lowPassFreq,
+            base_max: baseMultiplierParamsRef.current.base_max,
+            base_min: baseMultiplierParamsRef.current.base_min,
+            base_step: baseMultiplierParamsRef.current.base_step,
+            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+          },
+        });
+        const response = await fetch(url, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "X-WP-Nonce": window.MultiplierAPI.nonce,
+            "Content-Type": "application/json",
+          },
+          body: data,
+        });
+        const result = await response.json();
+        console.log("Result:", result);
+        setPresetData([...result.updated_data]);
+      } catch (error) {
+        console.log(`User post preset error! status: ${error}`);
+      }
+    }
+  };
+
   const saveIndexPreset = async () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
@@ -452,6 +497,7 @@ export default function App() {
         setGlobalPresetNum={setGlobalPresetNum}
         setGlobalPresetName={setGlobalPresetName}
         handlePresetSelect={handlePresetSelect}
+        saveGlobalPreset={saveGlobalPreset}
       />
 
       <FreqArray
@@ -466,9 +512,11 @@ export default function App() {
         setMultiplier={setMultiplier}
         refreshFreqObj={refreshFreqObj}
         presetObj={presetObj}
+        baseMultiplierParamsRef={baseMultiplierParamsRef}
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
+
       <IndexArray
         indexData={indexData}
         //indexIdRef={indexIdRef}
