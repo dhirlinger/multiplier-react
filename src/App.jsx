@@ -14,6 +14,8 @@ import {
   indexArrDefault,
 } from "./assets/default";
 import GlobalPreset from "./components/GlobalPreset";
+import PatreonBanner from "./components/PatreonBanner";
+import AppDescription from "./components/AppDescription";
 
 export default function App() {
   //preset + rest api related vars
@@ -307,8 +309,6 @@ export default function App() {
       alert("You must login via patreon to access this feature");
       return;
     } else {
-      // console.log(seqArrayRef.current);
-      console.log(window.MultiplierAPI.nonce);
       try {
         const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/index-arrays/`;
         const data = JSON.stringify({
@@ -438,68 +438,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96">
-      <h1 style={{ marginBottom: "0", marginTop: "0" }}>Multiplier:</h1>
+    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
+      <PatreonBanner loginStatusRef={loginStatusRef} />
 
-      {!loginStatusRef.current.logged_in && (
-        <p
-          style={{
-            marginBottom: "5px",
-            marginTop: "5px",
-            backgroundColor: "#630c0cff",
-            color: "#fafafaff",
-          }}
-        >
-          To save and recall your own presets and to use MIDI functionality you
-          must be a member of
-          <b>
-            {" "}
-            <a
-              href="https://www.patreon.com/user?u=90105560&amp;utm_source=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post%2F&amp;utm_medium=patreon_wordpress_plugin&amp;utm_campaign=14548621&amp;utm_term=&amp;utm_content=creator_profile_link_in_text_over_interface"
-              target="_blank"
-            >
-              Doug’s Patreon
-            </a>{" "}
-            at $3{" "}
-          </b>{" "}
-          or more.{" "}
-          <a
-            href="http://localhost:8888/patreon-flow/?patreon-unlock-post=8"
-            target="_blank"
-          >
-            Unlock with Patreon
-          </a>{" "}
-          Already a qualifying Patreon member?{" "}
-          <a
-            href="http://localhost:8888/patreon-flow/?patreon-login=yes&amp;patreon-final-redirect=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post"
-            rel="nofollow"
-          >
-            Refresh
-          </a>{" "}
-          to access this content.
-        </p>
-      )}
-
-      <p style={{ marginTop: "0" }}>
-        Multiplier is a step sequencer. There are 8 frequencies contained in the
-        frequency array. Sequence the order of the those values and change those
-        values by changing the base frequency and multiplier values. The base
-        frequency is multiplied by each position number (index) in the array to
-        create the frequency array. However, the first value is the base value
-        itself, and the second is the base x multiplier only (except if
-        multiplier = 1), and the third through eight are valued at 2-7
-        respectively.
-      </p>
+      <AppDescription />
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-
-      <PresetArray
-        presetData={presetData}
-        presetIdRef={presetIdRef}
-        handleSelect={handlePresetSelect}
-        presetObj={presetObj}
-        refreshPresetObj={refreshPresetObj}
-      />
 
       <GlobalPreset
         presetData={presetData}
