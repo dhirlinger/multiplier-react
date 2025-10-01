@@ -162,7 +162,6 @@ export default function GlobalPreset({
                   )
                 )}
           </p>
-          {JSON.stringify(findByPresetNumRef.current)}
         </div>
       </div>
     </>
