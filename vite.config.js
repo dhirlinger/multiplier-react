@@ -9,7 +9,8 @@ export default defineConfig({
     outDir: "../wordpress/wp-content/plugins/multiplier2",
     rollupOptions: {
       output: {
-        entryFileNames: `multiplier.js`, // Customize entry file names
+        entryFileNames: `multiplier.js`,
+        // Customize entry file names
       },
     },
   },

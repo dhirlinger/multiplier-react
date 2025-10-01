@@ -82,8 +82,15 @@ export default function App() {
     //for development assign userID to 1 if there is no user_id
     const userID = loginStatusRef.current.user_id
       ? loginStatusRef.current.user_id
-      : 1;
+      : null;
     console.log(`user: ${userID}`);
+    if (userID === null) {
+      setFreqData(freqArrDefault);
+      setIndexData(indexArrDefault);
+      setPresetData(presetDefault);
+      setLoading(false);
+      return;
+    }
     try {
       //get freq arrays for user 1
       const freqResponse = await fetch(
@@ -120,9 +127,11 @@ export default function App() {
           `User presets request error! status: ${presetResponse.status}`
         );
       const presetArrJSON = await presetResponse.json();
+      console.log(`data: ${JSON.stringify(presetArrJSON)}`);
       const normalizedGlobal = normalizePresets(presetArrJSON);
       //addEmptyPresets(normalizedGlobal);
       setPresetData(normalizedGlobal);
+      console.log(`prt: ${JSON.stringify(normalizedGlobal)}`);
       //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
@@ -142,19 +151,19 @@ export default function App() {
   };
 
   //add default presets to data arrays function
-  const addDefault = (dataArr, defaultArr) => {
-    defaultArr.map((preset) => {
-      dataArr.unshift(preset);
-    });
-  };
-  //add default presets to data arrays - this is only called if the user has data
-  useEffect(() => {
-    if (!loginStatusRef.current.user_id === 1) {
-      addDefault(indexData, indexArrDefault);
-      addDefault(freqData, freqArrDefault);
-      addDefault(presetData, presetDefault);
-    }
-  }, [indexData, freqData, presetData]);
+  // const addDefault = (dataArr, defaultArr) => {
+  //   defaultArr.map((preset) => {
+  //     dataArr.unshift(preset);
+  //   });
+  // };
+  //add default presets to data arrays if there is no user id
+  // useEffect(() => {
+  //   if (!loginStatusRef.current.user_id) {
+  //     addDefault(indexData, indexArrDefault);
+  //     addDefault(freqData, freqArrDefault);
+  //     addDefault(presetData, presetDefault);
+  //   }
+  // }, [indexData, freqData, presetData]);
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
@@ -173,31 +182,31 @@ export default function App() {
     return filled;
   };
 
-  const addEmptyPresets = (arr) => {
-    const presetNums = [];
-    arr.forEach((item) => {
-      if (item !== null) {
-        presetNums.push(item.preset_number);
-      }
-    });
-    for (let i = 1; i < 51; i++) {
-      if (!presetNums.includes(i.toString())) {
-        const firstNull = arr.findIndex((item) => item === null);
-        if (firstNull !== -1) {
-          arr[firstNull] = {
-            preset_number: i.toString(),
-            name: "EMPTY",
-            params_json: {},
-            index_array_id: null,
-            freq_array_id: null,
-            user_id: loginStatusRef.current.user_id
-              ? loginStatusRef.current.user_id
-              : null,
-          };
-        }
-      }
-    }
-  };
+  // const addEmptyPresets = (arr) => {
+  //   const presetNums = [];
+  //   arr.forEach((item) => {
+  //     if (item !== null) {
+  //       presetNums.push(item.preset_number);
+  //     }
+  //   });
+  //   for (let i = 1; i < 51; i++) {
+  //     if (!presetNums.includes(i.toString())) {
+  //       const firstNull = arr.findIndex((item) => item === null);
+  //       if (firstNull !== -1) {
+  //         arr[firstNull] = {
+  //           preset_number: i.toString(),
+  //           name: "EMPTY",
+  //           params_json: {},
+  //           index_array_id: null,
+  //           freq_array_id: null,
+  //           user_id: loginStatusRef.current.user_id
+  //             ? loginStatusRef.current.user_id
+  //             : null,
+  //         };
+  //       }
+  //     }
+  //   }
+  // };
 
   const handleFreqSelect = (e) => {
     //freqIdRef.current = e.target.value;
@@ -331,6 +340,7 @@ export default function App() {
             multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
           },
         });
+        console.log(`data: ${JSON.stringify(data)}`);
         const response = await fetch(url, {
           method: "POST",
           credentials: "include",
@@ -342,7 +352,8 @@ export default function App() {
         });
         const result = await response.json();
         console.log("Result:", result);
-        setPresetData([...result.updated_data]);
+        const normalizedGlobal = normalizePresets(result.updated_data);
+        setPresetData(normalizedGlobal);
       } catch (error) {
         console.log(`User post preset error! status: ${error}`);
       }

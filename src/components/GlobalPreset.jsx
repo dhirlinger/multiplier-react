@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Arrow } from "./Icon";
 
 export default function GlobalPreset({
@@ -15,18 +15,22 @@ export default function GlobalPreset({
   //parameters view
   const [paramsVisible, setParamsVisible] = useState(false);
 
-  const findByPresetNum = presetData.find(
-    (item) => item && Number(item.preset_number) === globalPresetNum
-  );
+  const findByPresetNumRef = useRef();
+
+  useEffect(() => {
+    findByPresetNumRef.current = presetData.find(
+      (item) => item && Number(item.preset_number) === globalPresetNum
+    );
+  }, [globalPresetNum, presetData]);
 
   //update preset name when preset number is updated
   useEffect(() => {
     if (globalPresetNum === "" || globalPresetNum === null) return;
 
-    if (findByPresetNum === undefined) {
+    if (findByPresetNumRef.current === undefined) {
       setGlobalPresetName("-EMPTY-");
     } else {
-      setGlobalPresetName(findByPresetNum.name);
+      setGlobalPresetName(findByPresetNumRef.current.name);
     }
   }, [globalPresetNum, presetData]);
 
@@ -41,6 +45,7 @@ export default function GlobalPreset({
       //handlePresetSelect(e);
       setInputRecalled(false);
       setGlobalPresetNum(Number(value));
+      console.log(`pre num: ${Number(value)}`);
     }
   };
 
@@ -146,14 +151,18 @@ export default function GlobalPreset({
           <p
             className={`${paramsVisible ? "block" : "hidden"} bg-maxbg py-1.5`}
           >
-            {findByPresetNum === undefined
+            {findByPresetNumRef.current === undefined
               ? "EMPTY PRESET"
-              : Object.keys(findByPresetNum.params_json).map((key) => (
-                  <span key={key} className="me-1">
-                    | {key}: {String(findByPresetNum.params_json[key])} |
-                  </span>
-                ))}
+              : Object.keys(findByPresetNumRef.current.params_json).map(
+                  (key) => (
+                    <span key={key} className="me-1">
+                      | {key}:{" "}
+                      {String(findByPresetNumRef.current.params_json[key])} |
+                    </span>
+                  )
+                )}
           </p>
+          {JSON.stringify(findByPresetNumRef.current)}
         </div>
       </div>
     </>
