@@ -25,7 +25,6 @@ export default function BaseMultiplier({
       base_max: baseMax,
       base_step: baseStep,
     };
-    console.log(`ref: ${JSON.stringify(paramsRef.current)}`);
   }, [
     multiplierMin,
     multiplierMax,

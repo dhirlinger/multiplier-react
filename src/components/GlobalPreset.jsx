@@ -9,9 +9,10 @@ export default function GlobalPreset({
   setGlobalPresetName,
   handlePresetSelect,
   saveGlobalPreset,
+  deleteGlobalPreset,
+  inputRecalled,
+  setInputRecalled,
 }) {
-  //input color control
-  const [inputRecalled, setInputRecalled] = useState(false);
   //parameters view
   const [paramsVisible, setParamsVisible] = useState(false);
 
@@ -99,7 +100,12 @@ export default function GlobalPreset({
           <button className="round" onClick={saveGlobalPreset}>
             SAVE
           </button>
-          <button className="round border-red-600 text-red-600">DELETE</button>
+          <button
+            className="round border-red-600 text-red-600"
+            onClick={deleteGlobalPreset}
+          >
+            DELETE
+          </button>
           <button className="round">MIDI</button>
           <div className="flex mt-1">
             <input

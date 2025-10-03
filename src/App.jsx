@@ -37,6 +37,8 @@ export default function App() {
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
   const baseMultiplierParamsRef = useRef({});
+  //preset ui input text control
+  const [globalInputRecalled, setGlobalInputRecalled] = useState(false);
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
@@ -362,7 +364,7 @@ export default function App() {
           multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
         },
       });
-      console.log(`data: ${JSON.stringify(data)}`);
+      console.log(`data: ${data}`);
       const response = await fetch(url, {
         method: "POST",
         credentials: "include",
@@ -376,8 +378,42 @@ export default function App() {
       console.log("Result:", result);
       const normalizedGlobal = normalizePresets(result.updated_data);
       setPresetData(normalizedGlobal);
+      setGlobalInputRecalled(true);
     } catch (error) {
       console.log(`User post preset error! status: ${error}`);
+    }
+  };
+
+  const deleteGlobalPreset = async () => {
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
+    if (globalPresetNum === undefined) {
+      alert("Please select a preset to delete!");
+      return;
+    }
+    if (confirm(`Delete Preset ${globalPresetNum}: ${globalPresetName}?`)) {
+      const findByPresetNum = presetData.find(
+        (item) => item && Number(item.preset_number) === globalPresetNum
+      );
+      try {
+        const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`;
+        const response = await fetch(url, {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "X-WP-Nonce": window.MultiplierAPI.nonce,
+            "Content-Type": "application/json",
+          },
+        });
+        const result = await response.json();
+        console.log("Result:", result);
+        const normalizedGlobal = normalizePresets(result.updated_data);
+        setPresetData(normalizedGlobal);
+      } catch (error) {
+        console.log(`delete global preset error! status: ${error}`);
+      }
     }
   };
 
@@ -529,6 +565,9 @@ export default function App() {
         setGlobalPresetName={setGlobalPresetName}
         handlePresetSelect={handlePresetSelect}
         saveGlobalPreset={saveGlobalPreset}
+        deleteGlobalPreset={deleteGlobalPreset}
+        inputRecalled={globalInputRecalled}
+        setInputRecalled={setGlobalInputRecalled}
       />
 
       <FreqArray
