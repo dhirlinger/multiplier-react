@@ -34,11 +34,14 @@ export default function App() {
   const presetIdRef = useRef(0);
   const [globalPresetNum, setGlobalPresetNum] = useState("");
   const [globalPresetName, setGlobalPresetName] = useState("");
+  const [freqPresetNum, setFreqPresetNum] = useState("");
+  const [freqPresetName, setFreqPresetName] = useState("");
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
   const baseMultiplierParamsRef = useRef({});
   //preset ui input text control
   const [globalInputRecalled, setGlobalInputRecalled] = useState(false);
+  const [freqInputRecalled, setFreqInputRecalled] = useState(false);
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
@@ -326,7 +329,7 @@ export default function App() {
           (item) => item && Number(item.preset_number) === globalPresetNum
         );
         if (findByPresetNum === undefined) {
-          save();
+          save("presets");
           return;
         } else {
           if (
@@ -334,7 +337,7 @@ export default function App() {
               `Overwrite Preset ${globalPresetNum} with ${globalPresetName}?`
             )
           ) {
-            save();
+            save("presets");
           } else {
             return;
           }
@@ -343,9 +346,9 @@ export default function App() {
     }
   };
 
-  const save = async () => {
+  const save = async (path) => {
     try {
-      const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/presets`;
+      const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/${path}`;
       const data = JSON.stringify({
         name: globalPresetName,
         preset_number: globalPresetNum,
@@ -384,6 +387,10 @@ export default function App() {
     } catch (error) {
       console.log(`User post preset error! status: ${error}`);
     }
+  };
+
+  const saveFreqPreset = () => {
+    return;
   };
 
   const deleteGlobalPreset = async () => {
@@ -449,6 +456,11 @@ export default function App() {
       }
     }
   };
+
+  const deleteFreqPreset = () => {
+    return;
+  };
+
   //keep data in order by preset_number
   const sortArr = (data, setData) => {
     const sortedArr = [...data];
@@ -571,6 +583,20 @@ export default function App() {
         inputRecalled={globalInputRecalled}
         setInputRecalled={setGlobalInputRecalled}
         category={"Global"}
+      />
+
+      <PresetUI
+        data={freqData}
+        presetNum={freqPresetNum}
+        presetName={freqPresetName}
+        setPresetNum={setFreqPresetNum}
+        setPresetName={setFreqPresetName}
+        recallPreset={handleFreqSelect}
+        savePreset={saveFreqPreset}
+        deletePreset={deleteFreqPreset}
+        inputRecalled={freqInputRecalled}
+        setInputRecalled={setFreqInputRecalled}
+        category={"Frequency Array"}
       />
 
       <FreqArray
