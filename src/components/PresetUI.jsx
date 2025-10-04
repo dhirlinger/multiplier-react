@@ -2,16 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { Arrow } from "./Icon";
 
 export default function GlobalPreset({
-  presetData,
-  globalPresetNum,
-  setGlobalPresetNum,
-  globalPresetName,
-  setGlobalPresetName,
-  handlePresetSelect,
-  saveGlobalPreset,
-  deleteGlobalPreset,
+  data,
+  presetNum,
+  setPresetNum,
+  presetName,
+  setPresetName,
+  recallPreset,
+  savePreset,
+  deletePreset,
   inputRecalled,
   setInputRecalled,
+  category,
 }) {
   //parameters view
   const [paramsVisible, setParamsVisible] = useState(false);
@@ -19,33 +20,33 @@ export default function GlobalPreset({
   const findByPresetNumRef = useRef();
 
   useEffect(() => {
-    findByPresetNumRef.current = presetData.find(
-      (item) => item && Number(item.preset_number) === globalPresetNum
+    findByPresetNumRef.current = data.find(
+      (item) => item && Number(item.preset_number) === presetNum
     );
-  }, [globalPresetNum, presetData]);
+  }, [presetNum, data]);
 
   //update preset name when preset number is updated
   useEffect(() => {
-    if (globalPresetNum === "" || globalPresetNum === null) return;
+    if (presetNum === "" || presetNum === null) return;
 
     if (findByPresetNumRef.current === undefined) {
-      setGlobalPresetName("-EMPTY-");
+      setPresetName("-EMPTY-");
     } else {
-      setGlobalPresetName(findByPresetNumRef.current.name);
+      setPresetName(findByPresetNumRef.current.name);
     }
-  }, [globalPresetNum, presetData]);
+  }, [presetNum, data]);
 
   const handlePresetNum = (e) => {
     const value = e.target.value;
     // allow empty string
     if (!value) {
-      setGlobalPresetNum("");
+      setPresetNum("");
       return;
     }
     if (/^(?:[1-9]|[1-4][0-9]|50)$/.test(value)) {
-      //handlePresetSelect(e);
+      //recallPreset(e);
       setInputRecalled(false);
-      setGlobalPresetNum(Number(value));
+      setPresetNum(Number(value));
       console.log(`pre num: ${Number(value)}`);
     }
   };
@@ -56,12 +57,12 @@ export default function GlobalPreset({
       alert("-EMPTY- is a forbidden preset name.");
       return;
     }
-    setGlobalPresetName(value);
+    setPresetName(value);
   };
 
   const handleRightArrow = () => {
     setInputRecalled(false);
-    setGlobalPresetNum((prev) => {
+    setPresetNum((prev) => {
       if (prev === "" || prev >= 50) {
         return 1;
       } else {
@@ -72,7 +73,7 @@ export default function GlobalPreset({
 
   const handleLeftArrow = () => {
     setInputRecalled(false);
-    setGlobalPresetNum((prev) => {
+    setPresetNum((prev) => {
       if (prev === "" || prev <= 1) {
         return 50;
       } else {
@@ -85,24 +86,24 @@ export default function GlobalPreset({
     <>
       <div className="text-4xl text-center">
         <h3 className="m-1.5">
-          <span className="bg-maxbg px-1.5">Global Preset</span>
+          <span className="bg-maxbg px-1.5">{category} Preset</span>
         </h3>
         <div className="flex max-w-sm min-w-xs flex-wrap justify-between mb-1.5">
           <button
             className="round"
             onClick={() => {
               setInputRecalled(true);
-              handlePresetSelect();
+              recallPreset();
             }}
           >
             RECALL
           </button>
-          <button className="round" onClick={saveGlobalPreset}>
+          <button className="round" onClick={savePreset}>
             SAVE
           </button>
           <button
             className="round border-red-600 text-red-600"
-            onClick={deleteGlobalPreset}
+            onClick={deletePreset}
           >
             DELETE
           </button>
@@ -119,7 +120,7 @@ export default function GlobalPreset({
               //min={1}
               max={50}
               maxLength={2}
-              value={globalPresetNum}
+              value={presetNum}
               onChange={handlePresetNum}
               //onInput={handleInput}
             ></input>
@@ -135,7 +136,7 @@ export default function GlobalPreset({
                 inputRecalled ? "text-inherit" : "text-mix"
               }`}
               placeholder="PRESET NAME"
-              value={globalPresetName}
+              value={presetName}
               onChange={handlePresetNameChange}
               maxLength={15}
             ></input>
@@ -147,28 +148,32 @@ export default function GlobalPreset({
             </button>
           </div>
         </div>
-        <div className="text-sm mb-1.5" style={{ overflowWrap: "anywhere" }}>
-          <p
-            className="cursor-pointer p-2.5 bg-maxbg border-solid border-[#E6A60D] border-[0.5px]"
-            onClick={() => setParamsVisible(!paramsVisible)}
-          >
-            PRESET PARAMETERS
-          </p>
-          <p
-            className={`${paramsVisible ? "block" : "hidden"} bg-maxbg py-1.5`}
-          >
-            {findByPresetNumRef.current === undefined
-              ? "EMPTY PRESET"
-              : Object.keys(findByPresetNumRef.current.params_json).map(
-                  (key) => (
-                    <span key={key} className="me-1">
-                      | {key}:{" "}
-                      {String(findByPresetNumRef.current.params_json[key])} |
-                    </span>
-                  )
-                )}
-          </p>
-        </div>
+        {category === "Global" && (
+          <div className="text-sm mb-1.5" style={{ overflowWrap: "anywhere" }}>
+            <p
+              className="cursor-pointer p-2.5 bg-maxbg border-solid border-[#E6A60D] border-[0.5px]"
+              onClick={() => setParamsVisible(!paramsVisible)}
+            >
+              PRESET PARAMETERS
+            </p>
+            <p
+              className={`${
+                paramsVisible ? "block" : "hidden"
+              } bg-maxbg py-1.5`}
+            >
+              {findByPresetNumRef.current === undefined
+                ? "EMPTY PRESET"
+                : Object.keys(findByPresetNumRef.current.params_json).map(
+                    (key) => (
+                      <span key={key} className="me-1">
+                        | {key}:{" "}
+                        {String(findByPresetNumRef.current.params_json[key])} |
+                      </span>
+                    )
+                  )}
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

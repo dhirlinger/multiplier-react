@@ -11,7 +11,7 @@ import {
   freqArrDefault,
   indexArrDefault,
 } from "./assets/default";
-import GlobalPreset from "./components/GlobalPreset";
+import PresetUI from "./components/PresetUI";
 import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
 
@@ -559,17 +559,18 @@ export default function App() {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
 
-      <GlobalPreset
-        presetData={presetData}
-        globalPresetNum={globalPresetNum}
-        globalPresetName={globalPresetName}
-        setGlobalPresetNum={setGlobalPresetNum}
-        setGlobalPresetName={setGlobalPresetName}
-        handlePresetSelect={handlePresetSelect}
-        saveGlobalPreset={saveGlobalPreset}
-        deleteGlobalPreset={deleteGlobalPreset}
+      <PresetUI
+        data={presetData}
+        presetNum={globalPresetNum}
+        presetName={globalPresetName}
+        setPresetNum={setGlobalPresetNum}
+        setPresetName={setGlobalPresetName}
+        recallPreset={handlePresetSelect}
+        savePreset={saveGlobalPreset}
+        deletePreset={deleteGlobalPreset}
         inputRecalled={globalInputRecalled}
         setInputRecalled={setGlobalInputRecalled}
+        category={"Global"}
       />
 
       <FreqArray
