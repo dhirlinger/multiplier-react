@@ -32,7 +32,7 @@ export default class SeqVoice {
     this.currentQuarterNote++; // Advance the beat number, wrap to zero
     if (this.currentQuarterNote == this.beatsPerBar) {
       this.currentQuarterNote = 0;
-      console.log("wrap to 0");
+      //console.log("wrap to 0");
     }
   }
 
@@ -47,7 +47,7 @@ export default class SeqVoice {
     }
     //status is ok
     this.statusCallback(1);
-    console.log(`arrHold: ${this.arrayHold}`);
+    //console.log(`arrHold: ${this.arrayHold}`);
     this.beatsPerBar = this.array.length;
 
     //guarding against array being out of bounds
@@ -71,9 +71,9 @@ export default class SeqVoice {
     // if (this.array[beatNumber] === "R" || this.array[beatNumber] === "r")
     //   this.array[beatNumber] = 0;
 
-    console.log(
-      `beatsPerBar: ${this.beatsPerBar} array L: ${this.array.length} beatNum: ${this.array[beatNumber]}`
-    );
+    // console.log(
+    //   `beatsPerBar: ${this.beatsPerBar} array L: ${this.array.length} beatNum: ${this.array[beatNumber]}`
+    // );
 
     // !this.array[beatNumber]
     //   ? (this.array[beatNumber] = 0)

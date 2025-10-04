@@ -129,7 +129,7 @@ export default function App() {
           `User presets request error! status: ${presetResponse.status}`
         );
       const presetArrJSON = await presetResponse.json();
-      console.log(`data: ${JSON.stringify(presetArrJSON)}`);
+      //console.log(`data: ${JSON.stringify(presetArrJSON)}`);
       const normalizedGlobal = normalizePresets(presetArrJSON);
       //addEmptyPresets(normalizedGlobal);
       setPresetData(normalizedGlobal);
@@ -309,7 +309,7 @@ export default function App() {
 
   const filterData = (data, id, key) => {
     const o = data.filter((obj) => obj && obj[key] === id);
-    console.log(`filterData: ${JSON.stringify(o[0])}`);
+    //console.log(`filterData: ${JSON.stringify(o[0])}`);
     return o[0];
   };
 
@@ -330,7 +330,9 @@ export default function App() {
           return;
         } else {
           if (
-            confirm(`Overwrite Preset ${globalPresetNum}: ${globalPresetName}?`)
+            confirm(
+              `Overwrite Preset ${globalPresetNum} with ${globalPresetName}?`
+            )
           ) {
             save();
           } else {
@@ -364,7 +366,7 @@ export default function App() {
           multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
         },
       });
-      console.log(`data: ${data}`);
+      //console.log(`data: ${data}`);
       const response = await fetch(url, {
         method: "POST",
         credentials: "include",
