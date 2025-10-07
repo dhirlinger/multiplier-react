@@ -23,7 +23,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   //const freqIdRef = useRef(0);
-  const [freqId, setFredId] = useState();
+  const [freqId, setFreqId] = useState();
   const [freqObj, setFreqObj] = useState();
 
   //const indexIdRef = useRef(0);
@@ -141,7 +141,7 @@ export default function App() {
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
         //freqIdRef.current = initialId;
-        setFredId(initialId);
+        setFreqId(initialId);
         setFreqObj(filterData(normalizedFreqData, initialId, "array_id"));
         //otherwise setFreqObj (ie load preset) from 1st array of freqArrDefault
       } else {
@@ -213,10 +213,29 @@ export default function App() {
   //   }
   // };
 
-  const handleFreqSelect = (e) => {
-    //freqIdRef.current = e.target.value;
-    setFredId(e.target.value);
-    setFreqObj(filterData(freqData, e.target.value, "array_id"));
+  const handleFreqSelect = () => {
+    if (freqObj && Number(freqObj.preset_number) === freqPresetNum) {
+      refreshFreqObj();
+      return;
+    }
+
+    const findByPresetNum = freqData.find(
+      (item) => item && Number(item.preset_number) === freqPresetNum
+    );
+
+    if (findByPresetNum === undefined) {
+      alert("EMPTY PRESET");
+      return;
+    } else {
+      setFreqId(findByPresetNum.array_id);
+      const selectedObj = filterData(
+        freqData,
+        findByPresetNum.array_id,
+        "array_id"
+      );
+      console.log(`sel: ${JSON.stringify(selectedObj)}`);
+      setFreqObj(selectedObj);
+    }
   };
 
   const handleIndexSelect = (e) => {
@@ -244,10 +263,11 @@ export default function App() {
         presetIdRef.current,
         "preset_id"
       );
+      console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setPresetObj(selectedObj);
       //setGlobalPresetName(selectedObj.name);
       setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
-      setFredId(selectedObj.freq_array_id);
+      setFreqId(selectedObj.freq_array_id);
       setIndexId(selectedObj.index_array_id);
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
@@ -286,7 +306,7 @@ export default function App() {
       // if presetObj contains freq arr id make necessary copies for synchronous freq array updates
       if (selectedObj.freq_array_id) {
         //freqIdRef.current = selectedObj.freq_array_id;
-        setFredId(selectedObj.freq_array_id);
+        setFreqId(selectedObj.freq_array_id);
         const refreshedFreqObj = filterData(
           freqData,
           selectedObj.freq_array_id,

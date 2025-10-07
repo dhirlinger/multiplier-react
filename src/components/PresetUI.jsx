@@ -20,6 +20,7 @@ export default function GlobalPreset({
   const findByPresetNumRef = useRef();
 
   useEffect(() => {
+    // console.log(`data: ${JSON.stringify(data)}`);
     findByPresetNumRef.current = data.find(
       (item) => item && Number(item.preset_number) === presetNum
     );
