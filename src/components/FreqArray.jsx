@@ -69,7 +69,7 @@ export default function FreqArray({
         >
           {freqData.map((item) => (
             <option key={item.array_id} value={item.array_id}>
-              {item.array_name}
+              {item.name}
             </option>
           ))}
         </select>

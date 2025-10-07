@@ -25,7 +25,7 @@ export const freqArrDefault = [
   {
     preset_number: "1",
     array_id: "1",
-    array_name: "DEFAULT",
+    name: "DEFAULT",
     base_freq: 110,
     multiplier: 1,
     user_id: "1",
@@ -33,7 +33,7 @@ export const freqArrDefault = [
   {
     preset_number: "2",
     array_id: "2",
-    array_name: "DEFAULT2",
+    name: "DEFAULT2",
     base_freq: 100,
     multiplier: 1.7,
     user_id: "1",
@@ -41,7 +41,7 @@ export const freqArrDefault = [
   {
     preset_number: "3",
     array_id: "3",
-    array_name: "DEFAULT3",
+    name: "DEFAULT3",
     base_freq: 110,
     multiplier: 1.5,
     user_id: "1",
@@ -51,7 +51,7 @@ export const indexArrDefault = [
   {
     preset_number: "1",
     array_id: "1",
-    array_name: "DEFAULT",
+    name: "DEFAULT",
     index_array: "1,3,8,4,2",
     user_id: "1",
   },

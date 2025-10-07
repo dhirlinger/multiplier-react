@@ -23,6 +23,7 @@ export default function GlobalPreset({
     findByPresetNumRef.current = data.find(
       (item) => item && Number(item.preset_number) === presetNum
     );
+    console.log(`findBy: ${JSON.stringify(findByPresetNumRef.current)}`);
   }, [presetNum, data]);
 
   //update preset name when preset number is updated

@@ -34,7 +34,7 @@ export default function IndexArray({
         <option>Choose List Preset</option>
         {indexData.map((item) => (
           <option key={item.array_id} value={item.array_id}>
-            {item.array_name}: {item.index_array}
+            {item.name}: {item.index_array}
           </option>
         ))}
       </select>

@@ -136,16 +136,17 @@ export default function App() {
       const normalizedGlobal = normalizePresets(presetArrJSON);
       //addEmptyPresets(normalizedGlobal);
       setPresetData(normalizedGlobal);
+      const normalizedFreqData = normalizePresets(freqArrJSON);
       //calculate freq array after data loads if there is data
       if (freqArrJSON.length > 0) {
         const initialId = freqArrJSON[0].array_id;
         //freqIdRef.current = initialId;
         setFredId(initialId);
-        setFreqObj(filterData(freqArrJSON, initialId, "array_id"));
+        setFreqObj(filterData(normalizedFreqData, initialId, "array_id"));
         //otherwise setFreqObj (ie load preset) from 1st array of freqArrDefault
       } else {
         freqArrDefault &&
-          setFreqObj(filterData(freqArrDefault, "1", "array_id"));
+          setFreqObj(filterData(normalizedFreqData, "1", "array_id"));
       }
     } catch (e) {
       setError(e);
@@ -443,7 +444,7 @@ export default function App() {
         const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/index-arrays/`;
         const data = JSON.stringify({
           index_array: seqArrayRef.current.join(),
-          array_name: indexPresetName,
+          name: indexPresetName,
           preset_number: indexPresetNum,
           user_id: loginStatusRef.current.user_id,
         });
