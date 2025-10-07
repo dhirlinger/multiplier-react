@@ -328,8 +328,30 @@ export default function App() {
         const findByPresetNum = presetData.find(
           (item) => item && Number(item.preset_number) === globalPresetNum
         );
+
+        const globalSaveJSON = JSON.stringify({
+          name: globalPresetName,
+          preset_number: globalPresetNum,
+          index_array_id: indexId,
+          freq_array_id: freqId,
+          user_id: loginStatusRef.current.user_id,
+          params_json: {
+            tempo: seqTempo,
+            duration: duration,
+            lowpass_q: lowPassQ,
+            wave_shape: waveshape,
+            lowpass_freq: lowPassFreq,
+            base_max: baseMultiplierParamsRef.current.base_max,
+            base_min: baseMultiplierParamsRef.current.base_min,
+            base_step: baseMultiplierParamsRef.current.base_step,
+            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+          },
+        });
+
         if (findByPresetNum === undefined) {
-          save("presets");
+          save("presets", globalSaveJSON);
           return;
         } else {
           if (
@@ -337,7 +359,7 @@ export default function App() {
               `Overwrite Preset ${globalPresetNum} with ${globalPresetName}?`
             )
           ) {
-            save("presets");
+            save("presets", globalSaveJSON);
           } else {
             return;
           }
@@ -346,29 +368,10 @@ export default function App() {
     }
   };
 
-  const save = async (path) => {
+  const save = async (path, saveJSON) => {
     try {
       const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/${path}`;
-      const data = JSON.stringify({
-        name: globalPresetName,
-        preset_number: globalPresetNum,
-        index_array_id: indexId,
-        freq_array_id: freqId,
-        user_id: loginStatusRef.current.user_id,
-        params_json: {
-          tempo: seqTempo,
-          duration: duration,
-          lowpass_q: lowPassQ,
-          wave_shape: waveshape,
-          lowpass_freq: lowPassFreq,
-          base_max: baseMultiplierParamsRef.current.base_max,
-          base_min: baseMultiplierParamsRef.current.base_min,
-          base_step: baseMultiplierParamsRef.current.base_step,
-          multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
-          multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
-          multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
-        },
-      });
+      const data = saveJSON;
       //console.log(`data: ${data}`);
       const response = await fetch(url, {
         method: "POST",
@@ -381,9 +384,14 @@ export default function App() {
       });
       const result = await response.json();
       console.log("Result:", result);
-      const normalizedGlobal = normalizePresets(result.updated_data);
-      setPresetData(normalizedGlobal);
-      setGlobalInputRecalled(true);
+      const setFunctions = (path) => {
+        if (path === "presets") {
+          const normalizedGlobal = normalizePresets(result.updated_data);
+          setPresetData(normalizedGlobal);
+          setGlobalInputRecalled(true);
+        }
+      };
+      setFunctions(path);
     } catch (error) {
       console.log(`User post preset error! status: ${error}`);
     }

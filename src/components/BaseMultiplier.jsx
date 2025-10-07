@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { midiNoteToFrequency, noteNameToMidi } from "../assets/noteConversions";
 
 export default function BaseMultiplier({
   base,
@@ -15,6 +16,8 @@ export default function BaseMultiplier({
   const [baseMin, setBaseMin] = useState("40");
   const [baseMax, setBaseMax] = useState("10000");
   const [baseStep, setBaseStep] = useState("10");
+
+  const [baseNameStatus, setBaseNameStatus] = useState();
 
   useEffect(() => {
     paramsRef.current = {
@@ -92,8 +95,25 @@ export default function BaseMultiplier({
     let inputValue = e.target.value;
     setMultiplierStep(inputValue);
   };
+
+  const handleBaseNameChange = (e) => {
+    const toBase = midiNoteToFrequency(
+      noteNameToMidi(e.target.value, setBaseNameStatus)
+    );
+
+    toBase && setBase(toBase);
+  };
+
   return (
     <div style={{ margin: "15px" }}>
+      <label htmlFor="baseNoteName">Note Name</label>
+      <input
+        id="baseNoteName"
+        type="text"
+        className="w-10"
+        onChange={handleBaseNameChange}
+      ></input>
+      {baseNameStatus}
       <label htmlFor="base">Base: </label>
       <input
         id="base"

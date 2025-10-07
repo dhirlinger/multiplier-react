@@ -1,5 +1,9 @@
 import BaseMultiplier from "./BaseMultiplier";
 import { Refresh } from "./Icon";
+import {
+  frequencyToMidi,
+  midiNumberToNoteName,
+} from "../assets/noteConversions";
 
 export default function FreqArray({
   freqData,
@@ -87,6 +91,19 @@ export default function FreqArray({
         <span style={{ fontWeight: "bold" }}>In Hertz: </span>
         {freqObj ? createFreqArray().join(", ") : "Loading frequency array..."}
       </p>
+      <p>
+        {freqObj ? (
+          <>
+            <span>Nearest Note: </span>
+            {createFreqArray()
+              .map((item) => midiNumberToNoteName(frequencyToMidi(item)))
+              .join(", ")}
+          </>
+        ) : (
+          ""
+        )}
+      </p>
+
       <BaseMultiplier
         base={base}
         setBase={setBase}
