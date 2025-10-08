@@ -14,6 +14,7 @@ import {
 import PresetUI from "./components/PresetUI";
 import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
+import { recall } from "./assets/handlers";
 
 export default function App() {
   //preset + rest api related vars
@@ -212,6 +213,19 @@ export default function App() {
   //     }
   //   }
   // };
+
+  let freqHandlerParams = {};
+
+  useEffect(() => {
+    freqHandlerParams.obj = freqObj;
+    freqHandlerParams.presetNum = freqPresetNum;
+    freqHandlerParams.refreshObj = refreshFreqObj;
+    freqHandlerParams.data = freqData;
+    freqHandlerParams.setId = setFreqId;
+    (freqHandlerParams.preset_id = "array_id"),
+      (freqHandlerParams.setObj = setFreqObj);
+    freqHandlerParams.filterData = filterData;
+  }, [freqObj, freqPresetNum, freqObj, freqData, freqId]);
 
   const handleFreqSelect = () => {
     if (freqObj && Number(freqObj.preset_number) === freqPresetNum) {
