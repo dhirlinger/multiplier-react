@@ -66,32 +66,6 @@ export default function App() {
   const [seqVoiceArr, setSeqVoiceArr] = useState();
   const [statusCode, setStatusCode] = useState(1);
 
-  // useEffect(() => {
-  //   // check if it exists
-  //   if (window.MultiplierAPI) {
-  //     //get login-status data
-  //     fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
-  //       method: "GET",
-  //       credentials: "include",
-  //       headers: {
-  //         "X-WP-Nonce": window.MultiplierAPI.nonce,
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         loginStatusRef.current = data;
-  //         console.log("ref:", loginStatusRef.current);
-  //         //get index array, freq array, and preset data
-  //         fetchPresetData();
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   } else {
-  //     fetchPresetData();
-  //   }
-  // }, []);
-
   useEffect(() => {
     const init = async () => {
       try {
@@ -122,42 +96,18 @@ export default function App() {
       return;
     }
     try {
-      //get freq arrays for user 1
-      const freqResponse = await fetch(
-        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
-        //`http://localhost:8888/wp-json/multiplier-api/v1/freq-arrays/${userID}`
-      );
-      if (!freqResponse.ok)
-        throw new Error(
-          `User frequency arrays request error! status: ${freqResponse.status}`
-        );
-      const freqArrJSON = await freqResponse.json();
+      const freqArrJSON = await get(`multiplier-api/v1/freq-arrays/${userID}`);
       //if there are no presets for this user freqData = freqArrDefault
       freqArrJSON.array_id
         ? setFreqData(freqArrJSON)
         : setFreqData(freqArrDefault);
       //get index arrays for current user
-      const indexResponse = await fetch(
-        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
-        //`http://localhost:8888/wp-json/multiplier-api/v1/index-arrays/${userID}`
+      const indexArrJSON = await get(
+        `multiplier-api/v1/index-arrays/${userID}`
       );
-      if (!indexResponse.ok)
-        throw new Error(
-          `User index array request error! status: ${indexResponse.status}`
-        );
-      const indexArrJSON = await indexResponse.json();
       setIndexData(indexArrJSON);
       //get presets for current user
-      const presetResponse = await fetch(
-        `http://192.168.1.195:8888/wp-json/multiplier-api/v1/presets/${userID}`
-        //`http://localhost:8888/wp-json/multiplier-api/v1/presets/${userID}`
-      );
-      if (!presetResponse.ok)
-        throw new Error(
-          `User presets request error! status: ${presetResponse.status}`
-        );
-      const presetArrJSON = await presetResponse.json();
-      //console.log(`data: ${JSON.stringify(presetArrJSON)}`);
+      const presetArrJSON = await get(`multiplier-api/v1/presets/${userID}`);
       const normalizedGlobal = normalizePresets(presetArrJSON);
       //addEmptyPresets(normalizedGlobal);
       setPresetData(normalizedGlobal);
