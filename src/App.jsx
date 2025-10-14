@@ -15,14 +15,15 @@ import PresetUI from "./components/PresetUI";
 import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
 import { recall } from "./assets/handlers";
+import useFetch from "./hooks/useFetch";
 
 export default function App() {
   //preset + rest api related vars
   const [freqData, setFreqData] = useState([]);
   const [indexData, setIndexData] = useState([]);
   const [presetData, setPresetData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [localLoading, setLocalLoading] = useState(true);
+  const [localError, setLocalError] = useState(null);
   //const freqIdRef = useRef(0);
   const [freqId, setFreqId] = useState();
   const [freqObj, setFreqObj] = useState();
@@ -40,6 +41,13 @@ export default function App() {
   const [presetObj, setPresetObj] = useState();
   const loginStatusRef = useRef({});
   const baseMultiplierParamsRef = useRef({});
+
+  // initialize hook
+  const { get, post, del, loading, error } = useFetch(
+    window.MultiplierAPI?.restUrl || "http://192.168.1.195:8888/wp-json/",
+    window.MultiplierAPI?.nonce || ""
+  );
+
   //preset ui input text control
   const [globalInputRecalled, setGlobalInputRecalled] = useState(false);
   const [freqInputRecalled, setFreqInputRecalled] = useState(false);
@@ -58,30 +66,46 @@ export default function App() {
   const [seqVoiceArr, setSeqVoiceArr] = useState();
   const [statusCode, setStatusCode] = useState(1);
 
+  // useEffect(() => {
+  //   // check if it exists
+  //   if (window.MultiplierAPI) {
+  //     //get login-status data
+  //     fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         "X-WP-Nonce": window.MultiplierAPI.nonce,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         loginStatusRef.current = data;
+  //         console.log("ref:", loginStatusRef.current);
+  //         //get index array, freq array, and preset data
+  //         fetchPresetData();
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       });
+  //   } else {
+  //     fetchPresetData();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    // check if it exists
-    if (window.MultiplierAPI) {
-      //get login-status data
-      fetch(window.MultiplierAPI.restUrl + "multiplier-api/v1/login-status", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "X-WP-Nonce": window.MultiplierAPI.nonce,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          loginStatusRef.current = data;
-          console.log("ref:", loginStatusRef.current);
-          //get index array, freq array, and preset data
-          fetchPresetData();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      fetchPresetData();
-    }
+    const init = async () => {
+      try {
+        if (window.MultiplierAPI) {
+          const data = await get("multiplier-api/v1/login-status");
+          loginStatusRef.current = data; // ✅ now properly defined
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        fetchPresetData();
+      }
+    };
+    init();
   }, []);
 
   const fetchPresetData = async () => {
@@ -94,7 +118,7 @@ export default function App() {
       setFreqData(freqArrDefault);
       setIndexData(indexArrDefault);
       setPresetData(presetDefault);
-      setLoading(false);
+      setLocalLoading(false);
       return;
     }
     try {
@@ -150,9 +174,9 @@ export default function App() {
           setFreqObj(filterData(normalizedFreqData, "1", "array_id"));
       }
     } catch (e) {
-      setError(e);
+      setLocalError(e);
     } finally {
-      setLoading(false);
+      setLocalLoading(false);
     }
   };
 
