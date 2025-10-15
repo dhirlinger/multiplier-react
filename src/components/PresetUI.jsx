@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Arrow } from "./Icon";
 
-export default function GlobalPreset({
+export default function PresetUI({
   data,
   presetNum,
   setPresetNum,

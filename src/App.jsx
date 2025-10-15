@@ -83,10 +83,7 @@ export default function App() {
   }, []);
 
   const fetchPresetData = async () => {
-    //for development assign userID to 1 if there is no user_id
-    const userID = loginStatusRef.current.user_id
-      ? loginStatusRef.current.user_id
-      : null;
+    const userID = loginStatusRef.current.user_id || null;
     console.log(`user: ${userID}`);
     if (userID === null) {
       setFreqData(freqArrDefault);
@@ -109,7 +106,6 @@ export default function App() {
       //get presets for current user
       const presetArrJSON = await get(`multiplier-api/v1/presets/${userID}`);
       const normalizedGlobal = normalizePresets(presetArrJSON);
-      //addEmptyPresets(normalizedGlobal);
       setPresetData(normalizedGlobal);
       const normalizedFreqData = normalizePresets(freqArrJSON);
       //calculate freq array after data loads if there is data
@@ -129,21 +125,6 @@ export default function App() {
       setLocalLoading(false);
     }
   };
-
-  //add default presets to data arrays function
-  // const addDefault = (dataArr, defaultArr) => {
-  //   defaultArr.map((preset) => {
-  //     dataArr.unshift(preset);
-  //   });
-  // };
-  //add default presets to data arrays if there is no user id
-  // useEffect(() => {
-  //   if (!loginStatusRef.current.user_id) {
-  //     addDefault(indexData, indexArrDefault);
-  //     addDefault(freqData, freqArrDefault);
-  //     addDefault(presetData, presetDefault);
-  //   }
-  // }, [indexData, freqData, presetData]);
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
@@ -201,6 +182,11 @@ export default function App() {
     freqHandlerParams.filterData = filterData;
   }, [freqObj, freqPresetNum, freqObj, freqData, freqId]);
 
+  const findByArrayId = (arrId, data) => {
+    const result = data.find(data.array_id === arrId);
+    return result;
+  };
+
   const handleFreqSelect = () => {
     if (freqObj && Number(freqObj.preset_number) === freqPresetNum) {
       refreshFreqObj();
@@ -254,8 +240,17 @@ export default function App() {
       console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setPresetObj(selectedObj);
       //setGlobalPresetName(selectedObj.name);
-      setFreqObj(filterData(freqData, selectedObj.freq_array_id, "array_id"));
+      const selectedFreqObj = filterData(
+        freqData,
+        selectedObj.freq_array_id,
+        "array_id"
+      );
+      console.log(`sel freq: ${JSON.stringify(selectedFreqObj)}`);
+      setFreqObj(selectedFreqObj);
       setFreqId(selectedObj.freq_array_id);
+      setFreqPresetNum(selectedFreqObj.preset_number);
+      //setFreqPresetName(selectedFreqObj.name);
+      setFreqInputRecalled(true);
       setIndexId(selectedObj.index_array_id);
       setIndexObj(
         filterData(indexData, selectedObj.index_array_id, "array_id")
