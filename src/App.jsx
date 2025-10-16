@@ -248,7 +248,7 @@ export default function App() {
       console.log(`sel freq: ${JSON.stringify(selectedFreqObj)}`);
       setFreqObj(selectedFreqObj);
       setFreqId(selectedObj.freq_array_id);
-      setFreqPresetNum(selectedFreqObj.preset_number);
+      setFreqPresetNum(Number(selectedFreqObj.preset_number));
       //setFreqPresetName(selectedFreqObj.name);
       setFreqInputRecalled(true);
       setIndexId(selectedObj.index_array_id);
@@ -296,6 +296,8 @@ export default function App() {
           "array_id"
         );
         setFreqObj(refreshedFreqObj);
+        setFreqPresetNum(Number(refreshedFreqObj.preset_number));
+        setFreqInputRecalled(true);
         setBase(refreshedFreqObj.base_freq);
         setMultiplier(refreshedFreqObj.multiplier);
       }
