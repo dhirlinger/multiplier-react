@@ -2,8 +2,8 @@ import { useState } from "react";
 
 export default function AppDescription() {
   const [seeDescription, setSeeDescription] = useState(false);
-  const description = `Multiplier is a step sequencer: part-instrument, part-practice tool. There
-      are 8 frequencies contained in the frequency array. Sequence the order of
+  const description = `Multiplier is a oddball step sequencer: part-instrument, part-practice tool. There
+      are 8 frequencies contained in a frequency array. Sequence the order of
       the those values and change those values by changing the base frequency
       and multiplier values. The base frequency is multiplied by each position
       number (index) in the array to create the frequency array. However, the

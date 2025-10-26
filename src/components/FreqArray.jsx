@@ -6,16 +6,12 @@ import {
 } from "../assets/noteConversions";
 
 export default function FreqArray({
-  freqData,
   baseMultiplierParamsRef,
-  freqId,
-  handleSelect,
   freqObj,
   base,
   setBase,
   multiplier,
   setMultiplier,
-  refreshFreqObj,
   presetObj,
 }) {
   const createFreqArray = () => {
@@ -55,28 +51,7 @@ export default function FreqArray({
           alignItems: "center",
           justifyContent: "center",
         }}
-      >
-        <label htmlFor="freqId" style={{ fontWeight: "bold" }}>
-          Frequency Array:
-        </label>
-        <select
-          //ref={freqIdRef}
-          value={freqId}
-          name="freqId"
-          id="freqId"
-          onChange={handleSelect}
-          style={{ marginLeft: "10px" }}
-        >
-          {freqData.map((item) => (
-            <option key={item.name} value={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-        <button className="refresh" onClick={refreshFreqObj}>
-          <Refresh />
-        </button>
-      </div>
+      ></div>
       <p>
         {freqObj && (
           <>
@@ -89,10 +64,12 @@ export default function FreqArray({
       </p>
       <p>
         <span style={{ fontWeight: "bold" }}>In Hertz: </span>
-        {freqObj ? createFreqArray().join(", ") : "Loading frequency array..."}
+        {base && multiplier
+          ? createFreqArray().join(", ")
+          : "set base and multiplier"}
       </p>
       <p>
-        {freqObj ? (
+        {base && multiplier ? (
           <>
             <span>Nearest Note: </span>
             {createFreqArray()

@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Arrow } from "./Icon";
+import GlobalPresetParameters from "./GlobalPresetParameters";
 
 export default function PresetUI({
   data,
@@ -14,9 +15,6 @@ export default function PresetUI({
   setInputRecalled,
   category,
 }) {
-  //parameters view
-  const [paramsVisible, setParamsVisible] = useState(false);
-
   const findByPresetNumRef = useRef();
 
   useEffect(() => {
@@ -151,30 +149,7 @@ export default function PresetUI({
           </div>
         </div>
         {category === "Global" && (
-          <div className="text-sm mb-1.5" style={{ overflowWrap: "anywhere" }}>
-            <p
-              className="cursor-pointer p-2.5 bg-maxbg border-solid border-[#E6A60D] border-[0.5px]"
-              onClick={() => setParamsVisible(!paramsVisible)}
-            >
-              PRESET PARAMETERS
-            </p>
-            <p
-              className={`${
-                paramsVisible ? "block" : "hidden"
-              } bg-maxbg py-1.5`}
-            >
-              {findByPresetNumRef.current === undefined
-                ? "EMPTY PRESET"
-                : Object.keys(findByPresetNumRef.current.params_json).map(
-                    (key) => (
-                      <span key={key} className="me-1">
-                        | {key}:{" "}
-                        {String(findByPresetNumRef.current.params_json[key])} |
-                      </span>
-                    )
-                  )}
-            </p>
-          </div>
+          <GlobalPresetParameters findByPresetNumRef={findByPresetNumRef} />
         )}
       </div>
     </>

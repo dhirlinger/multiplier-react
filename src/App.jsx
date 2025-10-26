@@ -66,6 +66,8 @@ export default function App() {
   const [seqVoiceArr, setSeqVoiceArr] = useState();
   const [statusCode, setStatusCode] = useState(1);
 
+  let userSettings = {};
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -125,6 +127,10 @@ export default function App() {
       setLocalLoading(false);
     }
   };
+
+  useEffect(() => {
+    userSettings = {};
+  });
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
