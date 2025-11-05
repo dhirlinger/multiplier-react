@@ -341,27 +341,6 @@ export default function App() {
           (item) => item && Number(item.preset_number) === globalPresetNum
         );
 
-        // const globalSaveJSON = JSON.stringify({
-        //   name: globalPresetName,
-        //   preset_number: globalPresetNum,
-        //   index_array_id: indexId,
-        //   freq_array_id: freqId,
-        //   user_id: loginStatusRef.current.user_id,
-        //   params_json: {
-        //     tempo: seqTempo,
-        //     duration: duration,
-        //     lowpass_q: lowPassQ,
-        //     wave_shape: waveshape,
-        //     lowpass_freq: lowPassFreq,
-        //     base_max: baseMultiplierParamsRef.current.base_max,
-        //     base_min: baseMultiplierParamsRef.current.base_min,
-        //     base_step: baseMultiplierParamsRef.current.base_step,
-        //     multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
-        //     multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
-        //     multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
-        //   },
-        // });
-
         const globalSaveJSON = {
           name: globalPresetName,
           preset_number: globalPresetNum,
@@ -405,6 +384,7 @@ export default function App() {
     const result = await post(`multiplier-api/v1/${path}`, saveJSON);
     const setFunctions = (path) => {
       const normalizedData = normalizePresets(result.updated_data);
+      console.log(`norm: ${JSON.stringify(normalizedData)}`);
       if (path === "presets") {
         setPresetData(normalizedData);
         setGlobalInputRecalled(true);
@@ -463,14 +443,14 @@ export default function App() {
           user_id: loginStatusRef.current.user_id,
         };
 
+        console.log(JSON.stringify(freqSaveJSON));
+
         if (findByPresetNum === undefined) {
           save("freq-arrays", freqSaveJSON);
           return;
         } else {
           if (
-            confirm(
-              `Overwrite Preset ${globalPresetNum} with ${globalPresetName}?`
-            )
+            confirm(`Overwrite Preset ${freqPresetNum} with ${freqPresetName}?`)
           ) {
             save("freq-arrays", freqSaveJSON);
           } else {
