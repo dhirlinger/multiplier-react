@@ -404,10 +404,13 @@ export default function App() {
   const save = async (path, saveJSON) => {
     const result = await post(`multiplier-api/v1/${path}`, saveJSON);
     const setFunctions = (path) => {
+      const normalizedData = normalizePresets(result.updated_data);
       if (path === "presets") {
-        const normalizedGlobal = normalizePresets(result.updated_data);
-        setPresetData(normalizedGlobal);
+        setPresetData(normalizedData);
         setGlobalInputRecalled(true);
+      } else if (path === "freq-arrays") {
+        setFreqData(normalizedData);
+        setFreqInputRecalled(true);
       }
     };
     setFunctions(path);
@@ -452,13 +455,13 @@ export default function App() {
           (item) => item && Number(item.preset_number) === freqPresetNum
         );
 
-        const freqSaveJSON = JSON.stringify({
+        const freqSaveJSON = {
           name: freqPresetName,
           preset_number: freqPresetNum,
           base_freq: base,
           multiplier: multiplier,
           user_id: loginStatusRef.current.user_id,
-        });
+        };
 
         if (findByPresetNum === undefined) {
           save("freq-arrays", freqSaveJSON);
