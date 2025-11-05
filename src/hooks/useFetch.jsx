@@ -29,6 +29,7 @@ export default function useFetch(baseUrl = "", nonce = "") {
         }
 
         const data = await response.json();
+
         return data;
       } catch (err) {
         console.error("useFetch error:", err);

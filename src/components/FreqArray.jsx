@@ -71,7 +71,7 @@ export default function FreqArray({
       <p>
         {base && multiplier ? (
           <>
-            <span>Nearest Note: </span>
+            <span style={{ fontWeight: "bold" }}>Nearest Note: </span>
             {createFreqArray()
               .map((item) => midiNumberToNoteName(frequencyToMidi(item)))
               .join(", ")}

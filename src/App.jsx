@@ -97,7 +97,7 @@ export default function App() {
     try {
       const freqArrJSON = await get(`multiplier-api/v1/freq-arrays/${userID}`);
       //if there are no presets for this user freqData = freqArrDefault
-      freqArrJSON.array_id
+      freqArrJSON[0].array_id
         ? setFreqData(freqArrJSON)
         : setFreqData(freqArrDefault);
       //get index arrays for current user
@@ -341,7 +341,28 @@ export default function App() {
           (item) => item && Number(item.preset_number) === globalPresetNum
         );
 
-        const globalSaveJSON = JSON.stringify({
+        // const globalSaveJSON = JSON.stringify({
+        //   name: globalPresetName,
+        //   preset_number: globalPresetNum,
+        //   index_array_id: indexId,
+        //   freq_array_id: freqId,
+        //   user_id: loginStatusRef.current.user_id,
+        //   params_json: {
+        //     tempo: seqTempo,
+        //     duration: duration,
+        //     lowpass_q: lowPassQ,
+        //     wave_shape: waveshape,
+        //     lowpass_freq: lowPassFreq,
+        //     base_max: baseMultiplierParamsRef.current.base_max,
+        //     base_min: baseMultiplierParamsRef.current.base_min,
+        //     base_step: baseMultiplierParamsRef.current.base_step,
+        //     multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+        //     multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+        //     multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+        //   },
+        // });
+
+        const globalSaveJSON = {
           name: globalPresetName,
           preset_number: globalPresetNum,
           index_array_id: indexId,
@@ -360,7 +381,7 @@ export default function App() {
             multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
             multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
           },
-        });
+        };
 
         if (findByPresetNum === undefined) {
           save("presets", globalSaveJSON);
@@ -381,36 +402,80 @@ export default function App() {
   };
 
   const save = async (path, saveJSON) => {
-    try {
-      const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/${path}`;
-      const data = saveJSON;
-      //console.log(`data: ${data}`);
-      const response = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "X-WP-Nonce": window.MultiplierAPI.nonce,
-          "Content-Type": "application/json",
-        },
-        body: data,
-      });
-      const result = await response.json();
-      console.log("Result:", result);
-      const setFunctions = (path) => {
-        if (path === "presets") {
-          const normalizedGlobal = normalizePresets(result.updated_data);
-          setPresetData(normalizedGlobal);
-          setGlobalInputRecalled(true);
-        }
-      };
-      setFunctions(path);
-    } catch (error) {
-      console.log(`User post preset error! status: ${error}`);
-    }
+    const result = await post(`multiplier-api/v1/${path}`, saveJSON);
+    const setFunctions = (path) => {
+      if (path === "presets") {
+        const normalizedGlobal = normalizePresets(result.updated_data);
+        setPresetData(normalizedGlobal);
+        setGlobalInputRecalled(true);
+      }
+    };
+    setFunctions(path);
+    // try {
+    //   const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/${path}`;
+    //   const data = saveJSON;
+    //   //console.log(`data: ${data}`);
+    //   const response = await fetch(url, {
+    //     method: "POST",
+    //     credentials: "include",
+    //     headers: {
+    //       "X-WP-Nonce": window.MultiplierAPI.nonce,
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: data,
+    //   });
+    //   const result = await response.json();
+    //   console.log("Result:", result);
+    //   const setFunctions = (path) => {
+    //     if (path === "presets") {
+    //       const normalizedGlobal = normalizePresets(result.updated_data);
+    //       setPresetData(normalizedGlobal);
+    //       setGlobalInputRecalled(true);
+    //     }
+    //   };
+    //   setFunctions(path);
+    // } catch (error) {
+    //   console.log(`User post preset error! status: ${error}`);
+    // }
   };
 
   const saveFreqPreset = () => {
-    return;
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    } else {
+      if (freqPresetNum < 1 || freqPresetNum > 50) {
+        alert("Preset Number must be 1-50");
+        return;
+      } else {
+        const findByPresetNum = freqData.find(
+          (item) => item && Number(item.preset_number) === freqPresetNum
+        );
+
+        const freqSaveJSON = JSON.stringify({
+          name: freqPresetName,
+          preset_number: freqPresetNum,
+          base_freq: base,
+          multiplier: multiplier,
+          user_id: loginStatusRef.current.user_id,
+        });
+
+        if (findByPresetNum === undefined) {
+          save("freq-arrays", freqSaveJSON);
+          return;
+        } else {
+          if (
+            confirm(
+              `Overwrite Preset ${globalPresetNum} with ${globalPresetName}?`
+            )
+          ) {
+            save("freq-arrays", freqSaveJSON);
+          } else {
+            return;
+          }
+        }
+      }
+    }
   };
 
   const deleteGlobalPreset = async () => {
