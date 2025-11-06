@@ -328,6 +328,22 @@ export default function App() {
     return o[0];
   };
 
+  const save = async (path, saveJSON) => {
+    const result = await post(`multiplier-api/v1/${path}`, saveJSON);
+    const setFunctions = (path) => {
+      const normalizedData = normalizePresets(result.updated_data);
+      console.log(`norm: ${JSON.stringify(normalizedData)}`);
+      if (path === "presets") {
+        setPresetData(normalizedData);
+        setGlobalInputRecalled(true);
+      } else if (path === "freq-arrays") {
+        setFreqData(normalizedData);
+        setFreqInputRecalled(true);
+      }
+    };
+    setFunctions(path);
+  };
+
   const saveGlobalPreset = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
@@ -378,48 +394,6 @@ export default function App() {
         }
       }
     }
-  };
-
-  const save = async (path, saveJSON) => {
-    const result = await post(`multiplier-api/v1/${path}`, saveJSON);
-    const setFunctions = (path) => {
-      const normalizedData = normalizePresets(result.updated_data);
-      console.log(`norm: ${JSON.stringify(normalizedData)}`);
-      if (path === "presets") {
-        setPresetData(normalizedData);
-        setGlobalInputRecalled(true);
-      } else if (path === "freq-arrays") {
-        setFreqData(normalizedData);
-        setFreqInputRecalled(true);
-      }
-    };
-    setFunctions(path);
-    // try {
-    //   const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/${path}`;
-    //   const data = saveJSON;
-    //   //console.log(`data: ${data}`);
-    //   const response = await fetch(url, {
-    //     method: "POST",
-    //     credentials: "include",
-    //     headers: {
-    //       "X-WP-Nonce": window.MultiplierAPI.nonce,
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: data,
-    //   });
-    //   const result = await response.json();
-    //   console.log("Result:", result);
-    //   const setFunctions = (path) => {
-    //     if (path === "presets") {
-    //       const normalizedGlobal = normalizePresets(result.updated_data);
-    //       setPresetData(normalizedGlobal);
-    //       setGlobalInputRecalled(true);
-    //     }
-    //   };
-    //   setFunctions(path);
-    // } catch (error) {
-    //   console.log(`User post preset error! status: ${error}`);
-    // }
   };
 
   const saveFreqPreset = () => {
@@ -474,23 +448,13 @@ export default function App() {
       const findByPresetNum = presetData.find(
         (item) => item && Number(item.preset_number) === globalPresetNum
       );
-      try {
-        const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`;
-        const response = await fetch(url, {
-          method: "DELETE",
-          credentials: "include",
-          headers: {
-            "X-WP-Nonce": window.MultiplierAPI.nonce,
-            "Content-Type": "application/json",
-          },
-        });
-        const result = await response.json();
-        console.log("Result:", result);
-        const normalizedGlobal = normalizePresets(result.updated_data);
-        setPresetData(normalizedGlobal);
-      } catch (error) {
-        console.log(`delete global preset error! status: ${error}`);
-      }
+
+      const result = await del(
+        `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
+      );
+      console.log("Result:", result);
+      const normalizedGlobal = normalizePresets(result.updated_data);
+      setPresetData(normalizedGlobal);
     }
   };
 
