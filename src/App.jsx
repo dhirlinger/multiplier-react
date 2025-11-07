@@ -494,7 +494,7 @@ export default function App() {
       alert("You must login via patreon to access this feature");
       return;
     }
-    if (globalPresetNum === undefined) {
+    if (freqPresetNum === undefined) {
       alert("Please select a preset to delete!");
       return;
     }
@@ -504,7 +504,7 @@ export default function App() {
       );
 
       const result = await del(
-        `multiplier-api/v1/freq-arrays/delete/${findByPresetNum.preset_id}`
+        `multiplier-api/v1/freq-arrays/delete/${findByPresetNum.array_id}`
       );
       console.log("Result:", result);
       const normalizedData = normalizePresets(result.updated_data);
