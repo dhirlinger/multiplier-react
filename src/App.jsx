@@ -489,8 +489,27 @@ export default function App() {
     }
   };
 
-  const deleteFreqPreset = () => {
-    return;
+  const deleteFreqPreset = async () => {
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
+    if (globalPresetNum === undefined) {
+      alert("Please select a preset to delete!");
+      return;
+    }
+    if (confirm(`Delete Preset ${freqPresetNum}: ${freqPresetName}?`)) {
+      const findByPresetNum = freqData.find(
+        (item) => item && Number(item.preset_number) === freqPresetNum
+      );
+
+      const result = await del(
+        `multiplier-api/v1/freq-arrays/delete/${findByPresetNum.preset_id}`
+      );
+      console.log("Result:", result);
+      const normalizedData = normalizePresets(result.updated_data);
+      setFreqData(normalizedData);
+    }
   };
 
   //keep data in order by preset_number
