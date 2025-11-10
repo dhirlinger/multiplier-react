@@ -14,7 +14,7 @@ import {
 import PresetUI from "./components/PresetUI";
 import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
-import { recall } from "./assets/handlers";
+import { normalizePresets, filterData } from "./assets/helpers";
 import useFetch from "./hooks/useFetch";
 
 export default function App() {
@@ -138,42 +138,6 @@ export default function App() {
   }, [freqObj]);
 
   //preset + rest api related func's
-  const normalizePresets = (arr, num = 50, key = "preset_number") => {
-    const filled = Array(num).fill(null);
-    arr.forEach((item) => {
-      const slot = item[key]; // usually 1–50
-      if (slot >= 1 && slot <= num) {
-        filled[slot - 1] = item;
-      }
-    });
-    return filled;
-  };
-
-  // const addEmptyPresets = (arr) => {
-  //   const presetNums = [];
-  //   arr.forEach((item) => {
-  //     if (item !== null) {
-  //       presetNums.push(item.preset_number);
-  //     }
-  //   });
-  //   for (let i = 1; i < 51; i++) {
-  //     if (!presetNums.includes(i.toString())) {
-  //       const firstNull = arr.findIndex((item) => item === null);
-  //       if (firstNull !== -1) {
-  //         arr[firstNull] = {
-  //           preset_number: i.toString(),
-  //           name: "EMPTY",
-  //           params_json: {},
-  //           index_array_id: null,
-  //           freq_array_id: null,
-  //           user_id: loginStatusRef.current.user_id
-  //             ? loginStatusRef.current.user_id
-  //             : null,
-  //         };
-  //       }
-  //     }
-  //   }
-  // };
 
   let freqHandlerParams = {};
 
@@ -187,11 +151,6 @@ export default function App() {
       (freqHandlerParams.setObj = setFreqObj);
     freqHandlerParams.filterData = filterData;
   }, [freqObj, freqPresetNum, freqObj, freqData, freqId]);
-
-  const findByArrayId = (arrId, data) => {
-    const result = data.find(data.array_id === arrId);
-    return result;
-  };
 
   const handleFreqSelect = () => {
     if (freqObj && Number(freqObj.preset_number) === freqPresetNum) {
@@ -320,12 +279,6 @@ export default function App() {
         setIndexId(selectedObj.index_array_id);
       }
     }
-  };
-
-  const filterData = (data, id, key) => {
-    const o = data.filter((obj) => obj && obj[key] === id);
-    //console.log(`filterData: ${JSON.stringify(o[0])}`);
-    return o[0];
   };
 
   const save = async (path, saveJSON) => {
@@ -510,13 +463,6 @@ export default function App() {
       const normalizedData = normalizePresets(result.updated_data);
       setFreqData(normalizedData);
     }
-  };
-
-  //keep data in order by preset_number
-  const sortArr = (data, setData) => {
-    const sortedArr = [...data];
-    sortedArr.sort((a, b) => a.preset_number - b.preset_number);
-    setData(sortedArr);
   };
 
   // useEffect(() => {

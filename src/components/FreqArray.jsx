@@ -12,7 +12,6 @@ export default function FreqArray({
   setBase,
   multiplier,
   setMultiplier,
-  presetObj,
 }) {
   const createFreqArray = () => {
     const arr = [];
@@ -86,7 +85,7 @@ export default function FreqArray({
         setBase={setBase}
         multiplier={multiplier}
         setMultiplier={setMultiplier}
-        presetObj={presetObj}
+        freqObj={freqObj}
         paramsRef={baseMultiplierParamsRef}
       />
     </div>
