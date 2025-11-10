@@ -322,12 +322,6 @@ export default function App() {
             lowpass_q: lowPassQ,
             wave_shape: waveshape,
             lowpass_freq: lowPassFreq,
-            base_max: baseMultiplierParamsRef.current.base_max,
-            base_min: baseMultiplierParamsRef.current.base_min,
-            base_step: baseMultiplierParamsRef.current.base_step,
-            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
-            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
-            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
           },
         };
 
@@ -368,6 +362,14 @@ export default function App() {
           base_freq: base,
           multiplier: multiplier,
           user_id: loginStatusRef.current.user_id,
+          params_json: {
+            base_max: baseMultiplierParamsRef.current.base_max,
+            base_min: baseMultiplierParamsRef.current.base_min,
+            base_step: baseMultiplierParamsRef.current.base_step,
+            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+          },
         };
 
         console.log(JSON.stringify(freqSaveJSON));
