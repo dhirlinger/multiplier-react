@@ -51,6 +51,7 @@ export default function App() {
   //preset ui input text control
   const [globalInputRecalled, setGlobalInputRecalled] = useState(false);
   const [freqInputRecalled, setFreqInputRecalled] = useState(false);
+  const [indexInputRecalled, setIndexInputRecalled] = useState(false);
   //audio api + sequencer related vars
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
@@ -179,9 +180,31 @@ export default function App() {
 
   const handleIndexSelect = (e) => {
     //indexIdRef.current = e.target.value;
-    setIndexId(e.target.value);
-    setIndexObj(filterData(indexData, e.target.value, "array_id"));
+    if (indexObj && Number(indexObj.preset_number) === indexPresetNum) {
+      refreshIndexObj();
+      return;
+    }
+    const findByPresetNum = indexData.find(
+      (item) => item && Number(item.preset_number) === indexPresetNum
+    );
+    if (findByPresetNum === undefined) {
+      alert("EMPTY PRESET");
+      return;
+    } else {
+      presetIdRef.current = findByPresetNum.array_id;
+      const selectedObj = filterData(
+        indexData,
+        presetIdRef.current,
+        "array_id"
+      );
+      console.log(`sel: ${JSON.stringify(selectedObj)}`);
+      setIndexObj(selectedObj);
+      setIndexId(selectedObj.index_array_id);
+    }
+    // }
   };
+  // setIndexId(e.target.value);
+  // setIndexObj(filterData(indexData, e.target.value, "array_id"));
 
   const handlePresetSelect = () => {
     //if (e != null) {
@@ -467,6 +490,10 @@ export default function App() {
     }
   };
 
+  const deleteIndexPreset = async () => {
+    return;
+  };
+
   // useEffect(() => {
   //   freqData.sort((a, b) => a.preset_number - b.preset_number);
   // }, [freqData]);
@@ -614,6 +641,20 @@ export default function App() {
       />
 
       <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
+
+      <PresetUI
+        data={indexData}
+        presetNum={indexPresetNum}
+        presetName={indexPresetName}
+        setPresetNum={setIndexPresetNum}
+        setPresetName={setIndexPresetName}
+        recallPreset={handleIndexSelect}
+        savePreset={saveIndexPreset}
+        deletePreset={deleteIndexPreset}
+        inputRecalled={indexInputRecalled}
+        setInputRecalled={setIndexInputRecalled}
+        category={"Index Array"}
+      />
 
       <IndexArray
         indexData={indexData}

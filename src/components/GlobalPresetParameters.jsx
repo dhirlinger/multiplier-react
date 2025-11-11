@@ -10,7 +10,7 @@ export default function GlobalPresetParameters({ findByPresetNumRef }) {
         className="cursor-pointer p-2.5 bg-maxbg border-solid border-[#E6A60D] border-[0.5px]"
         onClick={() => setParamsVisible(!paramsVisible)}
       >
-        PRESET PARAMETERS
+        PREVIEW PRESET PARAMETERS
       </p>
       <p className={`${paramsVisible ? "block" : "hidden"} bg-maxbg py-1.5`}>
         {findByPresetNumRef.current === undefined
