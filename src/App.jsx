@@ -315,6 +315,9 @@ export default function App() {
       } else if (path === "freq-arrays") {
         setFreqData(normalizedData);
         setFreqInputRecalled(true);
+      } else if (path === "index-arrays") {
+        setIndexData(normalizedData);
+        setIndexInputRecalled(true);
       }
     };
     setFunctions(path);
@@ -441,29 +444,59 @@ export default function App() {
       alert("You must login via patreon to access this feature");
       return;
     } else {
-      try {
-        const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/index-arrays/`;
-        const data = JSON.stringify({
+      if (indexPresetNum < 1 || indexPresetNum > 50) {
+        alert("Preset Number must be 1-50");
+        return;
+      } else {
+        const findByPresetNum = indexData.find(
+          (item) => item && Number(item.preset_number) === indexPresetNum
+        );
+
+        const indexSaveJSON = {
           index_array: seqArrayRef.current.join(),
           name: indexPresetName,
           preset_number: indexPresetNum,
           user_id: loginStatusRef.current.user_id,
-        });
-        const response = await fetch(url, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "X-WP-Nonce": window.MultiplierAPI.nonce,
-            "Content-Type": "application/json",
-          },
-          body: data,
-        });
-        const result = await response.json();
-        setIndexData([...result.updated_data]);
-        //sortArr(indexData, setIndexData);
-      } catch (error) {
-        console.log(`User post index array preset error! status: ${error}`);
+        };
+
+        if (findByPresetNum === undefined) {
+          save("index-arrays", indexSaveJSON);
+          return;
+        } else {
+          if (
+            confirm(
+              `Overwrite Preset ${indexPresetNum} with ${indexPresetName}?`
+            )
+          ) {
+            save("presets", indexSaveJSON);
+          } else {
+            return;
+          }
+        }
       }
+      // try {
+      //   const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/index-arrays/`;
+      //   const data = JSON.stringify({
+      //     index_array: seqArrayRef.current.join(),
+      //     name: indexPresetName,
+      //     preset_number: indexPresetNum,
+      //     user_id: loginStatusRef.current.user_id,
+      //   });
+      //   const response = await fetch(url, {
+      //     method: "POST",
+      //     credentials: "include",
+      //     headers: {
+      //       "X-WP-Nonce": window.MultiplierAPI.nonce,
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: data,
+      //   });
+      //   const result = await response.json();
+      //   setIndexData([...result.updated_data]);
+      //   //sortArr(indexData, setIndexData);
+      // } catch (error) {
+      //   console.log(`User post index array preset error! status: ${error}`);
+      // }
     }
   };
 
@@ -656,7 +689,7 @@ export default function App() {
         category={"Index Array"}
       />
 
-      <IndexArray
+      {/* <IndexArray
         indexData={indexData}
         //indexIdRef={indexIdRef}
         indexId={indexId}
@@ -667,7 +700,7 @@ export default function App() {
         setIndexPresetName={setIndexPresetName}
         indexPresetNum={indexPresetNum}
         setIndexPresetNum={setIndexPresetNum}
-      />
+      /> */}
       <div className="flex">
         <SeqArrInput
           arrIndex={0}
