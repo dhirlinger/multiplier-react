@@ -178,7 +178,7 @@ export default function App() {
     }
   };
 
-  const handleIndexSelect = (e) => {
+  const handleIndexSelect = () => {
     //indexIdRef.current = e.target.value;
     if (indexObj && Number(indexObj.preset_number) === indexPresetNum) {
       refreshIndexObj();
@@ -191,15 +191,14 @@ export default function App() {
       alert("EMPTY PRESET");
       return;
     } else {
-      presetIdRef.current = findByPresetNum.array_id;
+      setIndexId(findByPresetNum.array_id);
       const selectedObj = filterData(
         indexData,
-        presetIdRef.current,
+        findByPresetNum.array_id,
         "array_id"
       );
       console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setIndexObj(selectedObj);
-      setIndexId(selectedObj.index_array_id);
     }
     // }
   };
@@ -228,21 +227,21 @@ export default function App() {
       console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setPresetObj(selectedObj);
       //setGlobalPresetName(selectedObj.name);
-      const selectedFreqObj = filterData(
-        freqData,
-        selectedObj.freq_array_id,
-        "array_id"
-      );
-      console.log(`sel freq: ${JSON.stringify(selectedFreqObj)}`);
-      setFreqObj(selectedFreqObj);
-      setFreqId(selectedObj.freq_array_id);
-      setFreqPresetNum(Number(selectedFreqObj.preset_number));
-      //setFreqPresetName(selectedFreqObj.name);
-      setFreqInputRecalled(true);
-      setIndexId(selectedObj.index_array_id);
-      setIndexObj(
-        filterData(indexData, selectedObj.index_array_id, "array_id")
-      );
+      // const selectedFreqObj = filterData(
+      //   freqData,
+      //   selectedObj.freq_array_id,
+      //   "array_id"
+      // );
+      // console.log(`sel freq: ${JSON.stringify(selectedFreqObj)}`);
+      // setFreqObj(selectedFreqObj);
+      // setFreqId(selectedObj.freq_array_id);
+      // setFreqPresetNum(Number(selectedFreqObj.preset_number));
+      // //setFreqPresetName(selectedFreqObj.name);
+      // setFreqInputRecalled(true);
+      // setIndexId(selectedObj.index_array_id);
+      // setIndexObj(
+      //   filterData(indexData, selectedObj.index_array_id, "array_id")
+      // );
       setWaveshape(selectedObj.params_json.wave_shape);
       setDuration(selectedObj.params_json.duration);
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
@@ -275,32 +274,32 @@ export default function App() {
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
       // if presetObj contains freq arr id make necessary copies for synchronous freq array updates
-      if (selectedObj.freq_array_id) {
-        //freqIdRef.current = selectedObj.freq_array_id;
-        setFreqId(selectedObj.freq_array_id);
-        const refreshedFreqObj = filterData(
-          freqData,
-          selectedObj.freq_array_id,
-          "array_id"
-        );
-        setFreqObj(refreshedFreqObj);
-        setFreqPresetNum(Number(refreshedFreqObj.preset_number));
-        setFreqInputRecalled(true);
-        setBase(refreshedFreqObj.base_freq);
-        setMultiplier(refreshedFreqObj.multiplier);
-      }
+      // if (selectedObj.freq_array_id) {
+      //   //freqIdRef.current = selectedObj.freq_array_id;
+      //   setFreqId(selectedObj.freq_array_id);
+      //   const refreshedFreqObj = filterData(
+      //     freqData,
+      //     selectedObj.freq_array_id,
+      //     "array_id"
+      //   );
+      //setFreqObj(refreshedFreqObj);
+      //setFreqPresetNum(Number(refreshedFreqObj.preset_number));
+      //setFreqInputRecalled(true);
+      // setBase(refreshedFreqObj.base_freq);
+      // setMultiplier(refreshedFreqObj.multiplier);
+
       // if presetObj contains index array id create refreshedIndexObj update seqArrayRef and reset indexObj
-      if (selectedObj.index_array_id) {
-        console.log(`ind arr: ${selectedObj.index_array_id}`);
-        const refreshedIndexObj = filterData(
-          indexData,
-          selectedObj.index_array_id,
-          "array_id"
-        );
-        seqArrayRef.current = refreshedIndexObj.index_array.split(",");
-        setIndexObj({ ...refreshedIndexObj });
-        setIndexId(selectedObj.index_array_id);
-      }
+      // if (selectedObj.index_array_id) {
+      //   console.log(`ind arr: ${selectedObj.index_array_id}`);
+      //   const refreshedIndexObj = filterData(
+      //     indexData,
+      //     selectedObj.index_array_id,
+      //     "array_id"
+      //   );
+      //   seqArrayRef.current = refreshedIndexObj.index_array.split(",");
+      //   setIndexObj({ ...refreshedIndexObj });
+      //   setIndexId(selectedObj.index_array_id);
+      // }
     }
   };
 
@@ -339,8 +338,6 @@ export default function App() {
         const globalSaveJSON = {
           name: globalPresetName,
           preset_number: globalPresetNum,
-          index_array_id: indexId,
-          freq_array_id: freqId,
           user_id: loginStatusRef.current.user_id,
           params_json: {
             tempo: seqTempo,
@@ -416,29 +413,6 @@ export default function App() {
     }
   };
 
-  const deleteGlobalPreset = async () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    if (globalPresetNum === undefined) {
-      alert("Please select a preset to delete!");
-      return;
-    }
-    if (confirm(`Delete Preset ${globalPresetNum}: ${globalPresetName}?`)) {
-      const findByPresetNum = presetData.find(
-        (item) => item && Number(item.preset_number) === globalPresetNum
-      );
-
-      const result = await del(
-        `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
-      );
-      console.log("Result:", result);
-      const normalizedGlobal = normalizePresets(result.updated_data);
-      setPresetData(normalizedGlobal);
-    }
-  };
-
   const saveIndexPreset = async () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
@@ -468,35 +442,35 @@ export default function App() {
               `Overwrite Preset ${indexPresetNum} with ${indexPresetName}?`
             )
           ) {
-            save("presets", indexSaveJSON);
+            save("index-arrays", indexSaveJSON);
           } else {
             return;
           }
         }
       }
-      // try {
-      //   const url = `${window.MultiplierAPI.restUrl}multiplier-api/v1/index-arrays/`;
-      //   const data = JSON.stringify({
-      //     index_array: seqArrayRef.current.join(),
-      //     name: indexPresetName,
-      //     preset_number: indexPresetNum,
-      //     user_id: loginStatusRef.current.user_id,
-      //   });
-      //   const response = await fetch(url, {
-      //     method: "POST",
-      //     credentials: "include",
-      //     headers: {
-      //       "X-WP-Nonce": window.MultiplierAPI.nonce,
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: data,
-      //   });
-      //   const result = await response.json();
-      //   setIndexData([...result.updated_data]);
-      //   //sortArr(indexData, setIndexData);
-      // } catch (error) {
-      //   console.log(`User post index array preset error! status: ${error}`);
-      // }
+    }
+  };
+
+  const deleteGlobalPreset = async () => {
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
+    if (globalPresetNum === undefined) {
+      alert("Please select a preset to delete!");
+      return;
+    }
+    if (confirm(`Delete Preset ${globalPresetNum}: ${globalPresetName}?`)) {
+      const findByPresetNum = presetData.find(
+        (item) => item && Number(item.preset_number) === globalPresetNum
+      );
+
+      const result = await del(
+        `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
+      );
+      console.log("Result:", result);
+      const normalizedGlobal = normalizePresets(result.updated_data);
+      setPresetData(normalizedGlobal);
     }
   };
 

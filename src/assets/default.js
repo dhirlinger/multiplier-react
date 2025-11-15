@@ -29,6 +29,14 @@ export const freqArrDefault = [
     base_freq: 110,
     multiplier: 1,
     user_id: "1",
+    params_json: {
+      multiplier_max: 12.75,
+      multiplier_min: 0.425,
+      multiplier_step: 0.425,
+      base_max: 11000,
+      base_min: 30,
+      base_step: 1,
+    },
   },
   {
     preset_number: "2",
@@ -37,6 +45,14 @@ export const freqArrDefault = [
     base_freq: 100,
     multiplier: 1.7,
     user_id: "1",
+    params_json: {
+      base_max: 1000,
+      base_min: 40,
+      base_step: 10,
+      multiplier_max: 10,
+      multiplier_min: 0.1,
+      multiplier_step: 0.1,
+    },
   },
   {
     preset_number: "3",
@@ -45,6 +61,14 @@ export const freqArrDefault = [
     base_freq: 110,
     multiplier: 1.5,
     user_id: "1",
+    params_json: {
+      base_max: 1000,
+      base_min: 40,
+      base_step: 10,
+      multiplier_max: 10,
+      multiplier_min: 0.1,
+      multiplier_step: 0.1,
+    },
   },
 ];
 export const indexArrDefault = [
