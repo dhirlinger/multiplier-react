@@ -226,22 +226,6 @@ export default function App() {
       );
       console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setPresetObj(selectedObj);
-      //setGlobalPresetName(selectedObj.name);
-      // const selectedFreqObj = filterData(
-      //   freqData,
-      //   selectedObj.freq_array_id,
-      //   "array_id"
-      // );
-      // console.log(`sel freq: ${JSON.stringify(selectedFreqObj)}`);
-      // setFreqObj(selectedFreqObj);
-      // setFreqId(selectedObj.freq_array_id);
-      // setFreqPresetNum(Number(selectedFreqObj.preset_number));
-      // //setFreqPresetName(selectedFreqObj.name);
-      // setFreqInputRecalled(true);
-      // setIndexId(selectedObj.index_array_id);
-      // setIndexObj(
-      //   filterData(indexData, selectedObj.index_array_id, "array_id")
-      // );
       setWaveshape(selectedObj.params_json.wave_shape);
       setDuration(selectedObj.params_json.duration);
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
@@ -273,33 +257,6 @@ export default function App() {
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
-      // if presetObj contains freq arr id make necessary copies for synchronous freq array updates
-      // if (selectedObj.freq_array_id) {
-      //   //freqIdRef.current = selectedObj.freq_array_id;
-      //   setFreqId(selectedObj.freq_array_id);
-      //   const refreshedFreqObj = filterData(
-      //     freqData,
-      //     selectedObj.freq_array_id,
-      //     "array_id"
-      //   );
-      //setFreqObj(refreshedFreqObj);
-      //setFreqPresetNum(Number(refreshedFreqObj.preset_number));
-      //setFreqInputRecalled(true);
-      // setBase(refreshedFreqObj.base_freq);
-      // setMultiplier(refreshedFreqObj.multiplier);
-
-      // if presetObj contains index array id create refreshedIndexObj update seqArrayRef and reset indexObj
-      // if (selectedObj.index_array_id) {
-      //   console.log(`ind arr: ${selectedObj.index_array_id}`);
-      //   const refreshedIndexObj = filterData(
-      //     indexData,
-      //     selectedObj.index_array_id,
-      //     "array_id"
-      //   );
-      //   seqArrayRef.current = refreshedIndexObj.index_array.split(",");
-      //   setIndexObj({ ...refreshedIndexObj });
-      //   setIndexId(selectedObj.index_array_id);
-      // }
     }
   };
 
@@ -498,7 +455,26 @@ export default function App() {
   };
 
   const deleteIndexPreset = async () => {
-    return;
+    if (!loginStatusRef.current.logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
+    if (freqPresetNum === undefined) {
+      alert("Please select a preset to delete!");
+      return;
+    }
+    if (confirm(`Delete Preset ${indexPresetNum}: ${indexPresetName}?`)) {
+      const findByPresetNum = indexData.find(
+        (item) => item && Number(item.preset_number) === indexPresetNum
+      );
+
+      const result = await del(
+        `multiplier-api/v1/index-arrays/delete/${findByPresetNum.array_id}`
+      );
+      console.log("Result:", result);
+      const normalizedData = normalizePresets(result.updated_data);
+      setIndexData(normalizedData);
+    }
   };
 
   // useEffect(() => {
