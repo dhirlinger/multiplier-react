@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms" {
+  strategy: "class"; /* only generate classes */
+}
 /* @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
@@ -12,6 +15,10 @@
   --color-maxbg: rgb(59, 59, 59);
   --color-inherit: inherit;
   --color-mix: color-mix(in oklab, currentcolor 50%, transparent);
+}
+
+@utility form-checkbox {
+  @apply text-[#E6A60D] bg-[#3b3b3b] border border-[#E6A60D] focus:outline-0 focus:outline-offset-0 focus:border-[#E6A60D] focus:ring-offset-0 focus:ring-transparent;
 }
 
 @layer base {

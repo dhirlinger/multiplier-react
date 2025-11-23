@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Arrow } from "./Icon";
-import GlobalPresetParameters from "./GlobalPresetParameters";
+import PreviewPresetParameters from "./PreviewPresetParameters";
+import RecallCheckbox from "./RecallCheckbox";
 
 export default function PresetUI({
   data,
@@ -14,6 +15,10 @@ export default function PresetUI({
   inputRecalled,
   setInputRecalled,
   category,
+  freqRecall,
+  setFreqRecall,
+  indexRecall,
+  setIndexRecall,
 }) {
   const findByPresetNumRef = useRef();
 
@@ -82,6 +87,14 @@ export default function PresetUI({
     });
   };
 
+  const handleFreqRecall = (e) => {
+    setFreqRecall(e.target.checked);
+  };
+
+  const handleIndexRecall = (e) => {
+    setIndexRecall(e.target.checked);
+  };
+
   return (
     <>
       <div className="text-4xl text-center">
@@ -108,6 +121,23 @@ export default function PresetUI({
             DELETE
           </button>
           <button className="round">MIDI</button>
+
+          {/* GLOBAL CHECKBOXES */}
+          {category === "Global" && (
+            <div className="flex text-xs text-transform: uppercase">
+              <RecallCheckbox
+                stateRecall={freqRecall}
+                handleChange={handleFreqRecall}
+                text={"recall freq params"}
+              />
+              <RecallCheckbox
+                stateRecall={indexRecall}
+                handleChange={handleIndexRecall}
+                text={"recall index array"}
+              />
+            </div>
+          )}
+
           <div className="flex mt-1">
             <input
               type="text"
@@ -148,9 +178,10 @@ export default function PresetUI({
             </button>
           </div>
         </div>
-        {category === "Global" && (
-          <GlobalPresetParameters findByPresetNumRef={findByPresetNumRef} />
-        )}
+        <PreviewPresetParameters
+          findByPresetNumRef={findByPresetNumRef}
+          category={category}
+        />
       </div>
     </>
   );

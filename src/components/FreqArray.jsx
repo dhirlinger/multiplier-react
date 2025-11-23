@@ -1,5 +1,4 @@
 import BaseMultiplier from "./BaseMultiplier";
-import { Refresh } from "./Icon";
 import {
   frequencyToMidi,
   midiNumberToNoteName,

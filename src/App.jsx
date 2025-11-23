@@ -66,8 +66,8 @@ export default function App() {
   const [index, setIndex] = useState();
   const [seqVoiceArr, setSeqVoiceArr] = useState();
   const [statusCode, setStatusCode] = useState(1);
-
-  let userSettings = {};
+  const [freqRecall, setFreqRecall] = useState(true);
+  const [indexRecall, setIndexRecall] = useState(true);
 
   useEffect(() => {
     const init = async () => {
@@ -128,10 +128,6 @@ export default function App() {
       setLocalLoading(false);
     }
   };
-
-  useEffect(() => {
-    userSettings = {};
-  });
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
@@ -231,6 +227,8 @@ export default function App() {
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
+      setFreqRecall(selectedObj.params_json.recall_freq);
+      setIndexRecall(selectedObj.params_json.recall_index);
     }
     // }
   };
@@ -302,7 +300,20 @@ export default function App() {
             lowpass_q: lowPassQ,
             wave_shape: waveshape,
             lowpass_freq: lowPassFreq,
+            recall_freq: freqRecall,
+            index_recall: indexRecall,
           },
+          freq_json: {
+            base_freq: base,
+            multiplier: multiplier,
+            base_max: baseMultiplierParamsRef.current.base_max,
+            base_min: baseMultiplierParamsRef.current.base_min,
+            base_step: baseMultiplierParamsRef.current.base_step,
+            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+          },
+          index_array: seqArrayRef.current.join(),
         };
 
         if (findByPresetNum === undefined) {
@@ -592,6 +603,10 @@ export default function App() {
         inputRecalled={globalInputRecalled}
         setInputRecalled={setGlobalInputRecalled}
         category={"Global"}
+        freqRecall={freqRecall}
+        setFreqRecall={setFreqRecall}
+        indexRecall={indexRecall}
+        setIndexRecall={setIndexRecall}
       />
 
       <PresetUI
