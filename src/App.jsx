@@ -255,6 +255,8 @@ export default function App() {
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
+      setFreqRecall(selectedObj.params_json.recall_freq);
+      setIndexRecall(selectedObj.params_json.recall_index);
     }
   };
 
