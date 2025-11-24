@@ -12,6 +12,16 @@ export const presetDefault = [
       recall_freq: false,
       recall_index: false,
     },
+    freq_json: {
+      base_freq: 110,
+      multiplier: 1,
+      multiplier_max: 12.75,
+      multiplier_min: 0.425,
+      multiplier_step: 0.425,
+      base_max: 11000,
+      base_min: 30,
+      base_step: 1,
+    },
     user_id: "1",
   },
 ];

@@ -227,8 +227,10 @@ export default function App() {
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
-      setFreqRecall(selectedObj.params_json.recall_freq);
-      setIndexRecall(selectedObj.params_json.recall_index);
+      if (selectedObj.freq_json && freqRecall) {
+        setBase(selectedObj.freq_json.base_freq);
+        setMultiplier(selectedObj.freq_json.multiplier);
+      }
     }
     // }
   };
@@ -255,8 +257,10 @@ export default function App() {
       setLowPassFreq(selectedObj.params_json.lowpass_freq);
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
-      setFreqRecall(selectedObj.params_json.recall_freq);
-      setIndexRecall(selectedObj.params_json.recall_index);
+      if (selectedObj.freq_json && freqRecall) {
+        setBase(selectedObj.freq_json.base_freq);
+        setMultiplier(selectedObj.freq_json.multiplier);
+      }
     }
   };
 
@@ -302,8 +306,6 @@ export default function App() {
             lowpass_q: lowPassQ,
             wave_shape: waveshape,
             lowpass_freq: lowPassFreq,
-            recall_freq: freqRecall,
-            index_recall: indexRecall,
           },
           freq_json: {
             base_freq: base,

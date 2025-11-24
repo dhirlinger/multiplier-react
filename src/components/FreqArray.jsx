@@ -7,6 +7,7 @@ import {
 export default function FreqArray({
   baseMultiplierParamsRef,
   freqObj,
+  presetObj,
   base,
   setBase,
   multiplier,
@@ -85,6 +86,7 @@ export default function FreqArray({
         multiplier={multiplier}
         setMultiplier={setMultiplier}
         freqObj={freqObj}
+        presetObj={presetObj}
         paramsRef={baseMultiplierParamsRef}
       />
     </div>

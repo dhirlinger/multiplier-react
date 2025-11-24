@@ -7,6 +7,7 @@ export default function BaseMultiplier({
   multiplier,
   setMultiplier,
   freqObj,
+  presetObj,
   paramsRef,
 }) {
   const [multiplierMin, setMultiplierMin] = useState("0.1");
@@ -43,16 +44,19 @@ export default function BaseMultiplier({
       setBaseMin(freqObj.params_json.base_min);
       setBaseMax(freqObj.params_json.base_max);
       setBaseStep(freqObj.params_json.base_step);
-      // paramsRef.current = {
-      //   multiplier_min: presetObj.params_json.multiplier_min,
-      //   multiplier_max: presetObj.params_json.multiplier_max,
-      //   multiplier_step: presetObj.params_json.multiplier_step,
-      //   base_min: presetObj.params_json.base_min,
-      //   base_max: presetObj.params_json.base_max,
-      //   base_step: presetObj.params_json.base_step,
-      // };
     }
   }, [freqObj]);
+
+  useEffect(() => {
+    if (presetObj) {
+      setMultiplierMin(presetObj.freq_json.multiplier_min);
+      setMultiplierMax(presetObj.freq_json.multiplier_max);
+      setMultiplierStep(presetObj.freq_json.multiplier_step);
+      setBaseMin(presetObj.freq_json.base_min);
+      setBaseMax(presetObj.freq_json.base_max);
+      setBaseStep(presetObj.freq_json.base_step);
+    }
+  }, [presetObj]);
 
   const handleBaseChange = (e) => {
     let inputValue = e.target.value;
