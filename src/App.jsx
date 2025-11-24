@@ -250,7 +250,18 @@ export default function App() {
 
   const refreshPresetObj = () => {
     if (presetObj) {
-      const selectedObj = { ...presetObj };
+      const findByPresetNum = presetData.find(
+        (item) => item && Number(item.preset_number) === globalPresetNum
+      );
+
+      presetIdRef.current = findByPresetNum.preset_id;
+      const currentObj = filterData(
+        presetData,
+        presetIdRef.current,
+        "preset_id"
+      );
+
+      const selectedObj = { ...currentObj };
       setPresetObj(selectedObj);
       setWaveshape(selectedObj.params_json.wave_shape);
       setDuration(selectedObj.params_json.duration);
@@ -258,6 +269,7 @@ export default function App() {
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
       if (selectedObj.freq_json && freqRecall) {
+        console.log(`b: ${selectedObj.freq_json.base_freq}`);
         setBase(selectedObj.freq_json.base_freq);
         setMultiplier(selectedObj.freq_json.multiplier);
       }
@@ -271,6 +283,7 @@ export default function App() {
       console.log(`norm: ${JSON.stringify(normalizedData)}`);
       if (path === "presets") {
         setPresetData(normalizedData);
+        console.log(`result: ${JSON.stringify(normalizedData)}`);
         setGlobalInputRecalled(true);
       } else if (path === "freq-arrays") {
         setFreqData(normalizedData);
