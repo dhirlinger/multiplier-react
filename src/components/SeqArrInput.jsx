@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-export default function NumberInput({ arrIndex, seqArrayRef, indexObj }) {
+export default function NumberInput({
+  arrIndex,
+  seqArrayRef,
+  indexObj,
+  presetObj,
+  indexRecall,
+}) {
   const [value, setValue] = useState("");
 
   //update value on indexObj update.
@@ -12,6 +18,15 @@ export default function NumberInput({ arrIndex, seqArrayRef, indexObj }) {
     }
     arr[arrIndex] ? setValue(arr[arrIndex]) : setValue("");
   }, [indexObj]);
+
+  //update on presetObj update if indexRecall checkout = true
+  useEffect(() => {
+    let arr = [];
+    if (indexRecall && presetObj) {
+      arr = presetObj.index_array.split(",");
+    }
+    arr[arrIndex] ? setValue(arr[arrIndex]) : setValue("");
+  }, [presetObj]);
 
   const handleChange = (event) => {
     let inputValue = event.target.value;

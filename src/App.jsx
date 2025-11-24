@@ -1,7 +1,6 @@
 import "./App.css";
 import { useEffect, useRef, useState } from "react";
 import FreqArray from "./components/FreqArray";
-import IndexArray from "./components/IndexArray";
 import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
 import SeqVoice from "./assets/SeqVoice";
@@ -231,6 +230,9 @@ export default function App() {
         setBase(selectedObj.freq_json.base_freq);
         setMultiplier(selectedObj.freq_json.multiplier);
       }
+      if (selectedObj.index_array && indexRecall) {
+        seqArrayRef.current = selectedObj.index_array.split(",");
+      }
     }
     // }
   };
@@ -269,9 +271,11 @@ export default function App() {
       setLowPassQ(selectedObj.params_json.lowpass_q);
       setSeqTempo(selectedObj.params_json.tempo);
       if (selectedObj.freq_json && freqRecall) {
-        console.log(`b: ${selectedObj.freq_json.base_freq}`);
         setBase(selectedObj.freq_json.base_freq);
         setMultiplier(selectedObj.freq_json.multiplier);
+      }
+      if (selectedObj.index_array && indexRecall) {
+        seqArrayRef.current = selectedObj.index_array.split(",");
       }
     }
   };
@@ -580,7 +584,7 @@ export default function App() {
   useEffect(() => {
     seqInstance.current.arrayHold = seqArrayRef.current;
     console.log(`seqIns Arr: ${seqArrayRef.current}`);
-  }, [indexObj]);
+  }, [indexObj, presetObj]);
 
   const handleClick = () => {
     setSeqIsPlaying(!seqIsPlaying);
@@ -688,41 +692,57 @@ export default function App() {
           arrIndex={0}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={1}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={2}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={3}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={4}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={5}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={6}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
         <SeqArrInput
           arrIndex={7}
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
+          presetObj={presetObj}
+          indexRecall={indexRecall}
         />
       </div>
 

@@ -3,6 +3,7 @@ export const presetDefault = [
     preset_number: "1",
     preset_id: "1",
     name: "DEFAULT",
+    index_array: "2,3,4,1",
     params_json: {
       tempo: 600,
       duration: 1,
