@@ -345,6 +345,7 @@ export default function App() {
   };
 
   const saveGlobalPreset = () => {
+    setDisplayConfirm(false);
     const globalSaveJSON = {
       name: globalPresetName,
       preset_number: globalPresetNum,
