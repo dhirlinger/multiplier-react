@@ -13,7 +13,11 @@ import {
 import PresetUI from "./components/PresetUI";
 import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
-import { normalizePresets, filterData } from "./assets/helpers";
+import {
+  normalizePresets,
+  filterData,
+  findByPresetNum,
+} from "./assets/helpers";
 import useFetch from "./hooks/useFetch";
 import ConfirmOverlay from "./components/ConfirmOverlay";
 
@@ -160,63 +164,49 @@ export default function App() {
       return;
     }
 
-    const findByPresetNum = freqData.find(
-      (item) => item && Number(item.preset_number) === freqPresetNum
-    );
+    const findBy = findByPresetNum(freqData, freqPresetNum);
 
-    if (findByPresetNum === undefined) {
+    if (findBy === undefined) {
       return;
     } else {
-      setFreqId(findByPresetNum.array_id);
-      const selectedObj = filterData(
-        freqData,
-        findByPresetNum.array_id,
-        "array_id"
-      );
+      setFreqId(findBy.array_id);
+      const selectedObj = filterData(freqData, findBy.array_id, "array_id");
       console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setFreqObj(selectedObj);
     }
   };
 
   const handleIndexSelect = () => {
-    //indexIdRef.current = e.target.value;
     if (indexObj && Number(indexObj.preset_number) === indexPresetNum) {
       refreshIndexObj();
       return;
     }
-    const findByPresetNum = indexData.find(
-      (item) => item && Number(item.preset_number) === indexPresetNum
-    );
-    if (findByPresetNum === undefined) {
+
+    const findBy = findByPresetNum(indexData, indexPresetNum);
+
+    if (findBy === undefined) {
       return;
     } else {
-      setIndexId(findByPresetNum.array_id);
-      const selectedObj = filterData(
-        indexData,
-        findByPresetNum.array_id,
-        "array_id"
-      );
+      setIndexId(findBy.array_id);
+      const selectedObj = filterData(indexData, findBy.array_id, "array_id");
+
       console.log(`sel: ${JSON.stringify(selectedObj)}`);
       setIndexObj(selectedObj);
     }
-    // }
   };
-  // setIndexId(e.target.value);
-  // setIndexObj(filterData(indexData, e.target.value, "array_id"));
 
   const handlePresetSelect = () => {
-    //if (e != null) {
     if (presetObj && Number(presetObj.preset_number) === globalPresetNum) {
       refreshPresetObj();
       return;
     }
-    const findByPresetNum = presetData.find(
-      (item) => item && Number(item.preset_number) === globalPresetNum
-    );
-    if (findByPresetNum === undefined) {
+
+    const findBy = findByPresetNum(presetData, globalPresetNum);
+
+    if (findBy === undefined) {
       return;
     } else {
-      presetIdRef.current = findByPresetNum.preset_id;
+      presetIdRef.current = findBy.preset_id;
       const selectedObj = filterData(
         presetData,
         presetIdRef.current,
@@ -240,7 +230,6 @@ export default function App() {
       }
       setGlobalInputRecalled(true);
     }
-    // }
   };
 
   const refreshFreqObj = () => {
@@ -258,11 +247,9 @@ export default function App() {
 
   const refreshPresetObj = () => {
     if (presetObj) {
-      const findByPresetNum = presetData.find(
-        (item) => item && Number(item.preset_number) === globalPresetNum
-      );
+      const findBy = findByPresetNum(presetData, globalPresetNum);
 
-      presetIdRef.current = findByPresetNum.preset_id;
+      presetIdRef.current = findBy.preset_id;
       const currentObj = filterData(
         presetData,
         presetIdRef.current,
@@ -316,9 +303,8 @@ export default function App() {
     if (globalPresetNum < 1 || globalPresetNum > 50) {
       return;
     }
-    const findByPresetNum = presetData.find(
-      (item) => item && Number(item.preset_number) === globalPresetNum
-    );
+    const findBy = findByPresetNum(presetData, globalPresetNum);
+
     if (globalPresetName === "-EMPTY-") {
       const handleName = () => {
         setDisplayConfirm(false);
@@ -330,7 +316,7 @@ export default function App() {
       setDisplayConfirm(true);
       return;
     }
-    if (findByPresetNum !== undefined) {
+    if (findBy !== undefined) {
       confirmPropsRef.current = {
         action: "Overwrite",
         num: globalPresetNum,
@@ -382,9 +368,7 @@ export default function App() {
         alert("Preset Number must be 1-50");
         return;
       } else {
-        const findByPresetNum = freqData.find(
-          (item) => item && Number(item.preset_number) === freqPresetNum
-        );
+        const findBy = findByPresetNum(freqData, freqPresetNum);
 
         const freqSaveJSON = {
           name: freqPresetName,
@@ -404,7 +388,7 @@ export default function App() {
 
         console.log(JSON.stringify(freqSaveJSON));
 
-        if (findByPresetNum === undefined) {
+        if (findBy === undefined) {
           save("freq-arrays", freqSaveJSON);
           return;
         } else {
@@ -429,9 +413,7 @@ export default function App() {
         alert("Preset Number must be 1-50");
         return;
       } else {
-        const findByPresetNum = indexData.find(
-          (item) => item && Number(item.preset_number) === indexPresetNum
-        );
+        const findBy = findByPresetNum(indexData, indexPresetNum);
 
         const indexSaveJSON = {
           index_array: seqArrayRef.current.join(),
@@ -440,7 +422,7 @@ export default function App() {
           user_id: loginStatusRef.current.user_id,
         };
 
-        if (findByPresetNum === undefined) {
+        if (findBy === undefined) {
           save("index-arrays", indexSaveJSON);
           return;
         } else {
@@ -463,11 +445,9 @@ export default function App() {
       alert("You must login via patreon to access this feature");
       return;
     }
-    const findByPresetNum = presetData.find(
-      (item) => item && Number(item.preset_number) === globalPresetNum
-    );
+    const findBy = findByPresetNum(presetData, globalPresetNum);
 
-    if (findByPresetNum === undefined) {
+    if (findBy === undefined) {
       return;
     } else {
       confirmPropsRef.current = {
@@ -484,11 +464,9 @@ export default function App() {
 
   const deleteGlobalPreset = async () => {
     setDisplayConfirm(false);
-    const findByPresetNum = presetData.find(
-      (item) => item && Number(item.preset_number) === globalPresetNum
-    );
+    const findBy = findByPresetNum(presetData, globalPresetNum);
     const result = await del(
-      `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
+      `multiplier-api/v1/presets/delete/${findBy.preset_id}`
     );
     console.log("Result:", result);
     const normalizedGlobal = normalizePresets(result.updated_data);
@@ -506,12 +484,10 @@ export default function App() {
       return;
     }
     if (confirm(`Delete Preset ${freqPresetNum}: ${freqPresetName}?`)) {
-      const findByPresetNum = freqData.find(
-        (item) => item && Number(item.preset_number) === freqPresetNum
-      );
+      const findBy = findByPresetNum(freqData, freqPresetNum);
 
       const result = await del(
-        `multiplier-api/v1/freq-arrays/delete/${findByPresetNum.array_id}`
+        `multiplier-api/v1/freq-arrays/delete/${findBy.array_id}`
       );
       console.log("Result:", result);
       const normalizedData = normalizePresets(result.updated_data);
@@ -529,12 +505,10 @@ export default function App() {
       return;
     }
     if (confirm(`Delete Preset ${indexPresetNum}: ${indexPresetName}?`)) {
-      const findByPresetNum = indexData.find(
-        (item) => item && Number(item.preset_number) === indexPresetNum
-      );
+      const findBy = findByPresetNum(indexData, indexPresetNum);
 
       const result = await del(
-        `multiplier-api/v1/index-arrays/delete/${findByPresetNum.array_id}`
+        `multiplier-api/v1/index-arrays/delete/${findBy.array_id}`
       );
       console.log("Result:", result);
       const normalizedData = normalizePresets(result.updated_data);

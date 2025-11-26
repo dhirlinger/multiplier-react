@@ -25,3 +25,7 @@ export const sortArr = (data, setData) => {
   sortedArr.sort((a, b) => a.preset_number - b.preset_number);
   setData(sortedArr);
 };
+
+export const findByPresetNum = (data, presetNum) => {
+  return data.find((item) => item && Number(item.preset_number) === presetNum);
+};
