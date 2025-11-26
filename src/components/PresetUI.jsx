@@ -105,7 +105,6 @@ export default function PresetUI({
           <button
             className="round"
             onClick={() => {
-              setInputRecalled(true);
               recallPreset();
             }}
           >

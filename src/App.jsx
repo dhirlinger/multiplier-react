@@ -165,7 +165,6 @@ export default function App() {
     );
 
     if (findByPresetNum === undefined) {
-      alert("EMPTY PRESET");
       return;
     } else {
       setFreqId(findByPresetNum.array_id);
@@ -189,7 +188,6 @@ export default function App() {
       (item) => item && Number(item.preset_number) === indexPresetNum
     );
     if (findByPresetNum === undefined) {
-      alert("EMPTY PRESET");
       return;
     } else {
       setIndexId(findByPresetNum.array_id);
@@ -216,7 +214,6 @@ export default function App() {
       (item) => item && Number(item.preset_number) === globalPresetNum
     );
     if (findByPresetNum === undefined) {
-      alert("EMPTY PRESET");
       return;
     } else {
       presetIdRef.current = findByPresetNum.preset_id;
@@ -241,6 +238,7 @@ export default function App() {
         seqArrayRef.current = selectedObj.index_array.split(",");
         indexInputRecalled && setIndexInputRecalled(false);
       }
+      setGlobalInputRecalled(true);
     }
     // }
   };
@@ -310,59 +308,68 @@ export default function App() {
     setFunctions(path);
   };
 
-  const saveGlobalPreset = () => {
+  const confirmGlobalSave = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
-    } else {
-      if (globalPresetNum < 1 || globalPresetNum > 50) {
-        alert("Preset Number must be 1-50");
-        return;
-      } else {
-        const findByPresetNum = presetData.find(
-          (item) => item && Number(item.preset_number) === globalPresetNum
-        );
-
-        const globalSaveJSON = {
-          name: globalPresetName,
-          preset_number: globalPresetNum,
-          user_id: loginStatusRef.current.user_id,
-          params_json: {
-            tempo: seqTempo,
-            duration: duration,
-            lowpass_q: lowPassQ,
-            wave_shape: waveshape,
-            lowpass_freq: lowPassFreq,
-          },
-          freq_json: {
-            base_freq: base,
-            multiplier: multiplier,
-            base_max: baseMultiplierParamsRef.current.base_max,
-            base_min: baseMultiplierParamsRef.current.base_min,
-            base_step: baseMultiplierParamsRef.current.base_step,
-            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
-            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
-            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
-          },
-          index_array: seqArrayRef.current.join(),
-        };
-
-        if (findByPresetNum === undefined) {
-          save("presets", globalSaveJSON);
-          return;
-        } else {
-          if (
-            confirm(
-              `Overwrite Preset ${globalPresetNum} with ${globalPresetName}?`
-            )
-          ) {
-            save("presets", globalSaveJSON);
-          } else {
-            return;
-          }
-        }
-      }
     }
+    if (globalPresetNum < 1 || globalPresetNum > 50) {
+      return;
+    }
+    const findByPresetNum = presetData.find(
+      (item) => item && Number(item.preset_number) === globalPresetNum
+    );
+    if (globalPresetName === "-EMPTY-") {
+      const handleName = () => {
+        setDisplayConfirm(false);
+      };
+      confirmPropsRef.current = {
+        action: "Name",
+        handler: handleName,
+      };
+      setDisplayConfirm(true);
+      return;
+    }
+    if (findByPresetNum !== undefined) {
+      confirmPropsRef.current = {
+        action: "Overwrite",
+        num: globalPresetNum,
+        name: globalPresetName,
+        filler: " with",
+        handler: saveGlobalPreset,
+      };
+      setDisplayConfirm(true);
+    } else {
+      saveGlobalPreset();
+    }
+  };
+
+  const saveGlobalPreset = () => {
+    const globalSaveJSON = {
+      name: globalPresetName,
+      preset_number: globalPresetNum,
+      user_id: loginStatusRef.current.user_id,
+      params_json: {
+        tempo: seqTempo,
+        duration: duration,
+        lowpass_q: lowPassQ,
+        wave_shape: waveshape,
+        lowpass_freq: lowPassFreq,
+      },
+      freq_json: {
+        base_freq: base,
+        multiplier: multiplier,
+        base_max: baseMultiplierParamsRef.current.base_max,
+        base_min: baseMultiplierParamsRef.current.base_min,
+        base_step: baseMultiplierParamsRef.current.base_step,
+        multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+        multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+        multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+      },
+      index_array: seqArrayRef.current.join(),
+    };
+
+    save("presets", globalSaveJSON);
   };
 
   const saveFreqPreset = () => {
@@ -450,13 +457,16 @@ export default function App() {
     }
   };
 
-  const deleteGlobalPreset = () => {
+  const confirmGlobalDelete = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
     }
-    if (globalPresetNum === undefined) {
-      alert("Please select a preset to delete!");
+    const findByPresetNum = presetData.find(
+      (item) => item && Number(item.preset_number) === globalPresetNum
+    );
+
+    if (findByPresetNum === undefined) {
       return;
     } else {
       confirmPropsRef.current = {
@@ -464,27 +474,15 @@ export default function App() {
         num: globalPresetNum,
         name: globalPresetName,
         filler: ":",
-        handler: confirmGlobalDelete,
+        handler: deleteGlobalPreset,
       };
 
       setDisplayConfirm(true);
     }
-
-    // if (confirm(`Delete Preset ${globalPresetNum}: ${globalPresetName}?`)) {
-    //   const findByPresetNum = presetData.find(
-    //     (item) => item && Number(item.preset_number) === globalPresetNum
-    //   );
-
-    //   const result = await del(
-    //     `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
-    //   );
-    //   console.log("Result:", result);
-    //   const normalizedGlobal = normalizePresets(result.updated_data);
-    //   setPresetData(normalizedGlobal);
-    // }
   };
 
-  const confirmGlobalDelete = async () => {
+  const deleteGlobalPreset = async () => {
+    setDisplayConfirm(false);
     const findByPresetNum = presetData.find(
       (item) => item && Number(item.preset_number) === globalPresetNum
     );
@@ -494,6 +492,7 @@ export default function App() {
     console.log("Result:", result);
     const normalizedGlobal = normalizePresets(result.updated_data);
     setPresetData(normalizedGlobal);
+    setGlobalInputRecalled(false);
   };
 
   const deleteFreqPreset = async () => {
@@ -652,8 +651,8 @@ export default function App() {
         setPresetNum={setGlobalPresetNum}
         setPresetName={setGlobalPresetName}
         recallPreset={handlePresetSelect}
-        savePreset={saveGlobalPreset}
-        deletePreset={deleteGlobalPreset}
+        savePreset={confirmGlobalSave}
+        deletePreset={confirmGlobalDelete}
         inputRecalled={globalInputRecalled}
         setInputRecalled={setGlobalInputRecalled}
         category={"Global"}
@@ -710,6 +709,7 @@ export default function App() {
 
       <ConfirmOverlay
         confirmProps={confirmPropsRef}
+        displayConfirm={displayConfirm}
         onClose={() => {
           setDisplayConfirm(false);
         }}

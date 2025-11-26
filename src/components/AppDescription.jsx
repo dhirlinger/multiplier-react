@@ -17,7 +17,7 @@ export default function AppDescription() {
         seeDescription
           ? ""
           : "border-solid border-[#E6A60D] border-[0.5px] text-sm"
-      } mt-0 p-2.5 mb-2 bg-maxbg w-full text-center cursor-pointer`}
+      } mt-0 p-2.5 mb-2 bg-maxbg hover:bg-stone-700 w-full text-center cursor-pointer`}
       onClick={() => setSeeDescription(!seeDescription)}
     >
       {seeDescription ? description : "SEE DESCRIPTION"}
