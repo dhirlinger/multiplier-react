@@ -15,6 +15,7 @@ import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
 import { normalizePresets, filterData } from "./assets/helpers";
 import useFetch from "./hooks/useFetch";
+import ConfirmOverlay from "./components/ConfirmOverlay";
 
 export default function App() {
   //preset + rest api related vars
@@ -65,8 +66,13 @@ export default function App() {
   const [index, setIndex] = useState();
   const [seqVoiceArr, setSeqVoiceArr] = useState();
   const [statusCode, setStatusCode] = useState(1);
+  //global preset checkboxes
   const [freqRecall, setFreqRecall] = useState(true);
   const [indexRecall, setIndexRecall] = useState(true);
+  //confirm overlay display toggle w ref obj for dynamic props
+  const [displayConfirm, setDisplayConfirm] = useState(false);
+  const confirmPropsRef = useRef({}); //preset num, name, action(str), filler(str)[ with/:], handler
+  //`${action} Preset ${num}${filler} ${name}?`
 
   useEffect(() => {
     const init = async () => {
@@ -229,9 +235,11 @@ export default function App() {
       if (selectedObj.freq_json && freqRecall) {
         setBase(selectedObj.freq_json.base_freq);
         setMultiplier(selectedObj.freq_json.multiplier);
+        freqInputRecalled && setFreqInputRecalled(false);
       }
       if (selectedObj.index_array && indexRecall) {
         seqArrayRef.current = selectedObj.index_array.split(",");
+        indexInputRecalled && setIndexInputRecalled(false);
       }
     }
     // }
@@ -273,9 +281,11 @@ export default function App() {
       if (selectedObj.freq_json && freqRecall) {
         setBase(selectedObj.freq_json.base_freq);
         setMultiplier(selectedObj.freq_json.multiplier);
+        freqInputRecalled && setFreqInputRecalled(false);
       }
       if (selectedObj.index_array && indexRecall) {
         seqArrayRef.current = selectedObj.index_array.split(",");
+        indexInputRecalled && setIndexInputRecalled(false);
       }
     }
   };
@@ -440,7 +450,7 @@ export default function App() {
     }
   };
 
-  const deleteGlobalPreset = async () => {
+  const deleteGlobalPreset = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
@@ -448,19 +458,42 @@ export default function App() {
     if (globalPresetNum === undefined) {
       alert("Please select a preset to delete!");
       return;
-    }
-    if (confirm(`Delete Preset ${globalPresetNum}: ${globalPresetName}?`)) {
-      const findByPresetNum = presetData.find(
-        (item) => item && Number(item.preset_number) === globalPresetNum
-      );
+    } else {
+      confirmPropsRef.current = {
+        action: "Delete",
+        num: globalPresetNum,
+        name: globalPresetName,
+        filler: ":",
+        handler: confirmGlobalDelete,
+      };
 
-      const result = await del(
-        `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
-      );
-      console.log("Result:", result);
-      const normalizedGlobal = normalizePresets(result.updated_data);
-      setPresetData(normalizedGlobal);
+      setDisplayConfirm(true);
     }
+
+    // if (confirm(`Delete Preset ${globalPresetNum}: ${globalPresetName}?`)) {
+    //   const findByPresetNum = presetData.find(
+    //     (item) => item && Number(item.preset_number) === globalPresetNum
+    //   );
+
+    //   const result = await del(
+    //     `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
+    //   );
+    //   console.log("Result:", result);
+    //   const normalizedGlobal = normalizePresets(result.updated_data);
+    //   setPresetData(normalizedGlobal);
+    // }
+  };
+
+  const confirmGlobalDelete = async () => {
+    const findByPresetNum = presetData.find(
+      (item) => item && Number(item.preset_number) === globalPresetNum
+    );
+    const result = await del(
+      `multiplier-api/v1/presets/delete/${findByPresetNum.preset_id}`
+    );
+    console.log("Result:", result);
+    const normalizedGlobal = normalizePresets(result.updated_data);
+    setPresetData(normalizedGlobal);
   };
 
   const deleteFreqPreset = async () => {
@@ -675,18 +708,13 @@ export default function App() {
         category={"Index Array"}
       />
 
-      {/* <IndexArray
-        indexData={indexData}
-        //indexIdRef={indexIdRef}
-        indexId={indexId}
-        handleSelect={handleIndexSelect}
-        indexObj={indexObj}
-        refreshIndexObj={refreshIndexObj}
-        indexPresetName={indexPresetName}
-        setIndexPresetName={setIndexPresetName}
-        indexPresetNum={indexPresetNum}
-        setIndexPresetNum={setIndexPresetNum}
-      /> */}
+      <ConfirmOverlay
+        confirmProps={confirmPropsRef}
+        onClose={() => {
+          setDisplayConfirm(false);
+        }}
+      />
+
       <div className="flex">
         <SeqArrInput
           arrIndex={0}

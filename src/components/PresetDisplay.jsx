@@ -63,11 +63,17 @@ export default function PreviewDisplay({ findByPresetNumRef, category }) {
           </span>
         ))}
       {category === "Global" &&
+        findByPresetNumRef.current.freq_json &&
         Object.keys(findByPresetNumRef.current.freq_json).map((key) => (
           <span key={key} className="me-1">
             | {key}: {String(findByPresetNumRef.current.freq_json[key])} |
           </span>
         ))}
+      {category === "Global" && findByPresetNumRef.current.index_array && (
+        <span className="me-1">
+          index array: {findByPresetNumRef.current.index_array}
+        </span>
+      )}
       {category === "Frequency Array" && (
         <>
           <span className="me-1">
