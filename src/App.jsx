@@ -303,7 +303,6 @@ export default function App() {
     if (globalPresetNum < 1 || globalPresetNum > 50) {
       return;
     }
-    const findBy = findByPresetNum(presetData, globalPresetNum);
 
     if (globalPresetName === "-EMPTY-") {
       const handleName = () => {
@@ -316,6 +315,9 @@ export default function App() {
       setDisplayConfirm(true);
       return;
     }
+
+    const findBy = findByPresetNum(presetData, globalPresetNum);
+
     if (findBy !== undefined) {
       confirmPropsRef.current = {
         action: "Overwrite",
@@ -359,49 +361,63 @@ export default function App() {
     save("presets", globalSaveJSON);
   };
 
-  const saveFreqPreset = () => {
+  const confirmFreqSave = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
-    } else {
-      if (freqPresetNum < 1 || freqPresetNum > 50) {
-        alert("Preset Number must be 1-50");
-        return;
-      } else {
-        const findBy = findByPresetNum(freqData, freqPresetNum);
-
-        const freqSaveJSON = {
-          name: freqPresetName,
-          preset_number: freqPresetNum,
-          base_freq: base,
-          multiplier: multiplier,
-          user_id: loginStatusRef.current.user_id,
-          params_json: {
-            base_max: baseMultiplierParamsRef.current.base_max,
-            base_min: baseMultiplierParamsRef.current.base_min,
-            base_step: baseMultiplierParamsRef.current.base_step,
-            multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
-            multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
-            multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
-          },
-        };
-
-        console.log(JSON.stringify(freqSaveJSON));
-
-        if (findBy === undefined) {
-          save("freq-arrays", freqSaveJSON);
-          return;
-        } else {
-          if (
-            confirm(`Overwrite Preset ${freqPresetNum} with ${freqPresetName}?`)
-          ) {
-            save("freq-arrays", freqSaveJSON);
-          } else {
-            return;
-          }
-        }
-      }
     }
+    if (freqPresetNum < 1 || freqPresetNum > 50) {
+      return;
+    }
+
+    if (freqPresetName === "-EMPTY-") {
+      const handleName = () => {
+        setDisplayConfirm(false);
+      };
+      confirmPropsRef.current = {
+        action: "Name",
+        handler: handleName,
+      };
+      setDisplayConfirm(true);
+      return;
+    }
+
+    const findBy = findByPresetNum(freqData, freqPresetNum);
+
+    if (findBy !== undefined) {
+      confirmPropsRef.current = {
+        action: "Overwrite",
+        num: freqPresetNum,
+        name: freqPresetName,
+        filler: " with",
+        handler: saveFreqPreset,
+      };
+      setDisplayConfirm(true);
+    } else {
+      saveFreqPreset();
+    }
+  };
+
+  const saveFreqPreset = () => {
+    setDisplayConfirm(false);
+
+    const freqSaveJSON = {
+      name: freqPresetName,
+      preset_number: freqPresetNum,
+      base_freq: base,
+      multiplier: multiplier,
+      user_id: loginStatusRef.current.user_id,
+      params_json: {
+        base_max: baseMultiplierParamsRef.current.base_max,
+        base_min: baseMultiplierParamsRef.current.base_min,
+        base_step: baseMultiplierParamsRef.current.base_step,
+        multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
+        multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
+        multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
+      },
+    };
+
+    save("freq-arrays", freqSaveJSON);
   };
 
   const saveIndexPreset = async () => {
@@ -663,7 +679,7 @@ export default function App() {
         setPresetNum={setFreqPresetNum}
         setPresetName={setFreqPresetName}
         recallPreset={handleFreqSelect}
-        savePreset={saveFreqPreset}
+        savePreset={confirmFreqSave}
         deletePreset={confirmFreqDelete}
         inputRecalled={freqInputRecalled}
         setInputRecalled={setFreqInputRecalled}
