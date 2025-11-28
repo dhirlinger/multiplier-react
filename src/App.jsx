@@ -474,25 +474,44 @@ export default function App() {
     setGlobalInputRecalled(false);
   };
 
-  const deleteFreqPreset = async () => {
+  const confirmFreqDelete = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
     }
     if (freqPresetNum === undefined) {
-      alert("Please select a preset to delete!");
       return;
     }
-    if (confirm(`Delete Preset ${freqPresetNum}: ${freqPresetName}?`)) {
-      const findBy = findByPresetNum(freqData, freqPresetNum);
 
-      const result = await del(
-        `multiplier-api/v1/freq-arrays/delete/${findBy.array_id}`
-      );
-      console.log("Result:", result);
-      const normalizedData = normalizePresets(result.updated_data);
-      setFreqData(normalizedData);
+    const findBy = findByPresetNum(freqData, freqPresetNum);
+
+    if (findBy === undefined) {
+      return;
+    } else {
+      confirmPropsRef.current = {
+        action: "Delete",
+        num: freqPresetNum,
+        name: freqPresetName,
+        filler: ":",
+        handler: deleteFreqPreset,
+      };
+
+      setDisplayConfirm(true);
     }
+  };
+
+  const deleteFreqPreset = async () => {
+    setDisplayConfirm(false);
+
+    const findBy = findByPresetNum(freqData, freqPresetNum);
+
+    const result = await del(
+      `multiplier-api/v1/freq-arrays/delete/${findBy.array_id}`
+    );
+    console.log("Result:", result);
+    const normalizedData = normalizePresets(result.updated_data);
+    setFreqData(normalizedData);
+    setFreqInputRecalled(false);
   };
 
   const deleteIndexPreset = async () => {
@@ -645,7 +664,7 @@ export default function App() {
         setPresetName={setFreqPresetName}
         recallPreset={handleFreqSelect}
         savePreset={saveFreqPreset}
-        deletePreset={deleteFreqPreset}
+        deletePreset={confirmFreqDelete}
         inputRecalled={freqInputRecalled}
         setInputRecalled={setFreqInputRecalled}
         category={"Frequency Array"}
@@ -653,7 +672,6 @@ export default function App() {
 
       <FreqArray
         freqData={freqData}
-        //freqIdRef={freqIdRef}
         freqId={freqId}
         handleSelect={handleFreqSelect}
         freqObj={freqObj}
