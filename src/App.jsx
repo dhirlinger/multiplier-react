@@ -530,25 +530,44 @@ export default function App() {
     setFreqInputRecalled(false);
   };
 
-  const deleteIndexPreset = async () => {
+  const confirmIndexDelete = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
     }
     if (freqPresetNum === undefined) {
-      alert("Please select a preset to delete!");
       return;
     }
-    if (confirm(`Delete Preset ${indexPresetNum}: ${indexPresetName}?`)) {
-      const findBy = findByPresetNum(indexData, indexPresetNum);
 
-      const result = await del(
-        `multiplier-api/v1/index-arrays/delete/${findBy.array_id}`
-      );
-      console.log("Result:", result);
-      const normalizedData = normalizePresets(result.updated_data);
-      setIndexData(normalizedData);
+    const findBy = findByPresetNum(indexData, indexPresetNum);
+
+    if (findBy === undefined) {
+      return;
+    } else {
+      confirmPropsRef.current = {
+        action: "Delete",
+        num: indexPresetNum,
+        name: indexPresetName,
+        filler: ":",
+        handler: deleteIndexPreset,
+      };
+
+      setDisplayConfirm(true);
     }
+  };
+
+  const deleteIndexPreset = async () => {
+    setDisplayConfirm(false);
+
+    const findBy = findByPresetNum(indexData, indexPresetNum);
+
+    const result = await del(
+      `multiplier-api/v1/index-arrays/delete/${findBy.array_id}`
+    );
+    console.log("Result:", result);
+    const normalizedData = normalizePresets(result.updated_data);
+    setIndexData(normalizedData);
+    setIndexInputRecalled(false);
   };
 
   // useEffect(() => {
@@ -710,7 +729,7 @@ export default function App() {
         setPresetName={setIndexPresetName}
         recallPreset={handleIndexSelect}
         savePreset={saveIndexPreset}
-        deletePreset={deleteIndexPreset}
+        deletePreset={confirmIndexDelete}
         inputRecalled={indexInputRecalled}
         setInputRecalled={setIndexInputRecalled}
         category={"Index Array"}
