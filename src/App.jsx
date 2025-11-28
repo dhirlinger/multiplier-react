@@ -420,40 +420,53 @@ export default function App() {
     save("freq-arrays", freqSaveJSON);
   };
 
-  const saveIndexPreset = async () => {
+  const confirmIndexSave = () => {
     if (!loginStatusRef.current.logged_in) {
       alert("You must login via patreon to access this feature");
       return;
-    } else {
-      if (indexPresetNum < 1 || indexPresetNum > 50) {
-        alert("Preset Number must be 1-50");
-        return;
-      } else {
-        const findBy = findByPresetNum(indexData, indexPresetNum);
-
-        const indexSaveJSON = {
-          index_array: seqArrayRef.current.join(),
-          name: indexPresetName,
-          preset_number: indexPresetNum,
-          user_id: loginStatusRef.current.user_id,
-        };
-
-        if (findBy === undefined) {
-          save("index-arrays", indexSaveJSON);
-          return;
-        } else {
-          if (
-            confirm(
-              `Overwrite Preset ${indexPresetNum} with ${indexPresetName}?`
-            )
-          ) {
-            save("index-arrays", indexSaveJSON);
-          } else {
-            return;
-          }
-        }
-      }
     }
+    if (indexPresetNum < 1 || indexPresetNum > 50) {
+      return;
+    }
+    if (freqPresetName === "-EMPTY-") {
+      const handleName = () => {
+        setDisplayConfirm(false);
+      };
+      confirmPropsRef.current = {
+        action: "Name",
+        handler: handleName,
+      };
+      setDisplayConfirm(true);
+      return;
+    }
+
+    const findBy = findByPresetNum(indexData, indexPresetNum);
+
+    if (findBy !== undefined) {
+      confirmPropsRef.current = {
+        action: "Overwrite",
+        num: indexPresetNum,
+        name: indexPresetName,
+        filler: " with",
+        handler: saveIndexPreset,
+      };
+      setDisplayConfirm(true);
+    } else {
+      saveIndexPreset();
+    }
+  };
+
+  const saveIndexPreset = async () => {
+    setDisplayConfirm(false);
+
+    const indexSaveJSON = {
+      index_array: seqArrayRef.current.join(),
+      name: indexPresetName,
+      preset_number: indexPresetNum,
+      user_id: loginStatusRef.current.user_id,
+    };
+
+    save("index-arrays", indexSaveJSON);
   };
 
   const confirmGlobalDelete = () => {
@@ -728,7 +741,7 @@ export default function App() {
         setPresetNum={setIndexPresetNum}
         setPresetName={setIndexPresetName}
         recallPreset={handleIndexSelect}
-        savePreset={saveIndexPreset}
+        savePreset={confirmIndexSave}
         deletePreset={confirmIndexDelete}
         inputRecalled={indexInputRecalled}
         setInputRecalled={setIndexInputRecalled}
