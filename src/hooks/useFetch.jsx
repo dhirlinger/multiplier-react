@@ -1,9 +1,5 @@
 import { useState, useCallback } from "react";
 
-/**
- * Custom React hook for GET, POST, DELETE requests.
- * Automatically handles loading and error state.
- */
 export default function useFetch(baseUrl = "", nonce = "") {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

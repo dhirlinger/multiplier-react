@@ -10,8 +10,6 @@ export const presetDefault = [
       lowpass_q: 10,
       wave_shape: "square",
       lowpass_freq: 5000,
-      recall_freq: false,
-      recall_index: false,
     },
     freq_json: {
       base_freq: 110,
