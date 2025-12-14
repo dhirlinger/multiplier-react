@@ -163,7 +163,6 @@ export default function App() {
     if (!presetObj || !presetObj.params_json) return;
 
     const p = presetObj.params_json;
-    console.log(JSON.stringify(p));
 
     p.wave_shape && setWaveshape(p.wave_shape);
     p.duration && setDuration(p.duration);
@@ -239,22 +238,6 @@ export default function App() {
 
       setPresetObj(selectedObj);
 
-      //move the following to useEffect
-
-      // setWaveshape(selectedObj.params_json.wave_shape);
-      // setDuration(selectedObj.params_json.duration);
-      // setLowPassFreq(selectedObj.params_json.lowpass_freq);
-      // setLowPassQ(selectedObj.params_json.lowpass_q);
-      // setSeqTempo(selectedObj.params_json.tempo);
-      // if (selectedObj.freq_json && freqRecall) {
-      //   setBase(selectedObj.freq_json.base_freq);
-      //   setMultiplier(selectedObj.freq_json.multiplier);
-      //   freqInputRecalled && setFreqInputRecalled(false);
-      // }
-      // if (selectedObj.index_array && indexRecall) {
-      //   seqArrayRef.current = selectedObj.index_array.split(",");
-      //   indexInputRecalled && setIndexInputRecalled(false);
-      // }
       setGlobalInputRecalled(true);
     }
   };
@@ -285,20 +268,6 @@ export default function App() {
 
       const selectedObj = { ...currentObj };
       setPresetObj(selectedObj);
-      //   setWaveshape(selectedObj.params_json.wave_shape);
-      //   setDuration(selectedObj.params_json.duration);
-      //   setLowPassFreq(selectedObj.params_json.lowpass_freq);
-      //   setLowPassQ(selectedObj.params_json.lowpass_q);
-      //   setSeqTempo(selectedObj.params_json.tempo);
-      //   if (selectedObj.freq_json && freqRecall) {
-      //     setBase(selectedObj.freq_json.base_freq);
-      //     setMultiplier(selectedObj.freq_json.multiplier);
-      //     freqInputRecalled && setFreqInputRecalled(false);
-      //   }
-      //   if (selectedObj.index_array && indexRecall) {
-      //     seqArrayRef.current = selectedObj.index_array.split(",");
-      //     indexInputRecalled && setIndexInputRecalled(false);
-      //   }
     }
   };
 

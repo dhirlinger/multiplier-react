@@ -8,8 +8,6 @@ import {
 
 export default function usePresetActions(config) {
   const {
-    presetNum,
-    presetName,
     setPresetNum,
     setPresetName,
     data,
@@ -27,25 +25,28 @@ export default function usePresetActions(config) {
     setInputRecalled = () => {},
   } = config;
 
-  const handleSelect = useCallback(() => {
-    if (!presetNum) return;
+  const handleSelect = useCallback(
+    (presetNum) => {
+      if (!presetNum) return;
 
-    const obj = config.objRef?.current;
+      const obj = config.objRef?.current;
 
-    if (obj && Number(obj.preset_number) === presetNum) {
-      refreshObj();
-      return;
-    }
+      if (obj && Number(obj.preset_number) === presetNum) {
+        refreshObj();
+        return;
+      }
 
-    const findBy = findByPresetNum(data, presetNum);
+      const findBy = findByPresetNum(data, presetNum);
 
-    if (findBy === undefined) {
-      return;
-    } else {
-      setId(findBy.array_id);
-      const selectedObj = filterData(data, findBy.array_id, idField);
-      setObj(selectedObj);
-      setInputRecalled(true);
-    }
-  }, []);
+      if (findBy === undefined) {
+        return;
+      } else {
+        setId(findBy.array_id);
+        const selectedObj = filterData(data, findBy.array_id, idField);
+        setObj(selectedObj);
+        setInputRecalled(true);
+      }
+    },
+    [data, config.objRef, idField, refreshObj, setId, setInputRecalled, setObj]
+  );
 }
