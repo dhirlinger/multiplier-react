@@ -9,6 +9,7 @@ export default function BaseMultiplier({
   freqObj,
   presetObj,
   paramsRef,
+  globalFreqRecall,
 }) {
   const [multiplierMin, setMultiplierMin] = useState("0.1");
   const [multiplierMax, setMultiplierMax] = useState("10");
@@ -48,7 +49,7 @@ export default function BaseMultiplier({
   }, [freqObj]);
 
   useEffect(() => {
-    if (presetObj && presetObj.freq_json) {
+    if (globalFreqRecall && presetObj && presetObj.freq_json) {
       setMultiplierMin(presetObj.freq_json.multiplier_min);
       setMultiplierMax(presetObj.freq_json.multiplier_max);
       setMultiplierStep(presetObj.freq_json.multiplier_step);

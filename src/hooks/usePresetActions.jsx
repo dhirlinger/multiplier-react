@@ -12,7 +12,6 @@ export default function usePresetActions(config) {
     setPresetName,
     data,
     setData,
-    setId,
     idField, // "preset_id" or "array_id"
     setObj,
     buildSaveJSON,
@@ -41,12 +40,12 @@ export default function usePresetActions(config) {
       if (findBy === undefined) {
         return;
       } else {
-        setId(findBy.array_id);
         const selectedObj = filterData(data, findBy.array_id, idField);
         setObj(selectedObj);
         setInputRecalled(true);
       }
     },
-    [data, config.objRef, idField, refreshObj, setId, setInputRecalled, setObj]
+    [data, config.objRef, idField, refreshObj, setInputRecalled, setObj]
   );
+  return { handleSelect };
 }

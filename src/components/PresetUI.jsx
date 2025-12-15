@@ -15,10 +15,10 @@ export default function PresetUI({
   inputRecalled,
   setInputRecalled,
   category,
-  freqRecall,
-  setFreqRecall,
-  indexRecall,
-  setIndexRecall,
+  globalFreqRecall,
+  setGlobalFreqRecall,
+  globalIndexRecall,
+  setGlobalIndexRecall,
 }) {
   const findByPresetNumRef = useRef();
 
@@ -88,11 +88,11 @@ export default function PresetUI({
   };
 
   const handleFreqRecall = (e) => {
-    setFreqRecall(e.target.checked);
+    setGlobalFreqRecall(e.target.checked);
   };
 
   const handleIndexRecall = (e) => {
-    setIndexRecall(e.target.checked);
+    setGlobalIndexRecall(e.target.checked);
   };
 
   return (
@@ -105,7 +105,7 @@ export default function PresetUI({
           <button
             className="round"
             onClick={() => {
-              recallPreset();
+              recallPreset(presetNum);
             }}
           >
             RECALL
@@ -125,12 +125,12 @@ export default function PresetUI({
           {category === "Global" && (
             <div className="flex text-xs text-transform: uppercase">
               <RecallCheckbox
-                stateRecall={freqRecall}
+                stateRecall={globalFreqRecall}
                 handleChange={handleFreqRecall}
                 text={"recall freq params"}
               />
               <RecallCheckbox
-                stateRecall={indexRecall}
+                stateRecall={globalIndexRecall}
                 handleChange={handleIndexRecall}
                 text={"recall index array"}
               />

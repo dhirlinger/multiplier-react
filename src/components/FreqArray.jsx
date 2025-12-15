@@ -12,6 +12,7 @@ export default function FreqArray({
   setBase,
   multiplier,
   setMultiplier,
+  globalFreqRecall,
 }) {
   const createFreqArray = () => {
     const arr = [];
@@ -88,6 +89,7 @@ export default function FreqArray({
         freqObj={freqObj}
         presetObj={presetObj}
         paramsRef={baseMultiplierParamsRef}
+        globalFreqRecall={globalFreqRecall}
       />
     </div>
   );
