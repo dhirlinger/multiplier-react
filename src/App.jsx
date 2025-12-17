@@ -136,11 +136,17 @@ export default function App() {
     }
   };
 
-  freqObjRef.current = freqObj;
+  useEffect(() => {
+    freqObjRef.current = freqObj;
+  }, [freqObj]);
 
-  indexObjRef.current = indexObj;
+  useEffect(() => {
+    indexObjRef.current = indexObj;
+  }, [indexObj]);
 
-  presetObjRef.current = presetObj;
+  useEffect(() => {
+    presetObjRef.current = presetObj;
+  }, [presetObj]);
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
