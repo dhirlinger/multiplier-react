@@ -24,6 +24,8 @@ export default function NumberInput({
     let arr = [];
     if (indexRecall && presetObj) {
       arr = presetObj.index_array.split(",");
+    } else {
+      arr = seqArrayRef.current;
     }
     arr[arrIndex] ? setValue(arr[arrIndex]) : setValue("");
   }, [presetObj]);
