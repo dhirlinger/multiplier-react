@@ -178,12 +178,8 @@ export default function App() {
       freqInputRecalled && setFreqInputRecalled(false);
     }
     if (presetObj.index_array && globalIndexRecall) {
-      console.log("here");
       seqArrayRef.current = presetObj.index_array.split(",");
       indexInputRecalled && setIndexInputRecalled(false);
-    } else if (!globalIndexRecall) {
-      const copy = seqArrayRef.current;
-      seqArrayRef.current = copy;
     }
   }, [globalInputRecalled, presetObj]);
 
