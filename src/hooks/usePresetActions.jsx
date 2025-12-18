@@ -25,13 +25,12 @@ export default function usePresetActions(config) {
   } = config;
 
   const handleSelect = useCallback(
-    (presetNum) => {
+    (presetNum, objPresetNum) => {
       if (!presetNum) return;
-      console.log(presetNum);
-      const obj = config.objRef?.current;
-      console.log(JSON.stringify(obj));
-      if (obj && Number(obj.preset_number) === presetNum) {
-        console.log(JSON.stringify(obj));
+
+      console.log(JSON.stringify(objPresetNum));
+      if (Number(objPresetNum) === presetNum) {
+        console.log(JSON.stringify(objPresetNum));
         console.log("refresh was called");
         refreshObj();
         return;
@@ -48,7 +47,7 @@ export default function usePresetActions(config) {
         setInputRecalled(true);
       }
     },
-    [data, config.objRef, idField, refreshObj, setInputRecalled, setObj]
+    [data, idField, refreshObj, setInputRecalled, setObj]
   );
   return { handleSelect };
 }

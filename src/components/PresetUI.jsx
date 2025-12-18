@@ -19,6 +19,7 @@ export default function PresetUI({
   setGlobalFreqRecall,
   globalIndexRecall,
   setGlobalIndexRecall,
+  obj,
 }) {
   const findByPresetNumRef = useRef();
 
@@ -105,7 +106,7 @@ export default function PresetUI({
           <button
             className="round"
             onClick={() => {
-              recallPreset(presetNum);
+              recallPreset(presetNum, obj?.preset_number);
             }}
           >
             RECALL

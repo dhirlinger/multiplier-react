@@ -667,6 +667,7 @@ export default function App() {
         setGlobalFreqRecall={setGlobalFreqRecall}
         globalIndexRecall={globalIndexRecall}
         setGlobalIndexRecall={setGlobalIndexRecall}
+        obj={indexObj}
       />
 
       <PresetUI
@@ -681,6 +682,7 @@ export default function App() {
         inputRecalled={freqInputRecalled}
         setInputRecalled={setFreqInputRecalled}
         category={"Frequency Array"}
+        obj={freqObj}
       />
 
       <FreqArray
@@ -710,6 +712,7 @@ export default function App() {
         inputRecalled={indexInputRecalled}
         setInputRecalled={setIndexInputRecalled}
         category={"Index Array"}
+        obj={indexObj}
       />
 
       <ConfirmOverlay
