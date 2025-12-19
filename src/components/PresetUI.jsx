@@ -15,15 +15,15 @@ export default function PresetUI({
   inputRecalled,
   setInputRecalled,
   category,
-  freqRecall,
-  setFreqRecall,
-  indexRecall,
-  setIndexRecall,
+  globalFreqRecall,
+  setGlobalFreqRecall,
+  globalIndexRecall,
+  setGlobalIndexRecall,
+  obj,
 }) {
   const findByPresetNumRef = useRef();
 
   useEffect(() => {
-    // console.log(`data: ${JSON.stringify(data)}`);
     findByPresetNumRef.current = data.find(
       (item) => item && Number(item.preset_number) === presetNum
     );
@@ -39,7 +39,7 @@ export default function PresetUI({
     } else {
       setPresetName(findByPresetNumRef.current.name);
     }
-  }, [presetNum, data]);
+  }, [presetNum, data, setPresetName]);
 
   const handlePresetNum = (e) => {
     const value = e.target.value;
@@ -52,7 +52,6 @@ export default function PresetUI({
       //recallPreset(e);
       setInputRecalled(false);
       setPresetNum(Number(value));
-      console.log(`pre num: ${Number(value)}`);
     }
   };
 
@@ -88,11 +87,11 @@ export default function PresetUI({
   };
 
   const handleFreqRecall = (e) => {
-    setFreqRecall(e.target.checked);
+    setGlobalFreqRecall(e.target.checked);
   };
 
   const handleIndexRecall = (e) => {
-    setIndexRecall(e.target.checked);
+    setGlobalIndexRecall(e.target.checked);
   };
 
   return (
@@ -105,17 +104,22 @@ export default function PresetUI({
           <button
             className="round"
             onClick={() => {
-              recallPreset();
+              recallPreset(presetNum, obj?.preset_number);
             }}
           >
             RECALL
           </button>
-          <button className="round" onClick={savePreset}>
+          <button
+            className="round"
+            onClick={() => {
+              savePreset(presetNum, presetName);
+            }}
+          >
             SAVE
           </button>
           <button
             className="round border-red-600 text-red-600"
-            onClick={deletePreset}
+            onClick={() => deletePreset(presetNum, presetName)}
           >
             DELETE
           </button>
@@ -125,12 +129,12 @@ export default function PresetUI({
           {category === "Global" && (
             <div className="flex text-xs text-transform: uppercase">
               <RecallCheckbox
-                stateRecall={freqRecall}
+                stateRecall={globalFreqRecall}
                 handleChange={handleFreqRecall}
                 text={"recall freq params"}
               />
               <RecallCheckbox
-                stateRecall={indexRecall}
+                stateRecall={globalIndexRecall}
                 handleChange={handleIndexRecall}
                 text={"recall index array"}
               />

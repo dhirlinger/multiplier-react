@@ -5,7 +5,7 @@ export default function NumberInput({
   seqArrayRef,
   indexObj,
   presetObj,
-  indexRecall,
+  globalIndexRecall,
 }) {
   const [value, setValue] = useState("");
 
@@ -19,10 +19,10 @@ export default function NumberInput({
     arr[arrIndex] ? setValue(arr[arrIndex]) : setValue("");
   }, [indexObj]);
 
-  //update on presetObj update if indexRecall checkout = true
+  //update on presetObj update if globalIndexRecall checkout = true
   useEffect(() => {
     let arr = [];
-    if (indexRecall && presetObj) {
+    if (globalIndexRecall && presetObj) {
       arr = presetObj.index_array.split(",");
     } else {
       arr = seqArrayRef.current;
