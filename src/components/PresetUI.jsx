@@ -24,7 +24,6 @@ export default function PresetUI({
   const findByPresetNumRef = useRef();
 
   useEffect(() => {
-    // console.log(`data: ${JSON.stringify(data)}`);
     findByPresetNumRef.current = data.find(
       (item) => item && Number(item.preset_number) === presetNum
     );
@@ -40,7 +39,7 @@ export default function PresetUI({
     } else {
       setPresetName(findByPresetNumRef.current.name);
     }
-  }, [presetNum, data]);
+  }, [presetNum, data, setPresetName]);
 
   const handlePresetNum = (e) => {
     const value = e.target.value;
@@ -53,7 +52,6 @@ export default function PresetUI({
       //recallPreset(e);
       setInputRecalled(false);
       setPresetNum(Number(value));
-      console.log(`pre num: ${Number(value)}`);
     }
   };
 
@@ -111,12 +109,17 @@ export default function PresetUI({
           >
             RECALL
           </button>
-          <button className="round" onClick={savePreset}>
+          <button
+            className="round"
+            onClick={() => {
+              savePreset(presetNum, presetName);
+            }}
+          >
             SAVE
           </button>
           <button
             className="round border-red-600 text-red-600"
-            onClick={deletePreset}
+            onClick={() => deletePreset(presetNum, presetName)}
           >
             DELETE
           </button>

@@ -38,7 +38,7 @@ export default function App() {
   const [freqPresetNum, setFreqPresetNum] = useState("");
   const [freqPresetName, setFreqPresetName] = useState("");
   const [presetObj, setPresetObj] = useState();
-  const loginStatusRef = useRef({});
+  const loginStatusRef = useRef({ logged_in: false, user_id: null });
   const baseMultiplierParamsRef = useRef({});
 
   // initialize hook
@@ -72,11 +72,6 @@ export default function App() {
   const [displayConfirm, setDisplayConfirm] = useState(false);
   const confirmPropsRef = useRef({}); //preset num, name, action(str), filler(str)[ with/:], handler
   //`${action} Preset ${num}${filler} ${name}?`
-
-  //obj refs
-  const freqObjRef = useRef(null);
-  const indexObjRef = useRef(null);
-  const presetObjRef = useRef(null);
 
   useEffect(() => {
     const init = async () => {
@@ -136,17 +131,22 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    freqObjRef.current = freqObj;
-  }, [freqObj]);
+  // for usePresetActions
+  const freqDataRef = useRef(freqData);
+  const indexDataRef = useRef(indexData);
+  const presetDataRef = useRef(presetData);
 
   useEffect(() => {
-    indexObjRef.current = indexObj;
-  }, [indexObj]);
+    freqDataRef.current = freqData;
+  }, [freqData]);
 
   useEffect(() => {
-    presetObjRef.current = presetObj;
-  }, [presetObj]);
+    indexDataRef.current = indexData;
+  }, [indexData]);
+
+  useEffect(() => {
+    presetDataRef.current = presetData;
+  }, [presetData]);
 
   useEffect(() => {
     freqObj && setBase(freqObj.base_freq);
@@ -214,92 +214,62 @@ export default function App() {
   };
 
   const freqActions = usePresetActions({
-    objRef: freqObjRef,
     refreshObj: refreshFreqObj,
-    data: freqData,
+    dataRef: freqDataRef,
+    setData: setFreqData,
     setObj: setFreqObj,
     idField: "array_id",
     setInputRecalled: setFreqInputRecalled,
+    setDisplayConfirm,
+    savePath: "freq-arrays",
+    deletePath: "freq-arrays/delete",
+    buildSaveJSON: () => ({
+      name: freqPresetName,
+      preset_number: freqPresetNum,
+      base_freq: base,
+      multiplier: multiplier,
+      user_id: loginStatusRef.current.user_id,
+      params_json: { ...baseMultiplierParamsRef.current },
+    }),
+    post,
+    del,
+    loginStatusRef,
+    confirmPropsRef,
   });
 
   const indexActions = usePresetActions({
-    objRef: indexObjRef,
     refreshObj: refreshIndexObj,
-    data: indexData,
+    dataRef: indexDataRef,
+    setData: setIndexData,
     setObj: setIndexObj,
     idField: "array_id",
     setInputRecalled: setIndexInputRecalled,
+    setDisplayConfirm,
+    savePath: "index-arrays",
+    deletePath: "index-arrays/delete",
+    buildSaveJSON: () => ({
+      index_array: seqArrayRef.current.join(),
+      name: indexPresetName,
+      preset_number: indexPresetNum,
+      user_id: loginStatusRef.current.user_id,
+    }),
+    post,
+    del,
+    loginStatusRef,
+    confirmPropsRef,
   });
 
   const globalPresetActions = usePresetActions({
-    objRef: presetObjRef,
     refreshObj: refreshPresetObj,
-    data: presetData,
+    dataRef: presetDataRef,
+    setData: setPresetData,
     setObj: setPresetObj,
-    idField: "array_id",
+    idField: "preset_id",
     setInputRecalled: setGlobalInputRecalled,
-  });
-
-  const save = async (path, saveJSON) => {
-    const result = await post(`multiplier-api/v1/${path}`, saveJSON);
-    const setFunctions = (path) => {
-      const normalizedData = normalizePresets(result.updated_data);
-      console.log(`norm: ${JSON.stringify(normalizedData)}`);
-      if (path === "presets") {
-        setPresetData(normalizedData);
-        console.log(`result: ${JSON.stringify(normalizedData)}`);
-        setGlobalInputRecalled(true);
-      } else if (path === "freq-arrays") {
-        setFreqData(normalizedData);
-        setFreqInputRecalled(true);
-      } else if (path === "index-arrays") {
-        setIndexData(normalizedData);
-        setIndexInputRecalled(true);
-      }
-    };
-    setFunctions(path);
-  };
-
-  const confirmGlobalSave = () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    if (globalPresetNum < 1 || globalPresetNum > 50) {
-      return;
-    }
-
-    if (globalPresetName === "-EMPTY-") {
-      const handleName = () => {
-        setDisplayConfirm(false);
-      };
-      confirmPropsRef.current = {
-        action: "Name",
-        handler: handleName,
-      };
-      setDisplayConfirm(true);
-      return;
-    }
-
-    const findBy = findByPresetNum(presetData, globalPresetNum);
-
-    if (findBy !== undefined) {
-      confirmPropsRef.current = {
-        action: "Overwrite",
-        num: globalPresetNum,
-        name: globalPresetName,
-        filler: " with",
-        handler: saveGlobalPreset,
-      };
-      setDisplayConfirm(true);
-    } else {
-      saveGlobalPreset();
-    }
-  };
-
-  const saveGlobalPreset = () => {
-    setDisplayConfirm(false);
-    const globalSaveJSON = {
+    setDisplayConfirm,
+    savePath: "presets",
+    deletePath: "presets/delete",
+    buildSaveJSON: () => ({
       name: globalPresetName,
       preset_number: globalPresetNum,
       user_id: loginStatusRef.current.user_id,
@@ -321,242 +291,13 @@ export default function App() {
         multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
       },
       index_array: seqArrayRef.current.join(),
-    };
+    }),
+    post,
+    del,
+    loginStatusRef,
+    confirmPropsRef,
+  });
 
-    save("presets", globalSaveJSON);
-  };
-
-  const confirmFreqSave = () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    if (freqPresetNum < 1 || freqPresetNum > 50) {
-      return;
-    }
-
-    if (freqPresetName === "-EMPTY-") {
-      const handleName = () => {
-        setDisplayConfirm(false);
-      };
-      confirmPropsRef.current = {
-        action: "Name",
-        handler: handleName,
-      };
-      setDisplayConfirm(true);
-      return;
-    }
-
-    const findBy = findByPresetNum(freqData, freqPresetNum);
-
-    if (findBy !== undefined) {
-      confirmPropsRef.current = {
-        action: "Overwrite",
-        num: freqPresetNum,
-        name: freqPresetName,
-        filler: " with",
-        handler: saveFreqPreset,
-      };
-      setDisplayConfirm(true);
-    } else {
-      saveFreqPreset();
-    }
-  };
-
-  const saveFreqPreset = () => {
-    setDisplayConfirm(false);
-
-    const freqSaveJSON = {
-      name: freqPresetName,
-      preset_number: freqPresetNum,
-      base_freq: base,
-      multiplier: multiplier,
-      user_id: loginStatusRef.current.user_id,
-      params_json: {
-        base_max: baseMultiplierParamsRef.current.base_max,
-        base_min: baseMultiplierParamsRef.current.base_min,
-        base_step: baseMultiplierParamsRef.current.base_step,
-        multiplier_min: baseMultiplierParamsRef.current.multiplier_min,
-        multiplier_max: baseMultiplierParamsRef.current.multiplier_max,
-        multiplier_step: baseMultiplierParamsRef.current.multiplier_step,
-      },
-    };
-
-    save("freq-arrays", freqSaveJSON);
-  };
-
-  const confirmIndexSave = () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    if (indexPresetNum < 1 || indexPresetNum > 50) {
-      return;
-    }
-    if (freqPresetName === "-EMPTY-") {
-      const handleName = () => {
-        setDisplayConfirm(false);
-      };
-      confirmPropsRef.current = {
-        action: "Name",
-        handler: handleName,
-      };
-      setDisplayConfirm(true);
-      return;
-    }
-
-    const findBy = findByPresetNum(indexData, indexPresetNum);
-
-    if (findBy !== undefined) {
-      confirmPropsRef.current = {
-        action: "Overwrite",
-        num: indexPresetNum,
-        name: indexPresetName,
-        filler: " with",
-        handler: saveIndexPreset,
-      };
-      setDisplayConfirm(true);
-    } else {
-      saveIndexPreset();
-    }
-  };
-
-  const saveIndexPreset = async () => {
-    setDisplayConfirm(false);
-
-    const indexSaveJSON = {
-      index_array: seqArrayRef.current.join(),
-      name: indexPresetName,
-      preset_number: indexPresetNum,
-      user_id: loginStatusRef.current.user_id,
-    };
-
-    save("index-arrays", indexSaveJSON);
-  };
-
-  const confirmGlobalDelete = () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    const findBy = findByPresetNum(presetData, globalPresetNum);
-
-    if (findBy === undefined) {
-      return;
-    } else {
-      confirmPropsRef.current = {
-        action: "Delete",
-        num: globalPresetNum,
-        name: globalPresetName,
-        filler: ":",
-        handler: deleteGlobalPreset,
-      };
-
-      setDisplayConfirm(true);
-    }
-  };
-
-  const deleteGlobalPreset = async () => {
-    setDisplayConfirm(false);
-    const findBy = findByPresetNum(presetData, globalPresetNum);
-    const result = await del(
-      `multiplier-api/v1/presets/delete/${findBy.preset_id}`
-    );
-    console.log("Result:", result);
-    const normalizedGlobal = normalizePresets(result.updated_data);
-    setPresetData(normalizedGlobal);
-    setGlobalInputRecalled(false);
-  };
-
-  const confirmFreqDelete = () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    if (freqPresetNum === undefined) {
-      return;
-    }
-
-    const findBy = findByPresetNum(freqData, freqPresetNum);
-
-    if (findBy === undefined) {
-      return;
-    } else {
-      confirmPropsRef.current = {
-        action: "Delete",
-        num: freqPresetNum,
-        name: freqPresetName,
-        filler: ":",
-        handler: deleteFreqPreset,
-      };
-
-      setDisplayConfirm(true);
-    }
-  };
-
-  const deleteFreqPreset = async () => {
-    setDisplayConfirm(false);
-
-    const findBy = findByPresetNum(freqData, freqPresetNum);
-
-    const result = await del(
-      `multiplier-api/v1/freq-arrays/delete/${findBy.array_id}`
-    );
-    console.log("Result:", result);
-    const normalizedData = normalizePresets(result.updated_data);
-    setFreqData(normalizedData);
-    setFreqInputRecalled(false);
-  };
-
-  const confirmIndexDelete = () => {
-    if (!loginStatusRef.current.logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    if (freqPresetNum === undefined) {
-      return;
-    }
-
-    const findBy = findByPresetNum(indexData, indexPresetNum);
-
-    if (findBy === undefined) {
-      return;
-    } else {
-      confirmPropsRef.current = {
-        action: "Delete",
-        num: indexPresetNum,
-        name: indexPresetName,
-        filler: ":",
-        handler: deleteIndexPreset,
-      };
-
-      setDisplayConfirm(true);
-    }
-  };
-
-  const deleteIndexPreset = async () => {
-    setDisplayConfirm(false);
-
-    const findBy = findByPresetNum(indexData, indexPresetNum);
-
-    const result = await del(
-      `multiplier-api/v1/index-arrays/delete/${findBy.array_id}`
-    );
-    console.log("Result:", result);
-    const normalizedData = normalizePresets(result.updated_data);
-    setIndexData(normalizedData);
-    setIndexInputRecalled(false);
-  };
-
-  // useEffect(() => {
-  //   freqData.sort((a, b) => a.preset_number - b.preset_number);
-  // }, [freqData]);
-
-  // useEffect(() => {
-  //   presetData.sort((a, b) => a.preset_number - b.preset_number);
-  // }, [presetData]);
-
-  //audio api + sequencer related func's
   useEffect(() => {
     if (indexObj) {
       seqArrayRef.current = indexObj.index_array.split(",");
@@ -658,8 +399,8 @@ export default function App() {
         setPresetNum={setGlobalPresetNum}
         setPresetName={setGlobalPresetName}
         recallPreset={globalPresetActions.handleSelect}
-        savePreset={confirmGlobalSave}
-        deletePreset={confirmGlobalDelete}
+        savePreset={globalPresetActions.confirmSave}
+        deletePreset={globalPresetActions.confirmDelete}
         inputRecalled={globalInputRecalled}
         setInputRecalled={setGlobalInputRecalled}
         category={"Global"}
@@ -667,7 +408,7 @@ export default function App() {
         setGlobalFreqRecall={setGlobalFreqRecall}
         globalIndexRecall={globalIndexRecall}
         setGlobalIndexRecall={setGlobalIndexRecall}
-        obj={indexObj}
+        obj={presetObj}
       />
 
       <PresetUI
@@ -677,8 +418,8 @@ export default function App() {
         setPresetNum={setFreqPresetNum}
         setPresetName={setFreqPresetName}
         recallPreset={freqActions.handleSelect}
-        savePreset={confirmFreqSave}
-        deletePreset={confirmFreqDelete}
+        savePreset={freqActions.confirmSave}
+        deletePreset={freqActions.confirmDelete}
         inputRecalled={freqInputRecalled}
         setInputRecalled={setFreqInputRecalled}
         category={"Frequency Array"}
@@ -707,8 +448,8 @@ export default function App() {
         setPresetNum={setIndexPresetNum}
         setPresetName={setIndexPresetName}
         recallPreset={indexActions.handleSelect}
-        savePreset={confirmIndexSave}
-        deletePreset={confirmIndexDelete}
+        savePreset={indexActions.confirmSave}
+        deletePreset={indexActions.confirmDelete}
         inputRecalled={indexInputRecalled}
         setInputRecalled={setIndexInputRecalled}
         category={"Index Array"}
@@ -818,8 +559,6 @@ export default function App() {
       <p>{index}</p>
       <p>seqVoiceArr: {seqVoiceArr}</p>
       <p>{getStatus()}</p>
-      <button onClick={saveIndexPreset}>Save Index Array</button>
-      {/* <p>{JSON.stringify(indexData)}</p> */}
     </div>
   );
 }
