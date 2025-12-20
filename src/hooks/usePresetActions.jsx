@@ -109,17 +109,14 @@ export default function usePresetActions(config) {
 
   const deletePreset = useCallback(
     async (presetNum) => {
-      console.log("deletePreset called with:", presetNum);
       setDisplayConfirm(false);
 
       const findBy = findByPresetNum(dataRef.current, presetNum);
-      console.log("findBy result:", JSON.stringify(findBy));
-      console.log("idField:", idField);
-      console.log("findBy[idField]:", findBy[idField]);
+
       const result = await del(
         `multiplier-api/v1/${deletePath}/${findBy[idField]}`
       );
-      console.log("Delete result:", JSON.stringify(result));
+
       const normalizedData = normalizePresets(result.updated_data);
       setData(normalizedData);
       setInputRecalled(false);
