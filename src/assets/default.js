@@ -5,7 +5,8 @@ export const presetDefault = [
     name: "DEFAULT",
     index_array: "2,3,4,1",
     params_json: {
-      tempo: 600,
+      bpm: 120,
+      subdivision: 4,
       duration: 1,
       lowpass_q: 10,
       wave_shape: "square",

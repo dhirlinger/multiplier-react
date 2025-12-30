@@ -55,7 +55,8 @@ export default function App() {
   const [waveshape, setWaveshape] = useState("square");
   const seqArrayRef = useRef([]);
   const seqInstance = useRef(null);
-  const [seqTempo, setSeqTempo] = useState("600");
+  const [bpm, setBpm] = useState("120");
+  const [subdivision, setSubdivision] = useState("4");
   const [duration, setDuration] = useState("0.05");
   const [lowPassFreq, setLowPassFreq] = useState("15000");
   const [lowPassQ, setLowPassQ] = useState("0");
@@ -177,7 +178,8 @@ export default function App() {
     p.duration && setDuration(p.duration);
     p.lowpass_freq && setLowPassFreq(p.lowpass_freq);
     p.lowpass_q && setLowPassQ(p.lowpass_q);
-    p.tempo && setSeqTempo(p.tempo);
+    p.bpm && setBpm(p.bpm);
+    p.subdivision && setSubdivision(p.subdivision);
     if (presetObj.freq_json && globalFreqRecall) {
       setBase(presetObj.freq_json.base_freq);
       setMultiplier(presetObj.freq_json.multiplier);
@@ -274,7 +276,8 @@ export default function App() {
       preset_number: globalPresetNum,
       user_id: loginStatusRef.current.user_id,
       params_json: {
-        tempo: seqTempo,
+        bpm: bpm,
+        subdivision: subdivision,
         duration: duration,
         lowpass_q: lowPassQ,
         wave_shape: waveshape,
@@ -332,10 +335,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (seqTempo > 99 && seqTempo < 1001) {
-      seqInstance.current.tempo = seqTempo;
+    const effectiveBPM = bpm * subdivision;
+    if (effectiveBPM >= 100 && effectiveBPM <= 1800) {
+      seqInstance.current.tempo = effectiveBPM;
     }
-  }, [seqTempo]);
+  }, [bpm, subdivision]);
 
   useEffect(() => {
     seqInstance.current.noteLength = Number(duration);
@@ -524,16 +528,29 @@ export default function App() {
       </div>
 
       <div>
-        <span style={{ width: "50px" }}>tempo: </span>
-        <input
-          style={{ marginTop: "10px", marginRight: "10px", width: "50px" }}
-          type="number"
-          value={seqTempo}
-          onChange={(e) => {
-            const tempo = e.target.value;
-            setSeqTempo(tempo);
-          }}
-        ></input>
+        <div>
+          <label>BPM: </label>
+          <input
+            type="number"
+            value={bpm}
+            onChange={(e) => setBpm(e.target.value)}
+            style={{ marginTop: "10px", marginRight: "10px", width: "60px" }}
+          />
+          <label> Subdivision: </label>
+          <input
+            type="number"
+            min="1"
+            max="16"
+            value={subdivision}
+            onChange={(e) => setSubdivision(e.target.value)}
+            className={
+              bpm * subdivision >= 100 && bpm * subdivision <= 1800
+                ? "text-inherit"
+                : "text-mix"
+            }
+            style={{ width: "50px" }}
+          />
+        </div>
         <span style={{ width: "100px" }}>duration: </span>
         <input
           type="range"
