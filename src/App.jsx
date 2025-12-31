@@ -21,6 +21,7 @@ import {
 import useFetch from "./hooks/useFetch";
 import ConfirmOverlay from "./components/ConfirmOverlay";
 import usePresetActions from "./hooks/usePresetActions";
+import MidiTest from "./components/MidiTest";
 
 export default function App() {
   //preset + rest api related vars
@@ -391,6 +392,8 @@ export default function App() {
   return (
     <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
       <PatreonBanner loginStatusRef={loginStatusRef} />
+
+      <MidiTest />
 
       <AppDescription />
       {loading && <p>Loading...</p>}
