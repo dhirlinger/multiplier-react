@@ -148,7 +148,7 @@ export default class SeqVoice {
 
     if (this.audioContext == null) {
       this.audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
+        window.webkitAudioContext)({ latencyHint: "interactive" });
     }
 
     this.isRunning = true;

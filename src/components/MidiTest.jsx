@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
 import useMidi from "../hooks/useMidi";
+import { useMidiContext } from "../context/MidiContext";
 
 export default function MidiTest() {
-  const { midiEnabled, midiError, inputs, selectedInput } = useMidi();
+  const {
+    midiEnabled,
+    midiError,
+    inputs,
+    selectedInput,
+    setSelectedInput,
+    mappings,
+  } = useMidiContext();
   const [lastNote, setLastNote] = useState(null);
   const [lastCC, setLastCC] = useState(null);
 
@@ -57,7 +65,20 @@ export default function MidiTest() {
     >
       <h3>MIDI Test</h3>
       <p>Devices: {inputs.length}</p>
-      <p>Selected: {selectedInput?.name || "None"}</p>
+      <select
+        value={selectedInput?.id || ""}
+        onChange={(e) => {
+          const input = inputs.find((i) => i.id === e.target.value);
+          setSelectedInput(input);
+        }}
+      >
+        <option>Select Device</option>
+        {inputs.map((input) => (
+          <option key={input.id} value={input.id}>
+            {input.name}
+          </option>
+        ))}
+      </select>
 
       <div
         style={{

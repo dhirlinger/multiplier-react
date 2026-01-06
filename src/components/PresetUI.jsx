@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Arrow } from "./Icon";
 import PreviewPresetParameters from "./PreviewPresetParameters";
 import RecallCheckbox from "./RecallCheckbox";
+import { findByPresetNum } from "../assets/helpers";
 
 export default function PresetUI({
   data,
@@ -20,6 +21,8 @@ export default function PresetUI({
   globalIndexRecall,
   setGlobalIndexRecall,
   obj,
+  setDisplayMidiMapping,
+  setMidiMappingCategory,
 }) {
   const findByPresetNumRef = useRef();
 
@@ -37,7 +40,7 @@ export default function PresetUI({
     if (findByPresetNumRef.current === undefined) {
       setPresetName("-EMPTY-");
     } else {
-      setPresetName(findByPresetNumRef.current.name);
+      setPresetName(findByPresetNumRef.current.name || "");
     }
   }, [presetNum, data, setPresetName]);
 
@@ -123,7 +126,15 @@ export default function PresetUI({
           >
             DELETE
           </button>
-          <button className="round">MIDI</button>
+          <button
+            className="round"
+            onClick={() => {
+              setDisplayMidiMapping(true);
+              setMidiMappingCategory(category.toLowerCase().replace(" ", "_"));
+            }}
+          >
+            MIDI
+          </button>
 
           {/* GLOBAL CHECKBOXES */}
           {category === "Global" && (
@@ -185,6 +196,44 @@ export default function PresetUI({
           findByPresetNumRef={findByPresetNumRef}
           category={category}
         />
+        {/*preset grid*/}
+        <div className="grid grid-cols-10 gap-0.5 mt-2 w-full">
+          {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
+            const preset = findByPresetNum(data, num);
+            const isCurrentPreset = num === presetNum;
+            const gridClass =
+              isCurrentPreset && preset
+                ? "border-[#6DD7FF] text-[#6DD7FF]"
+                : isCurrentPreset && !preset
+                ? "border-[#6DD7FF] text-mix"
+                : preset
+                ? "border-[#E6A60D]"
+                : "border-[#E6A60D] text-mix";
+
+            return (
+              <button
+                key={num}
+                onClick={() => {
+                  setPresetNum(num);
+                  if (preset) {
+                    recallPreset(num, obj?.preset_number);
+                    setInputRecalled(true);
+                  } else {
+                    setInputRecalled(false);
+                  }
+                }}
+                className={`
+        aspect-square p-0 text-xs font-medium
+        ${gridClass}
+        border hover:bg-stone-700
+      `}
+                style={{ fontSize: "10px" }}
+              >
+                {num}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </>
   );
