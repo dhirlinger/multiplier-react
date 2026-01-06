@@ -20,7 +20,7 @@ export default function MidiMappingOverlay({
       }`}
     >
       <div
-        className={`bg-gray-900 rounded-lg shadow-lg max-w-md w-full transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D] ${
+        className={`bg-gray-900 rounded-lg shadow-lg max-w-sm w-full transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D] ${
           displayMidiMapping ? "opacity-100" : "opacity-0"
         }`}
       >
