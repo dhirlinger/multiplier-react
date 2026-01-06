@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Arrow } from "./Icon";
 import PreviewPresetParameters from "./PreviewPresetParameters";
 import RecallCheckbox from "./RecallCheckbox";
+import { findByPresetNum } from "../assets/helpers";
 
 export default function PresetUI({
   data,
@@ -198,22 +199,29 @@ export default function PresetUI({
         {/*preset grid*/}
         <div className="grid grid-cols-10 gap-0.5 mt-2 w-full">
           {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
+            const preset = findByPresetNum(data, num);
             const isCurrentPreset = num === presetNum;
+            const gridClass = isCurrentPreset
+              ? "border-[#6DD7FF] text-[#6DD7FF]"
+              : preset
+              ? "border-[#E6A60D]"
+              : "border-[#E6A60D] text-mix";
 
             return (
               <button
                 key={num}
                 onClick={() => {
-                  setInputRecalled(false);
                   setPresetNum(num);
+                  if (preset) {
+                    recallPreset(num, obj?.preset_number);
+                    setInputRecalled(true);
+                  } else {
+                    setInputRecalled(false);
+                  }
                 }}
                 className={`
         aspect-square p-0 text-xs font-medium
-        ${
-          isCurrentPreset
-            ? "border-[#6DD7FF] text-[#6DD7FF]"
-            : "border-[#E6A60D]"
-        }
+        ${gridClass}
         border hover:bg-stone-700
       `}
                 style={{ fontSize: "10px" }}

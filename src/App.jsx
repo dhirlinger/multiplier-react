@@ -18,8 +18,6 @@ import {
   filterData,
   findByPresetNum,
   scaleMidiExp,
-  scaleMidi,
-  scaleMidiRounded,
   scaleMidiToStep,
   scaleMidiToSteppedFloat,
 } from "./assets/helpers";
@@ -89,7 +87,7 @@ export default function App() {
       try {
         if (window.MultiplierAPI) {
           const data = await get("multiplier-api/v1/login-status");
-          loginStatusRef.current = data; // ✅ now properly defined
+          loginStatusRef.current = data;
         }
       } catch (err) {
         console.error(err);
