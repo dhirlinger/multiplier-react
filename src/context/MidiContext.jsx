@@ -5,6 +5,9 @@ const MidiContext = createContext();
 
 export function MidiProvider({ children, onMidiAction }) {
   const midi = useMidi();
+  const [learningMode, setLearningMode] = useState(null);
+  // null or { type: 'note', target: 'sequencer.start_stop' }
+  // or { type: 'cc', target: 'synth_params.duration' }
   const [mappings, setMappings] = useState({
     global_preset: {
       preset_recalls: {}, // Direct mappings: {"1": 60, "5": 62}
@@ -59,6 +62,8 @@ export function MidiProvider({ children, onMidiAction }) {
     setMappings((prev) => ({
       ...prev,
       sequencer: { start_stop: 60 },
+      freq_preset: { preset_recalls: { 1: 61, 2: 62, 3: 63 } },
+      synth_params: { duration: 1, lowpass_freq: 2, lowpass_q: 3 },
     }));
   }, []);
 
@@ -201,10 +206,80 @@ export function MidiProvider({ children, onMidiAction }) {
     };
   }, [midi.midiEnabled, midi.selectedInput, onMidiAction]);
 
+  // Listen for MIDI during learning mode
+  useEffect(() => {
+    if (!midi.midiEnabled || !midi.selectedInput || !learningMode) return;
+
+    const handleLearnNote = (e) => {
+      const noteNumber = e.note.number;
+      console.log(
+        "Learning - captured note:",
+        noteNumber,
+        "for target:",
+        learningMode.target
+      );
+
+      // Parse the target path (e.g., 'sequencer.start_stop')
+      const [category, field] = learningMode.target.split(".");
+
+      setMappings((prev) => ({
+        ...prev,
+        [category]: {
+          ...prev[category],
+          [field]: noteNumber,
+        },
+      }));
+
+      setLearningMode(null); // Exit learning mode
+    };
+
+    const handleLearnCC = (e) => {
+      const ccNumber = e.controller.number;
+      console.log(
+        "Learning - captured CC:",
+        ccNumber,
+        "for target:",
+        learningMode.target
+      );
+
+      // Parse the target path (e.g., 'synth_params.duration')
+      const [category, field] = learningMode.target.split(".");
+
+      setMappings((prev) => ({
+        ...prev,
+        [category]: {
+          ...prev[category],
+          [field]: ccNumber,
+        },
+      }));
+
+      setLearningMode(null); // Exit learning mode
+    };
+
+    if (learningMode.type === "note") {
+      midi.selectedInput.channels[1].addListener("noteon", handleLearnNote);
+    } else if (learningMode.type === "cc") {
+      midi.selectedInput.channels[1].addListener(
+        "controlchange",
+        handleLearnCC
+      );
+    }
+
+    return () => {
+      midi.selectedInput.channels[1].removeListener("noteon", handleLearnNote);
+      midi.selectedInput.channels[1].removeListener(
+        "controlchange",
+        handleLearnCC
+      );
+    };
+  }, [midi.midiEnabled, midi.selectedInput, learningMode]);
+
   const value = {
     ...midi,
     mappings,
     setMappings,
+    learningMode,
+    setLearningMode,
   };
 
   return <MidiContext.Provider value={value}>{children}</MidiContext.Provider>;

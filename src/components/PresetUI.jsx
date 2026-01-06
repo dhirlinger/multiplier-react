@@ -20,6 +20,8 @@ export default function PresetUI({
   globalIndexRecall,
   setGlobalIndexRecall,
   obj,
+  setDisplayMidiMapping,
+  setMidiMappingCategory,
 }) {
   const findByPresetNumRef = useRef();
 
@@ -37,7 +39,7 @@ export default function PresetUI({
     if (findByPresetNumRef.current === undefined) {
       setPresetName("-EMPTY-");
     } else {
-      setPresetName(findByPresetNumRef.current.name);
+      setPresetName(findByPresetNumRef.current.name || "");
     }
   }, [presetNum, data, setPresetName]);
 
@@ -123,7 +125,15 @@ export default function PresetUI({
           >
             DELETE
           </button>
-          <button className="round">MIDI</button>
+          <button
+            className="round"
+            onClick={() => {
+              setDisplayMidiMapping(true);
+              setMidiMappingCategory(category.toLowerCase().replace(" ", "_"));
+            }}
+          >
+            MIDI
+          </button>
 
           {/* GLOBAL CHECKBOXES */}
           {category === "Global" && (
@@ -185,6 +195,34 @@ export default function PresetUI({
           findByPresetNumRef={findByPresetNumRef}
           category={category}
         />
+        {/*preset grid*/}
+        <div className="grid grid-cols-10 gap-0.5 mt-2 w-full">
+          {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
+            const isCurrentPreset = num === presetNum;
+
+            return (
+              <button
+                key={num}
+                onClick={() => {
+                  setInputRecalled(false);
+                  setPresetNum(num);
+                }}
+                className={`
+        aspect-square p-0 text-xs font-medium
+        ${
+          isCurrentPreset
+            ? "border-[#6DD7FF] text-[#6DD7FF]"
+            : "border-[#E6A60D]"
+        }
+        border hover:bg-stone-700
+      `}
+                style={{ fontSize: "10px" }}
+              >
+                {num}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </>
   );

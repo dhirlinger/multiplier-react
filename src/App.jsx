@@ -17,11 +17,18 @@ import {
   normalizePresets,
   filterData,
   findByPresetNum,
+  scaleMidiExp,
+  scaleMidi,
+  scaleMidiRounded,
+  scaleMidiToStep,
+  scaleMidiToSteppedFloat,
 } from "./assets/helpers";
 import useFetch from "./hooks/useFetch";
 import ConfirmOverlay from "./components/ConfirmOverlay";
+import MidiMappingOverlay from "./components/MidiMappingOverlay";
 import usePresetActions from "./hooks/usePresetActions";
 import MidiTest from "./components/MidiTest";
+import { MidiProvider } from "./context/MidiContext";
 
 export default function App() {
   //preset + rest api related vars
@@ -74,6 +81,8 @@ export default function App() {
   const [displayConfirm, setDisplayConfirm] = useState(false);
   const confirmPropsRef = useRef({}); //preset num, name, action(str), filler(str)[ with/:], handler
   //`${action} Preset ${num}${filler} ${name}?`
+  const [displayMidiMapping, setDisplayMidiMapping] = useState(false);
+  const [midiMappingCategory, setMidiMappingCategory] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -371,7 +380,7 @@ export default function App() {
     console.log(`seqIns Arr: ${seqArrayRef.current}`);
   }, [indexObj, presetObj]);
 
-  const handleClick = () => {
+  const toggleSequencer = () => {
     setSeqIsPlaying(!seqIsPlaying);
     seqInstance.current.startStop(seqArrayRef.current);
   };
@@ -389,196 +398,294 @@ export default function App() {
     }
   };
 
+  // MIDI action mapping
+  const midiActions = {
+    start_stop: () => toggleSequencer(),
+
+    subdivision_recall: ({ value }) => setSubdivision(value),
+    subdivision_list_up: () => {
+      // TODO: Navigate up in subdivision list
+      console.log("Subdivision list up");
+    },
+    subdivision_list_down: () => {
+      // TODO: Navigate down in subdivision list
+      console.log("Subdivision list down");
+    },
+
+    preset_recall: ({ category, presetNum }) => {
+      if (category === "global_preset") {
+        globalPresetActions.handleSelect(presetNum, presetObj?.preset_number);
+        const findBy = findByPresetNum(presetData, presetNum);
+        setGlobalPresetNum(presetNum);
+        setGlobalPresetName(findBy?.name || "-EMPTY-");
+        setGlobalInputRecalled(true);
+      } else if (category === "freq_preset") {
+        freqActions.handleSelect(presetNum, freqObj?.preset_number);
+        const findBy = findByPresetNum(freqData, presetNum);
+        setFreqPresetNum(presetNum);
+        setFreqPresetName(findBy?.name || "-EMPTY-");
+        setFreqInputRecalled(true);
+      } else if (category === "index_preset") {
+        indexActions.handleSelect(presetNum, indexObj?.preset_number);
+        const findBy = findByPresetNum(indexData, presetNum);
+        setIndexPresetNum(presetNum);
+        setIndexPresetName(findBy?.name || "-Empty-");
+        setIndexInputRecalled(true);
+      }
+    },
+
+    preset_list_up: ({ category }) => {
+      // TODO: Navigate up in preset list
+      console.log("Preset list up:", category);
+    },
+    preset_list_down: ({ category }) => {
+      // TODO: Navigate down in preset list
+      console.log("Preset list down:", category);
+    },
+    preset_list_random: ({ category }) => {
+      // TODO: Random from preset list
+      console.log("Preset list random:", category);
+    },
+
+    multiplier_cc: ({ value }) => {
+      // TODO: Map CC value (0-127) to multiplier range
+      console.log("Multiplier CC:", value);
+    },
+    base_cc: ({ value }) => {
+      // TODO: Map CC value to base range
+      console.log("Base CC:", value);
+    },
+    duration_cc: ({ value }) => {
+      setDuration(scaleMidiToSteppedFloat(value, 0.01, 2));
+      console.log("Duration CC:", value);
+    },
+    lowpass_freq_cc: ({ value }) => {
+      setLowPassFreq(scaleMidiExp(value, 500, 15000));
+      console.log("LowPass Freq CC:", value);
+    },
+    lowpass_q_cc: ({ value }) => {
+      setLowPassQ(scaleMidiToStep(value, 0, 22));
+      console.log("LowPass Q CC:", value);
+    },
+
+    index_input_cc: ({ index, value }) => {
+      // TODO: Map CC value to index array input
+      console.log(`Index input ${index} CC:`, value);
+    },
+  };
+
+  const handleMidiAction = (action) => {
+    console.log("MIDI Action received:", action);
+    midiActions[action.type]?.(action);
+  };
+
   return (
-    <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
-      <PatreonBanner loginStatusRef={loginStatusRef} />
+    <MidiProvider onMidiAction={handleMidiAction}>
+      <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
+        <PatreonBanner loginStatusRef={loginStatusRef} />
 
-      <MidiTest />
+        <MidiTest />
 
-      <AppDescription />
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
+        <AppDescription />
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
 
-      <PresetUI
-        data={presetData}
-        presetNum={globalPresetNum}
-        presetName={globalPresetName}
-        setPresetNum={setGlobalPresetNum}
-        setPresetName={setGlobalPresetName}
-        recallPreset={globalPresetActions.handleSelect}
-        savePreset={globalPresetActions.confirmSave}
-        deletePreset={globalPresetActions.confirmDelete}
-        inputRecalled={globalInputRecalled}
-        setInputRecalled={setGlobalInputRecalled}
-        category={"Global"}
-        globalFreqRecall={globalFreqRecall}
-        setGlobalFreqRecall={setGlobalFreqRecall}
-        globalIndexRecall={globalIndexRecall}
-        setGlobalIndexRecall={setGlobalIndexRecall}
-        obj={presetObj}
-      />
-
-      <PresetUI
-        data={freqData}
-        presetNum={freqPresetNum}
-        presetName={freqPresetName}
-        setPresetNum={setFreqPresetNum}
-        setPresetName={setFreqPresetName}
-        recallPreset={freqActions.handleSelect}
-        savePreset={freqActions.confirmSave}
-        deletePreset={freqActions.confirmDelete}
-        inputRecalled={freqInputRecalled}
-        setInputRecalled={setFreqInputRecalled}
-        category={"Frequency Array"}
-        obj={freqObj}
-      />
-
-      <FreqArray
-        freqData={freqData}
-        freqObj={freqObj}
-        base={base}
-        setBase={setBase}
-        multiplier={multiplier}
-        setMultiplier={setMultiplier}
-        refreshFreqObj={refreshFreqObj}
-        presetObj={presetObj}
-        baseMultiplierParamsRef={baseMultiplierParamsRef}
-        globalFreqRecall={globalFreqRecall}
-      />
-
-      <WaveShapeSelect waveshape={waveshape} handleChange={handleShapeChange} />
-
-      <PresetUI
-        data={indexData}
-        presetNum={indexPresetNum}
-        presetName={indexPresetName}
-        setPresetNum={setIndexPresetNum}
-        setPresetName={setIndexPresetName}
-        recallPreset={indexActions.handleSelect}
-        savePreset={indexActions.confirmSave}
-        deletePreset={indexActions.confirmDelete}
-        inputRecalled={indexInputRecalled}
-        setInputRecalled={setIndexInputRecalled}
-        category={"Index Array"}
-        obj={indexObj}
-      />
-
-      <ConfirmOverlay
-        confirmProps={confirmPropsRef}
-        displayConfirm={displayConfirm}
-        onClose={() => {
-          setDisplayConfirm(false);
-        }}
-      />
-
-      <div className="flex">
-        <SeqArrInput
-          arrIndex={0}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
+        <PresetUI
+          data={presetData}
+          presetNum={globalPresetNum}
+          presetName={globalPresetName}
+          setPresetNum={setGlobalPresetNum}
+          setPresetName={setGlobalPresetName}
+          recallPreset={globalPresetActions.handleSelect}
+          savePreset={globalPresetActions.confirmSave}
+          deletePreset={globalPresetActions.confirmDelete}
+          inputRecalled={globalInputRecalled}
+          setInputRecalled={setGlobalInputRecalled}
+          category={"Global"}
+          globalFreqRecall={globalFreqRecall}
+          setGlobalFreqRecall={setGlobalFreqRecall}
           globalIndexRecall={globalIndexRecall}
+          setGlobalIndexRecall={setGlobalIndexRecall}
+          obj={presetObj}
+          setMidiMappingCategory={setMidiMappingCategory}
+          setDisplayMidiMapping={setDisplayMidiMapping}
         />
-        <SeqArrInput
-          arrIndex={1}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-        <SeqArrInput
-          arrIndex={2}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-        <SeqArrInput
-          arrIndex={3}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-        <SeqArrInput
-          arrIndex={4}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-        <SeqArrInput
-          arrIndex={5}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-        <SeqArrInput
-          arrIndex={6}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-        <SeqArrInput
-          arrIndex={7}
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-        />
-      </div>
 
-      <div>
-        <div>
-          <label>BPM: </label>
-          <input
-            type="number"
-            value={bpm}
-            onChange={(e) => setBpm(e.target.value)}
-            style={{ marginTop: "10px", marginRight: "10px", width: "60px" }}
+        <PresetUI
+          data={freqData}
+          presetNum={freqPresetNum}
+          presetName={freqPresetName}
+          setPresetNum={setFreqPresetNum}
+          setPresetName={setFreqPresetName}
+          recallPreset={freqActions.handleSelect}
+          savePreset={freqActions.confirmSave}
+          deletePreset={freqActions.confirmDelete}
+          inputRecalled={freqInputRecalled}
+          setInputRecalled={setFreqInputRecalled}
+          category={"Frequency Array"}
+          obj={freqObj}
+          setMidiMappingCategory={setMidiMappingCategory}
+          setDisplayMidiMapping={setDisplayMidiMapping}
+        />
+
+        <FreqArray
+          freqData={freqData}
+          freqObj={freqObj}
+          base={base}
+          setBase={setBase}
+          multiplier={multiplier}
+          setMultiplier={setMultiplier}
+          refreshFreqObj={refreshFreqObj}
+          presetObj={presetObj}
+          baseMultiplierParamsRef={baseMultiplierParamsRef}
+          globalFreqRecall={globalFreqRecall}
+        />
+
+        <WaveShapeSelect
+          waveshape={waveshape}
+          handleChange={handleShapeChange}
+        />
+
+        <PresetUI
+          data={indexData}
+          presetNum={indexPresetNum}
+          presetName={indexPresetName}
+          setPresetNum={setIndexPresetNum}
+          setPresetName={setIndexPresetName}
+          recallPreset={indexActions.handleSelect}
+          savePreset={indexActions.confirmSave}
+          deletePreset={indexActions.confirmDelete}
+          inputRecalled={indexInputRecalled}
+          setInputRecalled={setIndexInputRecalled}
+          category={"Index Array"}
+          obj={indexObj}
+          setMidiMappingCategory={setMidiMappingCategory}
+          setDisplayMidiMapping={setDisplayMidiMapping}
+        />
+
+        <ConfirmOverlay
+          confirmProps={confirmPropsRef}
+          displayConfirm={displayConfirm}
+          onClose={() => {
+            setDisplayConfirm(false);
+          }}
+        />
+
+        <MidiMappingOverlay
+          displayMidiMapping={displayMidiMapping}
+          onClose={() => setDisplayMidiMapping(false)}
+          category={midiMappingCategory || "global_preset"}
+        />
+
+        <div className="flex">
+          <SeqArrInput
+            arrIndex={0}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
           />
-          <label> Subdivision: </label>
-          <input
-            type="number"
-            min="1"
-            max="16"
-            value={subdivision}
-            onChange={(e) => setSubdivision(e.target.value)}
-            className={
-              bpm * subdivision >= 100 && bpm * subdivision <= 1800
-                ? "text-inherit"
-                : "text-mix"
-            }
-            style={{ width: "50px" }}
+          <SeqArrInput
+            arrIndex={1}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
+          />
+          <SeqArrInput
+            arrIndex={2}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
+          />
+          <SeqArrInput
+            arrIndex={3}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
+          />
+          <SeqArrInput
+            arrIndex={4}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
+          />
+          <SeqArrInput
+            arrIndex={5}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
+          />
+          <SeqArrInput
+            arrIndex={6}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
+          />
+          <SeqArrInput
+            arrIndex={7}
+            seqArrayRef={seqArrayRef}
+            indexObj={indexObj}
+            presetObj={presetObj}
+            globalIndexRecall={globalIndexRecall}
           />
         </div>
-        <span style={{ width: "100px" }}>duration: </span>
-        <input
-          type="range"
-          max="1.0"
-          min="0.01"
-          step="0.01"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+
+        <div>
+          <div>
+            <label>BPM: </label>
+            <input
+              type="number"
+              value={bpm}
+              onChange={(e) => setBpm(e.target.value)}
+              style={{ marginTop: "10px", marginRight: "10px", width: "60px" }}
+            />
+            <label> Subdivision: </label>
+            <input
+              type="number"
+              min="1"
+              max="16"
+              value={subdivision}
+              onChange={(e) => setSubdivision(e.target.value)}
+              className={
+                bpm * subdivision >= 100 && bpm * subdivision <= 1800
+                  ? "text-inherit"
+                  : "text-mix"
+              }
+              style={{ width: "50px" }}
+            />
+          </div>
+          <span style={{ width: "100px" }}>duration: </span>
+          <input
+            type="range"
+            max="1.0"
+            min="0.01"
+            step="0.01"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+          />
+          <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
+        </div>
+        <div style={{ marginTop: "10px" }}>
+          <button onClick={toggleSequencer}>
+            {seqIsPlaying ? "Stop" : "Play Seq"}
+          </button>
+        </div>
+        <LowPassFilter
+          value={lowPassFreq}
+          setValue={setLowPassFreq}
+          qValue={lowPassQ}
+          setQValue={setLowPassQ}
         />
-        <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
+        <p>{index}</p>
+        <p>seqVoiceArr: {seqVoiceArr}</p>
+        <p>{getStatus()}</p>
       </div>
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={handleClick}>
-          {seqIsPlaying ? "Stop" : "Play Seq"}
-        </button>
-      </div>
-      <LowPassFilter
-        value={lowPassFreq}
-        setValue={setLowPassFreq}
-        qValue={lowPassQ}
-        setQValue={setLowPassQ}
-      />
-      <p>{index}</p>
-      <p>seqVoiceArr: {seqVoiceArr}</p>
-      <p>{getStatus()}</p>
-    </div>
+    </MidiProvider>
   );
 }

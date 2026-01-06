@@ -29,3 +29,38 @@ export const sortArr = (data, setData) => {
 export const findByPresetNum = (data, presetNum) => {
   return data.find((item) => item && Number(item.preset_number) === presetNum);
 };
+
+//scale midi input
+export const scaleMidiExp = (value, outMin, outMax) => {
+  const norm = value / 127; // 0–1
+  return outMin * Math.pow(outMax / outMin, norm);
+};
+
+export const scaleMidi = (value, outMin, outMax) => {
+  return outMin + ((value - 0) * (outMax - outMin)) / (127 - 0);
+};
+
+export const scaleMidiRounded = (value, outMin, outMax) => {
+  return Math.round(outMin + (value / 127) * (outMax - outMin));
+};
+
+export const scaleMidiToStep = (value, outMin, outMax) => {
+  const steps = outMax - outMin;
+  return outMin + Math.floor((value / 127) * steps);
+};
+
+export const scaleMidiToSteppedFloat = (
+  value,
+  outMin,
+  outMax,
+  decimals = 2
+) => {
+  const v = Math.min(127, Math.max(0, value));
+
+  const factor = Math.pow(10, decimals);
+  const steps = Math.round((outMax - outMin) * factor);
+
+  const stepped = outMin + Math.floor((v / 127) * steps) / factor;
+
+  return Number(stepped.toFixed(decimals));
+};
