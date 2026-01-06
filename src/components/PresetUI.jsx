@@ -201,11 +201,14 @@ export default function PresetUI({
           {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
             const preset = findByPresetNum(data, num);
             const isCurrentPreset = num === presetNum;
-            const gridClass = isCurrentPreset
-              ? "border-[#6DD7FF] text-[#6DD7FF]"
-              : preset
-              ? "border-[#E6A60D]"
-              : "border-[#E6A60D] text-mix";
+            const gridClass =
+              isCurrentPreset && preset
+                ? "border-[#6DD7FF] text-[#6DD7FF]"
+                : isCurrentPreset && !preset
+                ? "border-[#6DD7FF] text-mix"
+                : preset
+                ? "border-[#E6A60D]"
+                : "border-[#E6A60D] text-mix";
 
             return (
               <button
