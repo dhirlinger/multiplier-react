@@ -170,7 +170,6 @@ export default function MidiMappingOverlay({
           </div>
         </div>
 
-        {/* Close Button */}
         <div className="flex justify-end p-4 space-x-3 bg-gray-700 rounded-b-lg">
           <button
             onClick={onClose}

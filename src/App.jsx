@@ -27,6 +27,8 @@ import MidiMappingOverlay from "./components/MidiMappingOverlay";
 import usePresetActions from "./hooks/usePresetActions";
 import MidiTest from "./components/MidiTest";
 import { MidiProvider } from "./context/MidiContext";
+import IndexColumnSlider from "./components/IndexColumnSlider";
+import IndexArraySliders from "./components/IndexArraySliders";
 
 export default function App() {
   //preset + rest api related vars
@@ -575,7 +577,13 @@ export default function App() {
           category={midiMappingCategory || "global_preset"}
         />
 
-        <div className="flex">
+        <IndexArraySliders
+          seqArrayRef={seqArrayRef}
+          indexObj={indexObj}
+          presetObj={presetObj}
+          globalIndexRecall={globalIndexRecall}
+        />
+        {/* <div className="flex">
           <SeqArrInput
             arrIndex={0}
             seqArrayRef={seqArrayRef}
@@ -632,7 +640,7 @@ export default function App() {
             presetObj={presetObj}
             globalIndexRecall={globalIndexRecall}
           />
-        </div>
+        </div> */}
 
         <div>
           <div>
