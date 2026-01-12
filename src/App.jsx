@@ -456,7 +456,7 @@ export default function App() {
       console.log("Base CC:", value);
     },
     duration_cc: ({ value }) => {
-      setDuration(scaleMidiToSteppedFloat(value, 0.01, 2));
+      setDuration(scaleMidiToSteppedFloat(value, 0.01, 1));
       console.log("Duration CC:", value);
     },
     lowpass_freq_cc: ({ value }) => {
