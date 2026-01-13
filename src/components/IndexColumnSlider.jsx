@@ -262,7 +262,6 @@ export default function IndexColumnSlider({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
       >
         {cells.map((cellValue, index) => {
           const isFilled =
