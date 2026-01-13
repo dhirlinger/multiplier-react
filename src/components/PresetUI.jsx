@@ -26,6 +26,8 @@ export default function PresetUI({
 }) {
   const findByPresetNumRef = useRef();
 
+  const mainColor = category === "Index Array" ? "pink-500" : "[#E6A60D]";
+
   useEffect(() => {
     findByPresetNumRef.current = data.find(
       (item) => item && Number(item.preset_number) === presetNum
@@ -207,8 +209,8 @@ export default function PresetUI({
                 : isCurrentPreset && !preset
                 ? "border-[#6DD7FF] text-mix"
                 : preset
-                ? "border-[#E6A60D]"
-                : "border-[#E6A60D] text-mix";
+                ? `border-${mainColor}`
+                : `border-${mainColor} text-mix`;
 
             return (
               <button

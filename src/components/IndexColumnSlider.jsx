@@ -213,12 +213,26 @@ export default function IndexColumnSlider({
 
     const rect = localColumnRef.current.getBoundingClientRect();
     const y = clientY - rect.top;
-    const cellHeight = rect.height / 9;
-    const cellIndex = Math.floor(y / cellHeight);
 
-    if (cellIndex >= 0 && cellIndex < cells.length) {
+    // Cell 0 = 1.75x cells 1-8 1x each = total 9.75
+    const totalFlexUnits = 9.75;
+    const unitHeight = rect.height / totalFlexUnits;
+    const cell0Height = unitHeight * 1.75;
+
+    // Check if we're in cell 0
+    if (y >= rect.height - cell0Height) {
+      return "";
+    }
+
+    // For cells 1-8
+    const remainingY = y;
+    const cellIndex = Math.floor(remainingY / unitHeight);
+
+    // cellIndex 0 = cell 8, cellIndex 1 = cell 7, etc.
+    if (cellIndex >= 0 && cellIndex < 8) {
       return cells[cellIndex];
     }
+
     return null;
   };
 
@@ -246,8 +260,8 @@ export default function IndexColumnSlider({
     <div className="flex flex-col items-center w-full">
       <button
         onClick={toggleRest}
-        className={`w-full aspect-square mb-1 border border-[#E6A60D] text-xs font-normal p-0
-          ${isRest ? "bg-[#E6A60D] text-gray-900" : "bg-maxbg text-white"}
+        className={`w-full aspect-square mb-1 border border-pink-500 text-xs font-normal p-0
+          ${isRest ? "bg-pink-400 text-gray-900" : "bg-maxbg text-white"}
           hover:bg-stone-700 transition-colors`}
       >
         REST
@@ -271,7 +285,7 @@ export default function IndexColumnSlider({
             <div
               key={index}
               className={`
-                relative flex-1 border-t border-[#E6A60D]
+                relative flex-1 border-t border-pink-500
                 ${isFilled ? columnColor : "bg-maxbg"}
                 transition-colors duration-100 ${
                   cellValue === "" && "flex-[1.75]"
@@ -291,7 +305,7 @@ export default function IndexColumnSlider({
         onChange={handleInputChange}
         maxLength={1}
         className={`w-full aspect-square mt-1 text-center text-2xl font-bold 
-    border border-[#E6A60D] text-white
+    border border-pink-500 text-white
     ${isEmpty ? "bg-black" : "bg-maxbg"}`}
       />
     </div>
