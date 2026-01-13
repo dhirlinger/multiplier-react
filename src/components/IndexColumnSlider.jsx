@@ -8,6 +8,8 @@ export default function IndexColumnSlider({
   globalIndexRecall,
   isDragging,
   setIsDragging,
+  columnRef: setColumnRef,
+  registerUpdateFunction,
 }) {
   const [value, setValue] = useState("");
   const [isRest, setIsRest] = useState(false);
@@ -17,7 +19,7 @@ export default function IndexColumnSlider({
     isRest: false,
   });
 
-  const columnRef = useRef(null);
+  const localColumnRef = useRef(null);
   const lastToggleTimeRef = useRef(0);
 
   const colors = [
@@ -34,6 +36,12 @@ export default function IndexColumnSlider({
   const columnColor = colors[arrIndex] || "bg-gray-500";
 
   const cells = [8, 7, 6, 5, 4, 3, 2, 1, ""];
+
+  useEffect(() => {
+    if (setColumnRef && localColumnRef.current) {
+      setColumnRef(localColumnRef.current);
+    }
+  }, [setColumnRef]);
 
   // Update from indexObj (preset recall)
   useEffect(() => {
@@ -74,6 +82,31 @@ export default function IndexColumnSlider({
       setValue(Number(newValue));
     }
   }, [presetObj]);
+
+  useEffect(() => {
+    if (registerUpdateFunction) {
+      registerUpdateFunction((clientY) => {
+        const cellValue = getCellValueFromPosition(clientY);
+        if (cellValue !== null) {
+          directSetValue(cellValue);
+        }
+      });
+    }
+  }, [registerUpdateFunction]);
+
+  const directSetValue = (cellValue) => {
+    if (cellValue === "") {
+      setValue("");
+      setIsRest(false);
+      setIsEmpty(true);
+      seqArrayRef.current[arrIndex] = "";
+    } else {
+      setValue(cellValue);
+      setIsRest(false);
+      setIsEmpty(false);
+      seqArrayRef.current[arrIndex] = String(cellValue);
+    }
+  };
 
   // Update the value (callable from UI and MIDI) with empty/recall after empty logic
   const updateValue = (newValue) => {
@@ -124,14 +157,6 @@ export default function IndexColumnSlider({
     }
   };
 
-  // Mouse/Touch interaction
-  const handleCellInteraction = (cellValue) => {
-    if (isRest) {
-      setIsRest(false);
-    }
-    updateValue(cellValue);
-  };
-
   const handleMouseDown = (e) => {
     setIsDragging(true);
     const cellValue = getCellValueFromPosition(e.clientY);
@@ -153,18 +178,7 @@ export default function IndexColumnSlider({
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
     if (cellValue !== null) {
-      // Direct set during drag (no toggle logic)
-      if (cellValue === "") {
-        setValue("");
-        setIsRest(false);
-        setIsEmpty(true);
-        seqArrayRef.current[arrIndex] = "";
-      } else {
-        setValue(cellValue);
-        setIsRest(false);
-        setIsEmpty(false);
-        seqArrayRef.current[arrIndex] = String(cellValue);
-      }
+      directSetValue(cellValue);
     }
   };
 
@@ -172,18 +186,7 @@ export default function IndexColumnSlider({
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
     if (cellValue !== null) {
-      // Always direct set during drag
-      if (cellValue === "") {
-        setValue("");
-        setIsRest(false);
-        setIsEmpty(true);
-        seqArrayRef.current[arrIndex] = "";
-      } else {
-        setValue(cellValue);
-        setIsRest(false);
-        setIsEmpty(false);
-        seqArrayRef.current[arrIndex] = String(cellValue);
-      }
+      directSetValue(cellValue);
     }
   };
 
@@ -204,35 +207,11 @@ export default function IndexColumnSlider({
     }
   };
 
-  const handleTouchMove = (e) => {
-    e.preventDefault();
-    if (!isDragging) return;
-    const touch = e.touches[0];
-    const cellValue = getCellValueFromPosition(touch.clientY);
-    if (cellValue !== null) {
-      if (cellValue === "") {
-        setValue("");
-        setIsRest(false);
-        setIsEmpty(true);
-        seqArrayRef.current[arrIndex] = "";
-      } else {
-        setValue(cellValue);
-        setIsRest(false);
-        setIsEmpty(false);
-        seqArrayRef.current[arrIndex] = String(cellValue);
-      }
-    }
-  };
-
-  const handleTouchEnd = () => {
-    //setIsDragging(false);
-  };
-
   // Calculate which cell value based on Y position
   const getCellValueFromPosition = (clientY) => {
-    if (!columnRef.current) return null;
+    if (!localColumnRef.current) return null;
 
-    const rect = columnRef.current.getBoundingClientRect();
+    const rect = localColumnRef.current.getBoundingClientRect();
     const y = clientY - rect.top;
     const cellHeight = rect.height / 9;
     const cellIndex = Math.floor(y / cellHeight);
@@ -276,14 +255,13 @@ export default function IndexColumnSlider({
 
       {/* Column with cells */}
       <div
-        ref={columnRef}
+        ref={localColumnRef}
         className="w-full flex flex-col cursor-pointer select-none relative h-90"
         style={{ touchAction: "none" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {cells.map((cellValue, index) => {

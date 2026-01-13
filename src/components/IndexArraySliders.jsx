@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import IndexColumnSlider from "./IndexColumnSlider";
 
 export default function IndexArraySliders({
@@ -11,7 +11,6 @@ export default function IndexArraySliders({
   const columnRefs = useRef([]);
   const updateFunctionsRef = useRef([]);
 
-  // In IndexArraySliders
   useEffect(() => {
     const handleGlobalMouseUp = () => setIsDragging(false);
 
@@ -26,8 +25,37 @@ export default function IndexArraySliders({
     return () => window.removeEventListener("touchend", handleGlobalTouchEnd);
   }, []);
 
+  const handleGlobalTouchMove = (e) => {
+    if (!isDragging) return;
+
+    const touch = e.touches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+
+    // Find which column the touch is over
+    for (let i = 0; i < columnRefs.current.length; i++) {
+      const columnRef = columnRefs.current[i];
+      if (!columnRef) continue;
+
+      const rect = columnRef.getBoundingClientRect();
+
+      if (
+        x >= rect.left &&
+        x <= rect.right &&
+        y >= rect.top &&
+        y <= rect.bottom
+      ) {
+        // Call this column's update function
+        if (updateFunctionsRef.current[i]) {
+          updateFunctionsRef.current[i](y);
+        }
+        break;
+      }
+    }
+  };
+
   return (
-    <div className="relative w-full mt-4">
+    <div className="relative w-full mt-4" onTouchMove={handleGlobalTouchMove}>
       <div className="absolute bottom-16 left-0 right-0 text-center text-sm text-white/70 pointer-events-none z-10">
         - SKIP / RECALL -
       </div>
@@ -40,6 +68,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[0] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[0] = fn)}
         />
         <IndexColumnSlider
           arrIndex={1}
@@ -49,6 +79,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[1] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[1] = fn)}
         />
         <IndexColumnSlider
           arrIndex={2}
@@ -58,6 +90,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[2] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[2] = fn)}
         />
         <IndexColumnSlider
           arrIndex={3}
@@ -67,6 +101,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[3] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[3] = fn)}
         />
         <IndexColumnSlider
           arrIndex={4}
@@ -76,6 +112,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[4] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[4] = fn)}
         />
         <IndexColumnSlider
           arrIndex={5}
@@ -85,6 +123,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[5] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[5] = fn)}
         />
         <IndexColumnSlider
           arrIndex={6}
@@ -94,6 +134,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[6] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[6] = fn)}
         />
         <IndexColumnSlider
           arrIndex={7}
@@ -103,6 +145,8 @@ export default function IndexArraySliders({
           globalIndexRecall={globalIndexRecall}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
+          columnRef={(el) => (columnRefs.current[7] = el)}
+          registerUpdateFunction={(fn) => (updateFunctionsRef.current[7] = fn)}
         />
       </div>
     </div>
