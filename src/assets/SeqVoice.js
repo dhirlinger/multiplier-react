@@ -41,7 +41,7 @@ export default class SeqVoice {
     //this.array = [...this.arrayHold];
     //check if array is empty if so tell user with callback
     if (this.array.length === 0) {
-      this.stop();
+      //this.stop();
       this.statusCallback(0);
       return;
     }
