@@ -18,7 +18,7 @@ export default function IndexColumnSlider({
     value: "",
     isRest: false,
   });
-
+  const [isHovered, setIsHovered] = useState(false);
   const localColumnRef = useRef(null);
   const lastToggleTimeRef = useRef(0);
 
@@ -261,8 +261,8 @@ export default function IndexColumnSlider({
       <button
         onClick={toggleRest}
         className={`w-full aspect-square mb-1 border border-pink-500 text-xs font-normal p-0
-          ${isRest ? "bg-pink-400 text-gray-900" : "bg-maxbg text-white"}
-          hover:bg-stone-700 transition-colors`}
+          ${isRest ? "bg-pink-500/60" : "bg-maxbg"}
+          hover:bg-pink-500/20 hover:text-stone-300 transition-colors`}
       >
         REST
       </button>
@@ -274,7 +274,11 @@ export default function IndexColumnSlider({
         style={{ touchAction: "none" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
+        onMouseEnter={(e) => {
+          setIsHovered(true);
+          handleMouseEnter(e);
+        }}
+        onMouseLeave={() => setIsHovered(false)}
         onTouchStart={handleTouchStart}
       >
         {cells.map((cellValue, index) => {
@@ -285,16 +289,14 @@ export default function IndexColumnSlider({
             <div
               key={index}
               className={`
-                relative flex-1 border-t border-pink-500
+                relative flex-1 border-t-[.5px] border-pink-500
                 ${isFilled ? columnColor : "bg-maxbg"}
+                ${isHovered && !isFilled && "bg-maxbg/70"}
                 transition-colors duration-100 ${
-                  cellValue === "" && "flex-[1.75]"
+                  cellValue === "" && "flex-[1.75] active:bg-pink-500/20"
                 }
               `}
-            >
-              {/* horizontal line indicator at top of each cell */}
-              <div className="absolute top-0 left-0 right-0 h-0 bg-[#E6A60D]" />
-            </div>
+            ></div>
           );
         })}
       </div>
