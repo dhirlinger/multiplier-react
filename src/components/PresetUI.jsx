@@ -26,7 +26,32 @@ export default function PresetUI({
 }) {
   const findByPresetNumRef = useRef();
 
-  const mainColor = category === "Index Array" ? "pink-500" : "[#E6A60D]";
+  const getColorClasses = () => {
+    if (category === "Index Array") {
+      return {
+        border: "border-pink-500",
+        text: "text-pink-500",
+        selectedBorder: "border-[#6DD7FF]",
+        selectedText: "text-[#6DD7FF]",
+      };
+    }
+    if (category === "Frequency Array") {
+      return {
+        border: "border-cyan-400",
+        text: "text-cyan-400",
+        selectedBorder: "border-pink-500",
+        selectedText: "text-pink-500",
+      };
+    }
+    return {
+      border: "border-[#E6A60D]",
+      text: "text-[#E6A60D]",
+      selectedBorder: "border-[#6DD7FF]",
+      selectedText: "text-[#6DD7FF]",
+    };
+  };
+
+  const colors = getColorClasses();
 
   useEffect(() => {
     findByPresetNumRef.current = data.find(
@@ -107,7 +132,7 @@ export default function PresetUI({
         </h3>
         <div className="flex max-w-sm min-w-xs flex-wrap justify-between mb-1.5">
           <button
-            className="round"
+            className={`${colors.border} round`}
             onClick={() => {
               recallPreset(presetNum, obj?.preset_number);
             }}
@@ -115,7 +140,7 @@ export default function PresetUI({
             RECALL
           </button>
           <button
-            className="round"
+            className={`${colors.border} round`}
             onClick={() => {
               savePreset(presetNum, presetName);
             }}
@@ -129,7 +154,7 @@ export default function PresetUI({
             DELETE
           </button>
           <button
-            className="round"
+            className={`${colors.border} round`}
             onClick={() => {
               setDisplayMidiMapping(true);
               setMidiMappingCategory(category.toLowerCase().replace(" ", "_"));
@@ -159,7 +184,9 @@ export default function PresetUI({
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
-              className={`preset-num w-1/6 aspect-square border border-[#E6A60D] text-xl placeholder:text-xl text-center ${
+              className={`preset-num w-1/6 aspect-square border ${
+                colors.border
+              } text-xl placeholder:text-xl text-center ${
                 inputRecalled ? "text-inherit" : "text-mix"
               }`}
               placeholder="50"
@@ -171,14 +198,16 @@ export default function PresetUI({
               //onInput={handleInput}
             ></input>
             <button
-              className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D]"
+              className={`flex items-center w-1/6 aspect-square p-0 border ${colors.border} ${colors.text}`}
               onClick={handleLeftArrow}
             >
               <Arrow />
             </button>
             <input
               type="text"
-              className={`preset-name w-1/2 border border-[#E6A60D] text-xl placeholder:text-xl text-center ${
+              className={`preset-name w-1/2 border ${
+                colors.border
+              } text-xl placeholder:text-xl text-center ${
                 inputRecalled ? "text-inherit" : "text-mix"
               }`}
               placeholder="PRESET NAME"
@@ -187,7 +216,7 @@ export default function PresetUI({
               maxLength={15}
             ></input>
             <button
-              className="flex items-center w-1/6 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] scale-x-[-1]"
+              className={`flex items-center w-1/6 aspect-square p-0 border ${colors.border} ${colors.text} scale-x-[-1]`}
               onClick={handleRightArrow}
             >
               <Arrow />
@@ -197,6 +226,7 @@ export default function PresetUI({
         <PreviewPresetParameters
           findByPresetNumRef={findByPresetNumRef}
           category={category}
+          colors={colors}
         />
         {/*preset grid*/}
         <div className="grid grid-cols-10 gap-0.5 mt-2 w-full">
@@ -205,12 +235,12 @@ export default function PresetUI({
             const isCurrentPreset = num === presetNum;
             const gridClass =
               isCurrentPreset && preset
-                ? "border-[#6DD7FF] text-[#6DD7FF]"
+                ? `${colors.selectedBorder} ${colors.selectedText}`
                 : isCurrentPreset && !preset
-                ? "border-[#6DD7FF] text-mix"
+                ? `${colors.selectedBorder} text-mix`
                 : preset
-                ? `border-${mainColor}`
-                : `border-${mainColor} text-mix`;
+                ? colors.border
+                : `${colors.border} text-mix`;
 
             return (
               <button
