@@ -61,6 +61,23 @@ export default function BaseMultiplier({
 
   const handleBaseChange = (e) => {
     let inputValue = e.target.value;
+
+    if (inputValue === "") {
+      setBase("");
+      return;
+    }
+
+    // positive numbers starting with 1-9 + optional decimals
+    if (!/^[1-9]\d*\.?\d*$/.test(inputValue)) {
+      return;
+    }
+
+    // 3 decimal places if more are entered
+    const parts = inputValue.split(".");
+    if (parts[1] && parts[1].length > 3) {
+      inputValue = parts[0] + "." + parts[1].substring(0, 3);
+    }
+
     setBase(inputValue);
   };
 

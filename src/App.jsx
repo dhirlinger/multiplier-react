@@ -35,6 +35,8 @@ export default function App() {
   const [freqData, setFreqData] = useState([]);
   const [indexData, setIndexData] = useState([]);
   const [presetData, setPresetData] = useState([]);
+  const [localLoading, setLocalLoading] = useState(true);
+  const [localError, setLocalError] = useState(null);
   const [freqObj, setFreqObj] = useState();
   const [indexObj, setIndexObj] = useState();
   const [indexPresetName, setIndexPresetName] = useState("");
