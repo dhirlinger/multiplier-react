@@ -44,7 +44,7 @@ export default function FreqArray({
   }
 
   return (
-    <div className="border-[.5px] p-2 mt-2">
+    <div className="border-[.5px] border-cyan-400 bg-maxbg p-2 mt-2">
       {/* <div className="grid grid-cols-2">
         <div>
           <span style={{ fontWeight: "bold" }}>Base Freq: </span>
@@ -56,12 +56,14 @@ export default function FreqArray({
         </div>
       </div> */}
       <div>
+        <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
         <div className="h-[72.5px]">
           <span style={{ fontWeight: "bold" }}>In Hertz: </span>
           {base && multiplier
             ? createFreqArray().join(", ")
             : "set base and multiplier"}
         </div>
+        <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
         <div className="h-[48.5px]">
           {base && multiplier ? (
             <>
@@ -75,7 +77,7 @@ export default function FreqArray({
           )}
         </div>
       </div>
-
+      <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
       <BaseMultiplier
         base={base}
         setBase={setBase}

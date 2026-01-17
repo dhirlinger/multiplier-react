@@ -346,7 +346,7 @@ export default function App() {
 
   useEffect(() => {
     const effectiveBPM = bpm * subdivision;
-    if (effectiveBPM >= 100 && effectiveBPM <= 1800) {
+    if (effectiveBPM >= 20 && effectiveBPM <= 1800) {
       seqInstance.current.tempo = effectiveBPM;
     }
   }, [bpm, subdivision]);
@@ -368,7 +368,9 @@ export default function App() {
   }, [lowPassQ]);
 
   useEffect(() => {
-    seqInstance.current.base = base;
+    if (base && base !== "") {
+      seqInstance.current.base = base;
+    }
   }, [base]);
 
   useEffect(() => {
@@ -659,7 +661,7 @@ export default function App() {
               value={subdivision}
               onChange={(e) => setSubdivision(e.target.value)}
               className={
-                bpm * subdivision >= 100 && bpm * subdivision <= 1800
+                bpm * subdivision >= 20 && bpm * subdivision <= 1800
                   ? "text-inherit"
                   : "text-mix"
               }

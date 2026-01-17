@@ -29,16 +29,16 @@ export default function PresetUI({
   const getColorClasses = () => {
     if (category === "Index Array") {
       return {
-        border: "border-pink-500",
-        text: "text-pink-500",
+        border: "border-pink-500/90",
+        text: "text-pink-500/90",
         selectedBorder: "border-[#6DD7FF]",
         selectedText: "text-[#6DD7FF]",
       };
     }
     if (category === "Frequency Array") {
       return {
-        border: "border-cyan-400",
-        text: "text-cyan-400",
+        border: "border-cyan-500",
+        text: "text-cyan-500",
         selectedBorder: "border-pink-500",
         selectedText: "text-pink-500",
       };

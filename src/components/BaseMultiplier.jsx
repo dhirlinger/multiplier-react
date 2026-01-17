@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { midiNoteToFrequency, noteNameToMidi } from "../assets/noteConversions";
-
+import { Arrow } from "./Icon";
+import BaseMultiplierUI from "./BaseMultiplerUI";
 export default function BaseMultiplier({
   base,
   setBase,
@@ -117,55 +118,35 @@ export default function BaseMultiplier({
   };
 
   return (
-    <div style={{ margin: "15px" }}>
-      <label htmlFor="base">Base: </label>
-      <input
-        id="base"
-        type="text" // use text to fully control input
+    <div id="base-multiplier-container">
+      <BaseMultiplierUI
         value={base}
-        maxLength={10}
-        style={{ width: "100px", fontSize: "36px" }}
-        onChange={handleBaseChange}
-      ></input>
-      <input
-        type="range"
-        max={baseMax}
+        setValue={setBase}
+        handleValueChange={handleBaseChange}
         min={baseMin}
+        max={baseMax}
         step={baseStep}
-        value={base}
-        onChange={(e) => setBase(e.target.value)}
+        setMin={setBaseMin}
+        setMax={setBaseMax}
+        setStep={setBaseStep}
+        category={"base"}
       />
-      <div>
-        <div>
-          <label htmlFor="base-min">base min: </label>
-          <input
-            id="base-min"
-            type="text" // use text to fully control input
-            value={baseMin}
-            // maxLength={10}
-            style={{ width: "50px", fontSize: "14px" }}
-            onChange={handleBaseMinChange}
-          ></input>
-          <label htmlFor="base-max">base max: </label>
-          <input
-            id="base-max"
-            type="text" // use text to fully control input
-            value={baseMax}
-            // maxLength={10}
-            style={{ width: "50px", fontSize: "14px" }}
-            onChange={handleBaseMaxChange}
-          ></input>
-          <label htmlFor="base-step">base step: </label>
-          <input
-            id="base-step"
-            type="text" // use text to fully control input
-            value={baseStep}
-            // maxLength={10}
-            style={{ width: "50px", fontSize: "14px" }}
-            onChange={handleBaseStepChange}
-          ></input>
-        </div>
-        <span style={{ width: "100px" }}>Multiplier: </span>
+      <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
+      <BaseMultiplierUI
+        value={multiplier}
+        setValue={setMultiplier}
+        handleValueChange={handleMultiplierChange}
+        min={multiplierMin}
+        max={multiplierMax}
+        step={multiplierStep}
+        setMin={setMultiplierMin}
+        setMax={setMultiplierMax}
+        setStep={setMultiplierStep}
+        category={"multiplier"}
+      />
+      {/* <label htmlFor="multipler" className="block font-bold">
+          Multiplier
+        </label>
         <input
           type="range"
           max={multiplierMax}
@@ -202,9 +183,9 @@ export default function BaseMultiplier({
             // maxLength={10}
             style={{ width: "50px", fontSize: "14px" }}
             onChange={handleMultiplierStepChange}
-          ></input>
-        </div>
-      </div>
+          ></input> */}
+      {/* </div>
+      </div> */}
     </div>
   );
 }

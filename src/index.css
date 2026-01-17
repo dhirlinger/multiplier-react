@@ -39,13 +39,37 @@
     @apply bg-maxbg;
   }
   button.round {
-    @apply m-0 mr-[4px] rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border text-lg font-sans;
+    @apply m-0 mr-1 rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border text-lg font-sans;
   }
   input,
   select {
     border: solid 0.5px;
     border-radius: 3px;
     background-color: rgb(59, 59, 59);
+  }
+  #base-multiplier-container input[type="text"] {
+    @apply border-cyan-400;
+  }
+
+  #base-multiplier-container input[type="range"] {
+    @apply h-14 appearance-none border-0;
+  }
+
+  #base-multiplier-container input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none w-14 h-14 bg-cyan-400 cursor-pointer rounded-full;
+  }
+
+  #base-multiplier-container input[type="range"]::-moz-range-thumb {
+    @apply w-14 h-14 bg-cyan-400 cursor-pointer rounded-full border-0;
+  }
+
+  #base-multiplier-container
+    input[type="range"]::-webkit-slider-runnable-track {
+    @apply h-14 bg-cyan-400/50 rounded;
+  }
+
+  #base-multiplier-container input[type="range"]::-moz-range-track {
+    @apply h-14 bg-cyan-400/50 rounded;
   }
 
   .patreon-text a {

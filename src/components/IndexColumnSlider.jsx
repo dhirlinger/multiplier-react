@@ -112,7 +112,7 @@ export default function IndexColumnSlider({
   const updateValue = (newValue) => {
     if (newValue === "") {
       const now = Date.now();
-      if (now - lastToggleTimeRef.current < 300) {
+      if (now - lastToggleTimeRef.current < 5) {
         return; // Ignore rapid successive calls within 300ms
       }
       lastToggleTimeRef.current = now;
@@ -260,7 +260,7 @@ export default function IndexColumnSlider({
     <div className="flex flex-col items-center w-full">
       <button
         onClick={toggleRest}
-        className={`w-full aspect-square mb-1 border border-pink-500 text-xs font-normal p-0
+        className={`w-full aspect-square mb-1 border border-pink-500/90 text-xs font-normal p-0
           ${isRest ? "bg-pink-500/60" : "bg-maxbg"}
           hover:bg-pink-500/20 hover:text-stone-300 transition-colors`}
       >
@@ -289,7 +289,7 @@ export default function IndexColumnSlider({
             <div
               key={index}
               className={`
-                relative flex-1 border-t-[.5px] border-pink-500
+                relative flex-1 border-t-[.5px] border-pink-500/90
                 ${isFilled ? columnColor : "bg-maxbg"}
                 ${isHovered && !isFilled && "bg-maxbg/70"}
                 transition-colors duration-100 ${
@@ -307,7 +307,7 @@ export default function IndexColumnSlider({
         onChange={handleInputChange}
         maxLength={1}
         className={`w-full aspect-square mt-1 text-center text-2xl font-bold 
-    border border-pink-500 text-white
+    border border-pink-500/90 text-white
     ${isEmpty ? "bg-black" : "bg-maxbg"}`}
       />
     </div>
