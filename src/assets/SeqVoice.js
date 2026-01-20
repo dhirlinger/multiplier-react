@@ -86,27 +86,6 @@ export default class SeqVoice {
     const osc = this.audioContext.createOscillator();
     const lowpass = this.audioContext.createBiquadFilter();
     const env = this.audioContext.createGain();
-    // if (this.array[beatNumber] === "R" || this.array[beatNumber] === "r")
-    //   this.array[beatNumber] = 0;
-
-    // console.log(
-    //   `beatsPerBar: ${this.beatsPerBar} array L: ${this.array.length} beatNum: ${this.array[beatNumber]}`
-    // );
-
-    // !this.array[beatNumber]
-    //   ? (this.array[beatNumber] = 0)
-    //   : this.array[beatNumber];
-
-    // if (!this.array[beatNumber]) {
-    //   console.log(`!arr[beatNum]: ${this.array[beatNumber]}`);
-    //   if (beatNumber <= this.array.length) {
-    //     this.array[beatNumber] = 0;
-    //     console.log("assign 0");
-    //   } else {
-    //     this.currentQuarterNote = 1;
-    //     return;
-    //   }
-    // }
 
     //do math for freq but avoid out of range values and errors
     if (this.array[beatNumber] == 1) {
