@@ -55,7 +55,7 @@ export default function IndexArraySliders({
   };
 
   return (
-    <div className="relative w-full mt-4" onTouchMove={handleGlobalTouchMove}>
+    <div className="relative w-full" onTouchMove={handleGlobalTouchMove}>
       <div className="absolute bottom-16 left-0 right-0 text-center text-sm text-white/70 pointer-events-none z-10">
         - SKIP / RECALL -
       </div>
