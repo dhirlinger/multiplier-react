@@ -29,6 +29,7 @@ import MidiTest from "./components/MidiTest";
 import { MidiProvider } from "./context/MidiContext";
 import IndexColumnSlider from "./components/IndexColumnSlider";
 import IndexArraySliders from "./components/IndexArraySliders";
+import Toggle from "./components/Toggle";
 
 export default function App() {
   //preset + rest api related vars
@@ -52,7 +53,7 @@ export default function App() {
   // initialize hook
   const { get, post, del, loading, error } = useFetch(
     window.MultiplierAPI?.restUrl || "http://192.168.1.195:8888/wp-json/",
-    window.MultiplierAPI?.nonce || ""
+    window.MultiplierAPI?.nonce || "",
   );
 
   //preset ui input text control
@@ -83,6 +84,9 @@ export default function App() {
   //`${action} Preset ${num}${filler} ${name}?`
   const [displayMidiMapping, setDisplayMidiMapping] = useState(false);
   const [midiMappingCategory, setMidiMappingCategory] = useState(null);
+
+  // Sequencer update mode: 'immediate' or 'next_loop'
+  const [updateMode, setUpdateMode] = useState("immediate");
 
   useEffect(() => {
     const init = async () => {
@@ -118,7 +122,7 @@ export default function App() {
         : setFreqData(freqArrDefault);
       //get index arrays for current user
       const indexArrJSON = await get(
-        `multiplier-api/v1/index-arrays/${userID}`
+        `multiplier-api/v1/index-arrays/${userID}`,
       );
       setIndexData(indexArrJSON);
       //get presets for current user
@@ -173,8 +177,8 @@ export default function App() {
     freqHandlerParams.presetNum = freqPresetNum;
     // freqHandlerParams.refreshObj = refreshFreqObj;
     freqHandlerParams.data = freqData;
-    (freqHandlerParams.preset_id = "array_id"),
-      (freqHandlerParams.setObj = setFreqObj);
+    ((freqHandlerParams.preset_id = "array_id"),
+      (freqHandlerParams.setObj = setFreqObj));
     freqHandlerParams.filterData = filterData;
   }, [freqObj, freqPresetNum, freqObj, freqData]);
 
@@ -196,7 +200,12 @@ export default function App() {
       freqInputRecalled && setFreqInputRecalled(false);
     }
     if (presetObj.index_array && globalIndexRecall) {
-      seqArrayRef.current = presetObj.index_array.split(",");
+      const newArray = presetObj.index_array.split(",");
+      seqArrayRef.current = newArray;
+      // Use updateArray to properly handle playback position
+      if (seqInstance.current) {
+        seqInstance.current.updateArray(newArray);
+      }
       indexInputRecalled && setIndexInputRecalled(false);
     }
   }, [globalInputRecalled, presetObj]);
@@ -209,7 +218,12 @@ export default function App() {
   const refreshIndexObj = () => {
     if (indexObj) {
       const refreshedObj = { ...indexObj };
-      seqArrayRef.current = refreshedObj.index_array.split(",");
+      const newArray = refreshedObj.index_array.split(",");
+      seqArrayRef.current = newArray;
+      // Use updateArray to properly handle playback position
+      if (seqInstance.current) {
+        seqInstance.current.updateArray(newArray);
+      }
       setIndexObj(refreshedObj);
     }
   };
@@ -313,7 +327,12 @@ export default function App() {
 
   useEffect(() => {
     if (indexObj) {
-      seqArrayRef.current = indexObj.index_array.split(",");
+      const newArray = indexObj.index_array.split(",");
+      seqArrayRef.current = newArray;
+      // Use updateArray to properly handle playback position
+      if (seqInstance.current) {
+        seqInstance.current.updateArray(newArray);
+      }
     }
   }, [indexObj]);
 
@@ -327,6 +346,13 @@ export default function App() {
       if (code === 0) setSeqIsPlaying(false);
     };
   }, []);
+
+  // Sync update mode with SeqVoice instance
+  useEffect(() => {
+    if (seqInstance.current) {
+      seqInstance.current.setUpdateMode(updateMode);
+    }
+  }, [updateMode]);
 
   //save this function for visual sync later
   // useEffect(() => {
@@ -390,6 +416,20 @@ export default function App() {
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
   };
+
+  // Handler for update mode toggle
+  const handleUpdateModeChange = (mode) => {
+    setUpdateMode(mode);
+  };
+
+  // Function to update array via SeqVoice.updateArray() - pass to child components
+  const updateSeqArray = (newArray) => {
+    seqArrayRef.current = newArray;
+    if (seqInstance.current) {
+      seqInstance.current.updateArray(newArray);
+    }
+  };
+
   // status codes/messages from SeqVoice.js
   const getStatus = () => {
     switch (statusCode) {
@@ -579,70 +619,22 @@ export default function App() {
           category={midiMappingCategory || "global_preset"}
         />
 
+        {/* Update Mode Toggle */}
+        <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">
+          <Toggle
+            handleChange={handleUpdateModeChange}
+            updateMode={updateMode}
+            id="mode"
+          />
+        </div>
+
         <IndexArraySliders
           seqArrayRef={seqArrayRef}
           indexObj={indexObj}
           presetObj={presetObj}
           globalIndexRecall={globalIndexRecall}
+          updateSeqArray={updateSeqArray}
         />
-        {/* <div className="flex">
-          <SeqArrInput
-            arrIndex={0}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={1}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={2}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={3}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={4}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={5}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={6}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-          <SeqArrInput
-            arrIndex={7}
-            seqArrayRef={seqArrayRef}
-            indexObj={indexObj}
-            presetObj={presetObj}
-            globalIndexRecall={globalIndexRecall}
-          />
-        </div> */}
 
         <div>
           <div>
@@ -693,6 +685,7 @@ export default function App() {
         <p>{index}</p>
         <p>seqVoiceArr: {seqVoiceArr}</p>
         <p>{getStatus()}</p>
+        <p className="text-xs text-gray-400">Update Mode: {updateMode}</p>
       </div>
     </MidiProvider>
   );

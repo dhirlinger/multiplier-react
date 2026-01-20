@@ -53,7 +53,7 @@ export const scaleMidiToSteppedFloat = (
   value,
   outMin,
   outMax,
-  decimals = 2
+  decimals = 2,
 ) => {
   const v = Math.min(127, Math.max(0, value));
 
@@ -63,4 +63,11 @@ export const scaleMidiToSteppedFloat = (
   const stepped = outMin + Math.floor((v / 127) * steps) / factor;
 
   return Number(stepped.toFixed(decimals));
+};
+
+export const capitalizeFirstLetter = (string) => {
+  if (typeof string !== "string" || string.length === 0) {
+    return "";
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };

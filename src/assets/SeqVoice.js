@@ -22,6 +22,21 @@ export default class SeqVoice {
     this.qValue = 0;
     this.base = 110;
     this.multiplier = 2;
+
+    // Update mode: 'immediate' or 'next_loop'
+    this.updateMode = "immediate";
+  }
+
+  /**
+   * Set the update mode for array changes
+   * @param {string} mode - 'immediate' or 'next_loop'
+   */
+  setUpdateMode(mode) {
+    if (mode === "immediate" || mode === "next_loop") {
+      this.updateMode = mode;
+    } else {
+      console.warn("Invalid update mode. Use 'immediate' or 'next_loop'");
+    }
   }
 
   nextNote() {
@@ -37,11 +52,15 @@ export default class SeqVoice {
   }
 
   scheduleNote(beatNumber, time) {
-    this.array = this.arrayHold.filter(Boolean);
-    //this.array = [...this.arrayHold];
+    // In immediate mode, update array every beat
+    // In next_loop mode, only update array when we're at beat 0
+    if (this.updateMode === "immediate" || beatNumber === 0) {
+      this.array = this.arrayHold.filter(Boolean);
+    }
+
     //check if array is empty if so tell user with callback
     if (this.array.length === 0) {
-      //this.stop();
+      this.stop();
       this.statusCallback(0);
       return;
     }
@@ -50,15 +69,14 @@ export default class SeqVoice {
     //console.log(`arrHold: ${this.arrayHold}`);
     this.beatsPerBar = this.array.length;
 
-    //guarding against array being out of bounds
+    //guarding against array being out of bounds - use modulo wraparound
     if (beatNumber >= this.array.length) {
-      console.warn("Beat number out of bounds", {
+      console.warn("Beat number out of bounds, wrapping with modulo", {
         beatNumber,
         arrayLength: this.array.length,
       });
-      beatNumber = this.array[0];
-      this.currentQuarterNote = 0;
-      return;
+      beatNumber = beatNumber % this.array.length;
+      this.currentQuarterNote = beatNumber;
     }
 
     // push the note on the queue, even if we're not playing.
@@ -147,8 +165,9 @@ export default class SeqVoice {
     if (this.isRunning) return;
 
     if (this.audioContext == null) {
-      this.audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)({ latencyHint: "interactive" });
+      this.audioContext = new (
+        window.AudioContext || window.webkitAudioContext
+      )();
     }
 
     this.isRunning = true;
@@ -170,6 +189,7 @@ export default class SeqVoice {
       this.stop();
     } else {
       this.array = array;
+      this.arrayHold = array;
       this.start();
     }
   }

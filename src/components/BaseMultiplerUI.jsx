@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Arrow } from "./Icon";
+import { capitalizeFirstLetter } from "../assets/helpers";
 
 export default function BaseMultiplierUI({
   value,
@@ -20,13 +21,6 @@ export default function BaseMultiplierUI({
       setStepOutOfBounds(true);
     } else setStepOutOfBounds(false);
   }, [setStepOutOfBounds, min, max, step]);
-
-  function capitalizeFirstLetter(string) {
-    if (typeof string !== "string" || string.length === 0) {
-      return "";
-    }
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 
   const getInputLimit = () => {
     if (category === "base") {
