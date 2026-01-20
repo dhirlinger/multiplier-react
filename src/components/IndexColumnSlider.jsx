@@ -112,7 +112,7 @@ export default function IndexColumnSlider({
   const updateValue = (newValue) => {
     if (newValue === "") {
       const now = Date.now();
-      if (now - lastToggleTimeRef.current < 5) {
+      if (now - lastToggleTimeRef.current < 300) {
         return; // Ignore rapid successive calls within 300ms
       }
       lastToggleTimeRef.current = now;

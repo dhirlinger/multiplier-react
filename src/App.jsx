@@ -204,7 +204,7 @@ export default function App() {
       seqArrayRef.current = newArray;
       // Use updateArray to properly handle playback position
       if (seqInstance.current) {
-        seqInstance.current.updateArray(newArray);
+        seqInstance.current.arrayHold = newArray;
       }
       indexInputRecalled && setIndexInputRecalled(false);
     }
@@ -222,7 +222,7 @@ export default function App() {
       seqArrayRef.current = newArray;
       // Use updateArray to properly handle playback position
       if (seqInstance.current) {
-        seqInstance.current.updateArray(newArray);
+        seqInstance.current.arrayHold = newArray;
       }
       setIndexObj(refreshedObj);
     }
@@ -331,7 +331,7 @@ export default function App() {
       seqArrayRef.current = newArray;
       // Use updateArray to properly handle playback position
       if (seqInstance.current) {
-        seqInstance.current.updateArray(newArray);
+        seqInstance.current.arrayHold = newArray;
       }
     }
   }, [indexObj]);
@@ -426,7 +426,7 @@ export default function App() {
   const updateSeqArray = (newArray) => {
     seqArrayRef.current = newArray;
     if (seqInstance.current) {
-      seqInstance.current.updateArray(newArray);
+      seqInstance.current.arrayHold = newArray;
     }
   };
 
