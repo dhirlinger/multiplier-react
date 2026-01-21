@@ -10,6 +10,7 @@ export default function IndexColumnSlider({
   setIsDragging,
   columnRef: setColumnRef,
   registerUpdateFunction,
+  lastColumnRef,
 }) {
   const [value, setValue] = useState("");
   const [isRest, setIsRest] = useState(false);
@@ -21,6 +22,7 @@ export default function IndexColumnSlider({
   const [isHovered, setIsHovered] = useState(false);
   const localColumnRef = useRef(null);
   const lastToggleTimeRef = useRef(0);
+  const lastCellValueRef = useRef(null);
 
   const colors = [
     "bg-blue-300", // 0
@@ -94,13 +96,36 @@ export default function IndexColumnSlider({
     }
   }, [registerUpdateFunction]);
 
-  const directSetValue = (cellValue) => {
-    if (cellValue === "") {
+  useEffect(() => {
+    if (!isDragging) {
+      lastCellValueRef.current = null;
+    }
+  }, [isDragging]);
+
+  const toggleCell0 = () => {
+    if (isEmpty) {
+      // Restore previous state
+      setValue(previousState.value);
+      setIsRest(previousState.isRest);
+      setIsEmpty(false);
+      seqArrayRef.current[arrIndex] = previousState.isRest
+        ? "R"
+        : String(previousState.value);
+    } else {
+      // Blank out
+      setPreviousState({ value, isRest });
       setValue("");
       setIsRest(false);
       setIsEmpty(true);
       seqArrayRef.current[arrIndex] = "";
+    }
+  };
+
+  const directSetValue = (cellValue) => {
+    if (cellValue === "") {
+      toggleCell0();
     } else {
+      // Normal value (1-8)
       setValue(cellValue);
       setIsRest(false);
       setIsEmpty(false);
@@ -112,27 +137,12 @@ export default function IndexColumnSlider({
   const updateValue = (newValue) => {
     if (newValue === "") {
       const now = Date.now();
-      if (now - lastToggleTimeRef.current < 300) {
+      if (now - lastToggleTimeRef.current < 150) {
         return; // Ignore rapid successive calls within 300ms
       }
       lastToggleTimeRef.current = now;
 
-      if (isEmpty) {
-        // Restore
-        setValue(previousState.value);
-        setIsRest(previousState.isRest);
-        setIsEmpty(false);
-        seqArrayRef.current[arrIndex] = previousState.isRest
-          ? "R"
-          : String(previousState.value);
-      } else {
-        // Blank
-        setPreviousState({ value, isRest });
-        setValue("");
-        setIsRest(false);
-        setIsEmpty(true);
-        seqArrayRef.current[arrIndex] = "";
-      }
+      toggleCell0();
     } else {
       // Normal value update (1-8)
       setValue(newValue);
@@ -177,7 +187,9 @@ export default function IndexColumnSlider({
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
-    if (cellValue !== null) {
+    if (cellValue !== null && cellValue !== lastCellValueRef.current) {
+      console.log(`mouseMove cellValue: ${cellValue}`);
+      lastCellValueRef.current = cellValue;
       directSetValue(cellValue);
     }
   };
@@ -185,6 +197,7 @@ export default function IndexColumnSlider({
   const handleMouseEnter = (e) => {
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
+    console.log(`mouseEnter cellValue: ${cellValue}`);
     if (cellValue !== null) {
       directSetValue(cellValue);
     }
@@ -278,7 +291,10 @@ export default function IndexColumnSlider({
           setIsHovered(true);
           handleMouseEnter(e);
         }}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          lastCellValueRef.current = null;
+        }}
         onTouchStart={handleTouchStart}
       >
         {cells.map((cellValue, index) => {
