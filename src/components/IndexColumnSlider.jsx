@@ -10,7 +10,7 @@ export default function IndexColumnSlider({
   setIsDragging,
   columnRef: setColumnRef,
   registerUpdateFunction,
-  lastColumnRef,
+  lastColumn,
 }) {
   const [value, setValue] = useState("");
   const [isRest, setIsRest] = useState(false);
@@ -23,6 +23,7 @@ export default function IndexColumnSlider({
   const localColumnRef = useRef(null);
   const lastToggleTimeRef = useRef(0);
   const lastCellValueRef = useRef(null);
+  const currentStateRef = useRef({ isEmpty, value, isRest, previousState });
 
   const colors = [
     "bg-blue-300", // 0
@@ -44,6 +45,42 @@ export default function IndexColumnSlider({
       setColumnRef(localColumnRef.current);
     }
   }, [setColumnRef]);
+
+  //replacing touch handler porque passive - false issue
+  useEffect(() => {
+    const element = localColumnRef.current;
+    if (!element) return;
+
+    const handleTouch = (e) => {
+      e.preventDefault();
+      setIsDragging(true);
+      const touch = e.touches[0];
+      const cellValue = getCellValueFromPosition(touch.clientY);
+      if (cellValue !== null) {
+        lastCellValueRef.current = cellValue;
+        if (cellValue === "") {
+          updateValue(cellValue);
+        } else {
+          setValue(cellValue);
+          setIsRest(false);
+          setIsEmpty(false);
+          seqArrayRef.current[arrIndex] = String(cellValue);
+        }
+      }
+    };
+
+    element.addEventListener("touchstart", handleTouch, {
+      passive: false,
+    });
+    return () =>
+      element.removeEventListener("touchstart", handleTouch, {
+        passive: false,
+      });
+  }, []);
+
+  useEffect(() => {
+    currentStateRef.current = { isEmpty, value, isRest, previousState };
+  }, [isEmpty, value, isRest, previousState]);
 
   // Update from indexObj (preset recall)
   useEffect(() => {
@@ -86,10 +123,22 @@ export default function IndexColumnSlider({
   }, [presetObj]);
 
   useEffect(() => {
+    if (isDragging && lastColumn !== arrIndex) {
+      lastCellValueRef.current = null;
+      console.log(`Touch left column ${arrIndex}`);
+    }
+  }, [lastColumn, arrIndex]);
+
+  useEffect(() => {
     if (registerUpdateFunction) {
+      console.log("here");
       registerUpdateFunction((clientY) => {
         const cellValue = getCellValueFromPosition(clientY);
+        console.log(
+          `cv: ${cellValue} last: ${lastCellValueRef.current} arr: ${arrIndex}`,
+        );
         if (cellValue !== null && cellValue !== lastCellValueRef.current) {
+          console.log(`after`);
           lastCellValueRef.current = cellValue;
           directSetValue(cellValue);
         }
@@ -171,7 +220,6 @@ export default function IndexColumnSlider({
   const handleMouseDown = (e) => {
     setIsDragging(true);
     const cellValue = getCellValueFromPosition(e.clientY);
-    console.log(lastCellValueRef.current);
     if (cellValue !== null) {
       lastCellValueRef.current = cellValue;
       if (cellValue === "") {
@@ -190,8 +238,13 @@ export default function IndexColumnSlider({
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
+    console.log(
+      `cv: ${cellValue} last: ${lastCellValueRef.current} arr: ${arrIndex}`,
+    );
     if (cellValue !== null && cellValue !== lastCellValueRef.current) {
-      console.log(`mouseMove cellValue: ${cellValue}`);
+      console.log(
+        `after mouseMove cellV: ${cellValue} lastCV: ${lastCellValueRef.current}`,
+      );
       lastCellValueRef.current = cellValue;
       directSetValue(cellValue);
     }
@@ -206,24 +259,23 @@ export default function IndexColumnSlider({
     }
   };
 
-  const handleTouchStart = (e) => {
-    //e.preventDefault();
-    setIsDragging(true);
-    const touch = e.touches[0];
-    const cellValue = getCellValueFromPosition(touch.clientY);
-    console.log(lastCellValueRef.current);
-    if (cellValue !== null) {
-      lastCellValueRef.current = cellValue;
-      if (cellValue === "") {
-        updateValue(cellValue);
-      } else {
-        setValue(cellValue);
-        setIsRest(false);
-        setIsEmpty(false);
-        seqArrayRef.current[arrIndex] = String(cellValue);
-      }
-    }
-  };
+  // const handleTouchStart = (e) => {
+  //   //e.preventDefault();
+  //   setIsDragging(true);
+  //   const touch = e.touches[0];
+  //   const cellValue = getCellValueFromPosition(touch.clientY);
+  //   if (cellValue !== null) {
+  //     lastCellValueRef.current = cellValue;
+  //     if (cellValue === "") {
+  //       updateValue(cellValue);
+  //     } else {
+  //       setValue(cellValue);
+  //       setIsRest(false);
+  //       setIsEmpty(false);
+  //       seqArrayRef.current[arrIndex] = String(cellValue);
+  //     }
+  //   }
+  // };
 
   // Calculate which cell value based on Y position
   const getCellValueFromPosition = (clientY) => {
@@ -300,7 +352,7 @@ export default function IndexColumnSlider({
           setIsHovered(false);
           lastCellValueRef.current = null;
         }}
-        onTouchStart={handleTouchStart}
+        //onTouchStart={handleTouchStart}
       >
         {cells.map((cellValue, index) => {
           const isFilled =
