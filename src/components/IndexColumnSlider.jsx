@@ -171,6 +171,7 @@ export default function IndexColumnSlider({
     setIsDragging(true);
     const cellValue = getCellValueFromPosition(e.clientY);
     if (cellValue !== null) {
+      lastCellValueRef.current = cellValue;
       if (cellValue === "") {
         // Cell 0 click - use toggle logic
         updateValue(cellValue);
@@ -187,6 +188,7 @@ export default function IndexColumnSlider({
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
+    console.log(lastCellValueRef.current);
     if (cellValue !== null && cellValue !== lastCellValueRef.current) {
       console.log(`mouseMove cellValue: ${cellValue}`);
       lastCellValueRef.current = cellValue;
