@@ -89,7 +89,8 @@ export default function IndexColumnSlider({
     if (registerUpdateFunction) {
       registerUpdateFunction((clientY) => {
         const cellValue = getCellValueFromPosition(clientY);
-        if (cellValue !== null) {
+        if (cellValue !== null && cellValue !== lastCellValueRef.current) {
+          lastCellValueRef.current = cellValue;
           directSetValue(cellValue);
         }
       });
@@ -170,6 +171,7 @@ export default function IndexColumnSlider({
   const handleMouseDown = (e) => {
     setIsDragging(true);
     const cellValue = getCellValueFromPosition(e.clientY);
+    console.log(lastCellValueRef.current);
     if (cellValue !== null) {
       lastCellValueRef.current = cellValue;
       if (cellValue === "") {
@@ -188,7 +190,6 @@ export default function IndexColumnSlider({
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const cellValue = getCellValueFromPosition(e.clientY);
-    console.log(lastCellValueRef.current);
     if (cellValue !== null && cellValue !== lastCellValueRef.current) {
       console.log(`mouseMove cellValue: ${cellValue}`);
       lastCellValueRef.current = cellValue;
@@ -206,11 +207,13 @@ export default function IndexColumnSlider({
   };
 
   const handleTouchStart = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     setIsDragging(true);
     const touch = e.touches[0];
     const cellValue = getCellValueFromPosition(touch.clientY);
+    console.log(lastCellValueRef.current);
     if (cellValue !== null) {
+      lastCellValueRef.current = cellValue;
       if (cellValue === "") {
         updateValue(cellValue);
       } else {
