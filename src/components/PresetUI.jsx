@@ -55,7 +55,7 @@ export default function PresetUI({
 
   useEffect(() => {
     findByPresetNumRef.current = data.find(
-      (item) => item && Number(item.preset_number) === presetNum
+      (item) => item && Number(item.preset_number) === presetNum,
     );
     console.log(`findBy: ${JSON.stringify(findByPresetNumRef.current)}`);
   }, [presetNum, data]);
@@ -122,6 +122,17 @@ export default function PresetUI({
 
   const handleIndexRecall = (e) => {
     setGlobalIndexRecall(e.target.checked);
+  };
+
+  const gridId = () => {
+    if (category === "Index Array") {
+      return "index-grid";
+    }
+    if (category === "Frequency Array") {
+      return "frequency-grid";
+    } else {
+      return "global-grid";
+    }
   };
 
   return (
@@ -229,7 +240,7 @@ export default function PresetUI({
           colors={colors}
         />
         {/*preset grid*/}
-        <div className="grid grid-cols-10 gap-0.5 mt-2 w-full">
+        <div className="grid grid-cols-10 gap-0.5 mt-2 w-full" id={gridId()}>
           {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
             const preset = findByPresetNum(data, num);
             const isCurrentPreset = num === presetNum;
@@ -237,10 +248,10 @@ export default function PresetUI({
               isCurrentPreset && preset
                 ? `${colors.selectedBorder} ${colors.selectedText}`
                 : isCurrentPreset && !preset
-                ? `${colors.selectedBorder} text-mix`
-                : preset
-                ? colors.border
-                : `${colors.border} text-mix`;
+                  ? `${colors.selectedBorder} text-mix`
+                  : preset
+                    ? colors.border
+                    : `${colors.border} text-mix`;
 
             return (
               <button
