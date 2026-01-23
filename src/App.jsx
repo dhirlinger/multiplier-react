@@ -343,7 +343,7 @@ export default function App() {
     };
     seqInstance.current.statusCallback = (code) => {
       setStatusCode(code);
-      if (code === 0) setSeqIsPlaying(false);
+      //if (code === 0) setSeqIsPlaying(false);
     };
   }, []);
 
@@ -439,6 +439,21 @@ export default function App() {
         return "OK";
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === " ") {
+        e.preventDefault(); // stops page scroll
+        toggleSequencer();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [toggleSequencer]);
 
   // MIDI action mapping
   const midiActions = {
