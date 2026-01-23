@@ -20,10 +20,8 @@ export default function IndexArraySliders({
   }, []);
 
   useEffect(() => {
-    console.log("Setting up touchend listener");
     const handleGlobalTouchEnd = () => {
       setIsDragging(false);
-      console.log(`touchEnd`);
     };
 
     window.addEventListener("touchend", handleGlobalTouchEnd);
