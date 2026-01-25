@@ -30,6 +30,7 @@ import { MidiProvider } from "./context/MidiContext";
 import IndexColumnSlider from "./components/IndexColumnSlider";
 import IndexArraySliders from "./components/IndexArraySliders";
 import Toggle from "./components/Toggle";
+import StickyBottomControls from "./components/StickyBottomControls";
 
 export default function App() {
   //preset + rest api related vars
@@ -686,21 +687,18 @@ export default function App() {
           />
           <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
         </div>
-        <div style={{ marginTop: "10px" }}>
-          <button onClick={toggleSequencer}>
-            {seqIsPlaying ? "Stop" : "Play Seq"}
-          </button>
-        </div>
+        <div style={{ marginTop: "10px" }}></div>
         <LowPassFilter
           value={lowPassFreq}
           setValue={setLowPassFreq}
           qValue={lowPassQ}
           setQValue={setLowPassQ}
         />
-        <p>{index}</p>
-        <p>seqVoiceArr: {seqVoiceArr}</p>
-        <p>{getStatus()}</p>
-        <p className="text-xs text-gray-400">Update Mode: {updateMode}</p>
+        <p className="text-xs text-gray-400 mb-1">Status: {getStatus()}</p>
+        <StickyBottomControls
+          toggleSequencer={toggleSequencer}
+          seqIsPlaying={seqIsPlaying}
+        />
       </div>
     </MidiProvider>
   );

@@ -124,20 +124,26 @@ export default function PresetUI({
     setGlobalIndexRecall(e.target.checked);
   };
 
-  const gridId = () => {
+  const divId = () => {
     if (category === "Index Array") {
-      return "index-grid";
+      return {
+        grid: "index-grid",
+        container: "index-container",
+      };
     }
     if (category === "Frequency Array") {
-      return "frequency-grid";
+      return {
+        grid: "frequency-grid",
+        container: "frequency-container",
+      };
     } else {
-      return "global-grid";
+      return { grid: "global-grid", container: "global-container" };
     }
   };
 
   return (
     <>
-      <div className="text-4xl text-center">
+      <div className="text-4xl text-center" id={divId().container}>
         <h3 className="m-1.5">
           <span className="bg-maxbg px-1.5">{category} Preset</span>
         </h3>
@@ -240,7 +246,10 @@ export default function PresetUI({
           colors={colors}
         />
         {/*preset grid*/}
-        <div className="grid grid-cols-10 gap-0.5 mt-2 w-full" id={gridId()}>
+        <div
+          className="grid grid-cols-10 gap-0.5 mt-2 w-full"
+          id={divId().grid}
+        >
           {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
             const preset = findByPresetNum(data, num);
             const isCurrentPreset = num === presetNum;

@@ -44,7 +44,7 @@ export default function FreqArray({
   }
 
   return (
-    <div className="border-[.5px] border-cyan-400 bg-maxbg p-2 mt-2">
+    <div className="border-[.5px] border-cyan-400 bg-maxbg p-2 mt-2 w-full">
       {/* <div className="grid grid-cols-2">
         <div>
           <span style={{ fontWeight: "bold" }}>Base Freq: </span>
