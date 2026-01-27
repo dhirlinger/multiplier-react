@@ -45,7 +45,7 @@
   }
 
   #waveshape label {
-    @apply text-sm p-2.5 border-2 border-[#E6A60D] flex justify-center;
+    @apply text-sm p-2.5 border-2 flex justify-center;
   }
 
   input,

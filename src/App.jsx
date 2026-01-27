@@ -31,6 +31,7 @@ import IndexColumnSlider from "./components/IndexColumnSlider";
 import IndexArraySliders from "./components/IndexArraySliders";
 import Toggle from "./components/Toggle";
 import StickyBottomControls from "./components/StickyBottomControls";
+import Tempo from "./components/Tempo";
 
 export default function App() {
   //preset + rest api related vars
@@ -652,41 +653,23 @@ export default function App() {
           updateSeqArray={updateSeqArray}
         />
 
-        <div>
-          <div>
-            <label>BPM: </label>
-            <input
-              type="number"
-              value={bpm}
-              onChange={(e) => setBpm(e.target.value)}
-              style={{ marginTop: "10px", marginRight: "10px", width: "60px" }}
-            />
-            <label> Subdivision: </label>
-            <input
-              type="number"
-              min="1"
-              max="16"
-              value={subdivision}
-              onChange={(e) => setSubdivision(e.target.value)}
-              className={
-                bpm * subdivision >= 20 && bpm * subdivision <= 1800
-                  ? "text-inherit"
-                  : "text-mix"
-              }
-              style={{ width: "50px" }}
-            />
-          </div>
-          <span style={{ width: "100px" }}>duration: </span>
-          <input
-            type="range"
-            max="1.0"
-            min="0.01"
-            step="0.01"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-          />
-          <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
-        </div>
+        <Tempo
+          bpm={bpm}
+          setBpm={setBpm}
+          subdivision={subdivision}
+          setSubdivision={setSubdivision}
+        />
+        <span style={{ width: "100px" }}>duration: </span>
+        <input
+          type="range"
+          max="1.0"
+          min="0.01"
+          step="0.01"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+        />
+        <span style={{ width: "50px" }}>{Number(duration).toFixed(2)}</span>
+
         <div style={{ marginTop: "10px" }}></div>
         <LowPassFilter
           value={lowPassFreq}

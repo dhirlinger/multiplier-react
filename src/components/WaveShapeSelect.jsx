@@ -14,7 +14,12 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
         checked={waveshape === "sine"}
         onChange={handleChange}
       ></input>
-      <label htmlFor="sine">sine</label>
+      <label
+        htmlFor="sine"
+        className={`${waveshape === "sine" ? "border-cyan-500 text-cyan-500" : "border-[#E6A60D]"}`}
+      >
+        sine
+      </label>
       <input
         type="radio"
         value="triangle"
@@ -23,7 +28,12 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
         checked={waveshape === "triangle"}
         onChange={handleChange}
       ></input>
-      <label htmlFor="triangle">triangle</label>
+      <label
+        htmlFor="triangle"
+        className={`${waveshape === "triangle" ? "border-cyan-500  text-cyan-500" : "border-[#E6A60D]"}`}
+      >
+        triangle
+      </label>
       <input
         type="radio"
         value="square"
@@ -32,7 +42,12 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
         checked={waveshape === "square"}
         onChange={handleChange}
       ></input>
-      <label htmlFor="square">square</label>
+      <label
+        htmlFor="square"
+        className={`${waveshape === "square" ? "border-cyan-500  text-cyan-500" : "border-[#E6A60D]"}`}
+      >
+        square
+      </label>
       <input
         type="radio"
         value="sawtooth"
@@ -41,7 +56,12 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
         checked={waveshape === "sawtooth"}
         onChange={handleChange}
       ></input>
-      <label htmlFor="sawtooth">sawtooth</label>
+      <label
+        htmlFor="sawtooth"
+        className={`${waveshape === "sawtooth" ? "border-cyan-500  text-cyan-500" : "border-[#E6A60D]"}`}
+      >
+        sawtooth
+      </label>
     </div>
   );
 }
