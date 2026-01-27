@@ -67,7 +67,7 @@ export default function BaseMultiplierUI({
         <div className="">
           <div className="flex items-center gap-2 mb-2">
             <button
-              className={`flex items-center w-14 aspect-square p-0 border border-cyan-400 text-cyan-500 rotate-90`}
+              className={`flex items-center w-14 aspect-square p-0 border border-cyan-500/90 text-cyan-500/90 rotate-90`}
               onClick={handleUpArrow}
             >
               <Arrow />
@@ -84,7 +84,7 @@ export default function BaseMultiplierUI({
           </div>
           <div className="flex items-center gap-2 mb-2">
             <button
-              className={`flex items-center w-14 aspect-square p-0 border border-cyan-400 text-cyan-500 -rotate-90`}
+              className={`flex items-center w-14 aspect-square p-0 border border-cyan-500/90 text-cyan-500/90 -rotate-90`}
               onClick={handleDownArrow}
             >
               <Arrow />
