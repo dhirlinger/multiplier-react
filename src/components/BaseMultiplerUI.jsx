@@ -140,8 +140,9 @@ export default function BaseMultiplierUI({
           onChange={(e) => {
             let inputValue = e.target.value;
             if (
-              Number(inputValue) > 0 &&
-              Number(inputValue) <= limits.stepMax
+              Number(inputValue) <= limits.stepMax ||
+              inputValue === "" ||
+              inputValue === "."
             ) {
               setStep(inputValue);
             }
