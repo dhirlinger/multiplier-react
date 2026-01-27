@@ -8,27 +8,34 @@ export default function LowPassFilter({ value, setValue, qValue, setQValue }) {
   };
 
   return (
-    <>
-      <p style={{ margin: "0" }}>{value}Hz</p>
-      <input
-        type="range"
-        min="500"
-        max="15000"
-        step="100"
-        name="lopass"
-        value={value}
-        onChange={handleFreqChange}
-      />
-      <p style={{ margin: "0" }}>Q: {qValue}</p>
-      <input
-        type="range"
-        min="0"
-        max="22"
-        step="1"
-        name="q"
-        value={qValue}
-        onChange={handleQChange}
-      />
-    </>
+    <div id="lfo-container" className="w-full ml-2">
+      <p className="block font-bold">LFO</p>
+      <div className="flex items-center justify-start gap-2">
+        <input
+          type="range"
+          min="500"
+          max="15000"
+          step="100"
+          name="lopass"
+          value={value}
+          onChange={handleFreqChange}
+          className="w-68"
+        />
+        <p>{value}Hz</p>
+      </div>
+      <div className="flex items-center justify-start gap-2 mt-2">
+        <input
+          type="range"
+          min="0"
+          max="22"
+          step="1"
+          name="q"
+          value={qValue}
+          onChange={handleQChange}
+          className="w-68"
+        />
+        <p>Q: {qValue}</p>
+      </div>
+    </div>
   );
 }
