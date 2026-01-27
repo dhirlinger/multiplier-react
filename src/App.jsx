@@ -569,6 +569,11 @@ export default function App() {
           setDisplayMidiMapping={setDisplayMidiMapping}
         />
 
+        <WaveShapeSelect
+          waveshape={waveshape}
+          handleChange={handleShapeChange}
+        />
+
         <PresetUI
           data={freqData}
           presetNum={freqPresetNum}
@@ -597,11 +602,6 @@ export default function App() {
           presetObj={presetObj}
           baseMultiplierParamsRef={baseMultiplierParamsRef}
           globalFreqRecall={globalFreqRecall}
-        />
-
-        <WaveShapeSelect
-          waveshape={waveshape}
-          handleChange={handleShapeChange}
         />
 
         <PresetUI

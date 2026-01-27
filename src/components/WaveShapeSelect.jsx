@@ -2,7 +2,10 @@ import React from "react";
 
 export default function WaveShapeSelect({ waveshape, handleChange }) {
   return (
-    <div style={{ marginTop: "20px", border: "solid 1px #666" }}>
+    <div
+      id="waveshape"
+      className="grid grid-cols-4 gap-2 justify-center border-[.5px] border-[#E6A60D] mt-2 mb-2 p-2"
+    >
       <input
         type="radio"
         value="sine"
