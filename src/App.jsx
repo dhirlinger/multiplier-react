@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import FreqArray from "./components/FreqArray";
 import WaveShapeSelect from "./components/WaveShapeSelect";
 import SeqArrInput from "./components/SeqArrInput";
@@ -69,12 +69,24 @@ export default function App() {
   const seqInstance = useRef(null);
   const [bpm, setBpm] = useState("120");
   const [subdivision, setSubdivision] = useState("4");
+
+  // Display state for high-frequency audio parameters (for UI rendering)
   const [duration, setDuration] = useState("0.05");
   const [lowPassFreq, setLowPassFreq] = useState("15000");
   const [lowPassQ, setLowPassQ] = useState("0");
-  const [seqIsPlaying, setSeqIsPlaying] = useState(false);
   const [base, setBase] = useState("110");
   const [multiplier, setMultiplier] = useState("2");
+
+  // Ref for instant audio updates (bypasses React re-render cycle)
+  const audioParamsRef = useRef({
+    base: 110,
+    multiplier: 2,
+    duration: 0.05,
+    lowPassFreq: 15000,
+    lowPassQ: 0,
+  });
+
+  const [seqIsPlaying, setSeqIsPlaying] = useState(false);
   const [index, setIndex] = useState();
   const [seqVoiceArr, setSeqVoiceArr] = useState();
   const [statusCode, setStatusCode] = useState(1);
@@ -90,6 +102,62 @@ export default function App() {
 
   // Sequencer update mode: 'immediate' or 'next_loop'
   const [updateMode, setUpdateMode] = useState("immediate");
+
+  /**
+   * Helper to update audio parameters instantly without waiting for React re-render.
+   * Updates in order: ref (instant) → seqInstance (instant audio) → state (display update)
+   * @param {string} param - Parameter name: 'base' | 'multiplier' | 'duration' | 'lowPassFreq' | 'lowPassQ'
+   * @param {number|string} value - The new value
+   */
+  const setAudioParam = useCallback((param, value) => {
+    // Convert to number for audio engine (keep original for display)
+    const numValue = Number(value);
+
+    // 1. Update ref instantly (no re-render)
+    audioParamsRef.current[param] = numValue;
+
+    // 2. Update seqInstance instantly (immediate audio change)
+    if (seqInstance.current) {
+      switch (param) {
+        case "base":
+          if (value && value !== "") {
+            seqInstance.current.base = numValue;
+          }
+          break;
+        case "multiplier":
+          seqInstance.current.multiplier = numValue;
+          break;
+        case "duration":
+          seqInstance.current.noteLength = numValue;
+          break;
+        case "lowPassFreq":
+          seqInstance.current.lowPassFreq = numValue;
+          break;
+        case "lowPassQ":
+          seqInstance.current.qValue = numValue;
+          break;
+      }
+    }
+
+    // 3. Update display state (triggers re-render but audio already updated)
+    switch (param) {
+      case "base":
+        setBase(value);
+        break;
+      case "multiplier":
+        setMultiplier(value);
+        break;
+      case "duration":
+        setDuration(value);
+        break;
+      case "lowPassFreq":
+        setLowPassFreq(value);
+        break;
+      case "lowPassQ":
+        setLowPassQ(value);
+        break;
+    }
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -166,10 +234,13 @@ export default function App() {
     presetDataRef.current = presetData;
   }, [presetData]);
 
+  // Update audio params when freqObj changes (preset recall)
   useEffect(() => {
-    freqObj && setBase(freqObj.base_freq);
-    freqObj && setMultiplier(freqObj.multiplier);
-  }, [freqObj]);
+    if (freqObj) {
+      setAudioParam("base", freqObj.base_freq);
+      setAudioParam("multiplier", freqObj.multiplier);
+    }
+  }, [freqObj, setAudioParam]);
 
   //preset + rest api related func's
 
@@ -185,6 +256,7 @@ export default function App() {
     freqHandlerParams.filterData = filterData;
   }, [freqObj, freqPresetNum, freqObj, freqData]);
 
+  // Global preset recall - uses setAudioParam for high-frequency params
   useEffect(() => {
     if (!globalInputRecalled) return;
     if (!presetObj || !presetObj.params_json) return;
@@ -192,14 +264,15 @@ export default function App() {
     const p = presetObj.params_json;
 
     p.wave_shape && setWaveshape(p.wave_shape);
-    p.duration && setDuration(p.duration);
-    p.lowpass_freq && setLowPassFreq(p.lowpass_freq);
-    p.lowpass_q && setLowPassQ(p.lowpass_q);
+    // Use setAudioParam for high-frequency audio params (instant update)
+    p.duration && setAudioParam("duration", p.duration);
+    p.lowpass_freq && setAudioParam("lowPassFreq", p.lowpass_freq);
+    p.lowpass_q && setAudioParam("lowPassQ", p.lowpass_q);
     p.bpm && setBpm(p.bpm);
     p.subdivision && setSubdivision(p.subdivision);
     if (presetObj.freq_json && globalFreqRecall) {
-      setBase(presetObj.freq_json.base_freq);
-      setMultiplier(presetObj.freq_json.multiplier);
+      setAudioParam("base", presetObj.freq_json.base_freq);
+      setAudioParam("multiplier", presetObj.freq_json.multiplier);
       freqInputRecalled && setFreqInputRecalled(false);
     }
     if (presetObj.index_array && globalIndexRecall) {
@@ -211,11 +284,11 @@ export default function App() {
       }
       indexInputRecalled && setIndexInputRecalled(false);
     }
-  }, [globalInputRecalled, presetObj]);
+  }, [globalInputRecalled, presetObj, setAudioParam]);
 
   const refreshFreqObj = () => {
-    setBase(freqObj.base_freq);
-    setMultiplier(freqObj.multiplier);
+    setAudioParam("base", freqObj.base_freq);
+    setAudioParam("multiplier", freqObj.multiplier);
   };
 
   const refreshIndexObj = () => {
@@ -339,6 +412,7 @@ export default function App() {
     }
   }, [indexObj]);
 
+  // Initialize SeqVoice with initial audio param values from ref
   useEffect(() => {
     seqInstance.current = new SeqVoice(600);
     seqInstance.current.onBeatCallback = (beatNumber) => {
@@ -348,6 +422,12 @@ export default function App() {
       setStatusCode(code);
       //if (code === 0) setSeqIsPlaying(false);
     };
+    // Initialize seqInstance with current audioParamsRef values
+    seqInstance.current.base = audioParamsRef.current.base;
+    seqInstance.current.multiplier = audioParamsRef.current.multiplier;
+    seqInstance.current.noteLength = audioParamsRef.current.duration;
+    seqInstance.current.lowPassFreq = audioParamsRef.current.lowPassFreq;
+    seqInstance.current.qValue = audioParamsRef.current.lowPassQ;
   }, []);
 
   // Sync update mode with SeqVoice instance
@@ -373,6 +453,7 @@ export default function App() {
     };
   }, []);
 
+  // BPM/subdivision - infrequent updates, OK to use useEffect
   useEffect(() => {
     const effectiveBPM = bpm * subdivision;
     if (effectiveBPM >= 20 && effectiveBPM <= 1800) {
@@ -380,37 +461,25 @@ export default function App() {
     }
   }, [bpm, subdivision]);
 
-  useEffect(() => {
-    seqInstance.current.noteLength = Number(duration);
-  }, [duration]);
+  // REMOVED: Old useEffects for high-frequency audio params
+  // These are now handled by setAudioParam() which updates seqInstance directly
+  // - duration → seqInstance.current.noteLength
+  // - lowPassFreq → seqInstance.current.lowPassFreq
+  // - lowPassQ → seqInstance.current.qValue
+  // - base → seqInstance.current.base
+  // - multiplier → seqInstance.current.multiplier
 
+  // Waveshape - infrequent updates, OK to use useEffect
   useEffect(() => {
     seqInstance.current.shape = waveshape;
   }, [waveshape]);
-
-  useEffect(() => {
-    seqInstance.current.lowPassFreq = lowPassFreq;
-  }, [lowPassFreq]);
-
-  useEffect(() => {
-    seqInstance.current.qValue = lowPassQ;
-  }, [lowPassQ]);
-
-  useEffect(() => {
-    if (base && base !== "") {
-      seqInstance.current.base = base;
-    }
-  }, [base]);
-
-  useEffect(() => {
-    seqInstance.current.multiplier = multiplier;
-  }, [multiplier]);
 
   useEffect(() => {
     seqInstance.current.arrayHold = seqArrayRef.current;
     console.log(`seqIns Arr: ${seqArrayRef.current}`);
   }, [indexObj, presetObj]);
 
+  // wrap this in useCallBack
   const toggleSequencer = () => {
     setSeqIsPlaying(!seqIsPlaying);
     seqInstance.current.startStop(seqArrayRef.current);
@@ -458,7 +527,7 @@ export default function App() {
     };
   }, [toggleSequencer]);
 
-  // MIDI action mapping
+  // MIDI action mapping - uses setAudioParam for high-frequency params
   const midiActions = {
     start_stop: () => toggleSequencer(),
 
@@ -507,25 +576,33 @@ export default function App() {
       console.log("Preset list random:", category);
     },
 
+    // MIDI CC handlers now use setAudioParam for instant audio updates
     multiplier_cc: ({ value }) => {
-      // TODO: Map CC value (0-127) to multiplier range
-      console.log("Multiplier CC:", value);
+      // TODO: Map CC value (0-127) to multiplier range using baseMultiplierParamsRef
+      const scaled = scaleMidiToSteppedFloat(value, 0.1, 10); // Example range
+      setAudioParam("multiplier", scaled);
+      console.log("Multiplier CC:", value, "→", scaled);
     },
     base_cc: ({ value }) => {
-      // TODO: Map CC value to base range
-      console.log("Base CC:", value);
+      // TODO: Map CC value to base range using baseMultiplierParamsRef
+      const scaled = scaleMidiExp(value, 40, 10000); // Example range
+      setAudioParam("base", scaled);
+      console.log("Base CC:", value, "→", scaled);
     },
     duration_cc: ({ value }) => {
-      setDuration(scaleMidiToSteppedFloat(value, 0.01, 1));
-      console.log("Duration CC:", value);
+      const scaled = scaleMidiToSteppedFloat(value, 0.01, 1);
+      setAudioParam("duration", scaled);
+      console.log("Duration CC:", value, "→", scaled);
     },
     lowpass_freq_cc: ({ value }) => {
-      setLowPassFreq(scaleMidiExp(value, 500, 15000));
-      console.log("LowPass Freq CC:", value);
+      const scaled = scaleMidiExp(value, 500, 15000);
+      setAudioParam("lowPassFreq", scaled);
+      console.log("LowPass Freq CC:", value, "→", scaled);
     },
     lowpass_q_cc: ({ value }) => {
-      setLowPassQ(scaleMidiToStep(value, 0, 22));
-      console.log("LowPass Q CC:", value);
+      const scaled = scaleMidiToStep(value, 0, 22);
+      setAudioParam("lowPassQ", scaled);
+      console.log("LowPass Q CC:", value, "→", scaled);
     },
 
     index_input_cc: ({ index, value }) => {
@@ -576,13 +653,14 @@ export default function App() {
           handleChange={handleShapeChange}
         />
 
-        <Duration duration={duration} setDuration={setDuration} />
+        {/* Duration now receives setAudioParam for instant updates */}
+        <Duration duration={duration} setAudioParam={setAudioParam} />
 
+        {/* LowPassFilter now receives setAudioParam for instant updates */}
         <LowPassFilter
           value={lowPassFreq}
-          setValue={setLowPassFreq}
           qValue={lowPassQ}
-          setQValue={setLowPassQ}
+          setAudioParam={setAudioParam}
         />
 
         <PresetUI
@@ -602,13 +680,13 @@ export default function App() {
           setDisplayMidiMapping={setDisplayMidiMapping}
         />
 
+        {/* FreqArray now receives setAudioParam for instant updates */}
         <FreqArray
           freqData={freqData}
           freqObj={freqObj}
           base={base}
-          setBase={setBase}
           multiplier={multiplier}
-          setMultiplier={setMultiplier}
+          setAudioParam={setAudioParam}
           refreshFreqObj={refreshFreqObj}
           presetObj={presetObj}
           baseMultiplierParamsRef={baseMultiplierParamsRef}

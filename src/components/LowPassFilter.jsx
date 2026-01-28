@@ -1,10 +1,10 @@
-export default function LowPassFilter({ value, setValue, qValue, setQValue }) {
+export default function LowPassFilter({ value, qValue, setAudioParam }) {
   const handleFreqChange = (e) => {
-    setValue(e.target.value);
+    setAudioParam("lowPassFreq", e.target.value);
   };
 
   const handleQChange = (e) => {
-    setQValue(e.target.value);
+    setAudioParam("lowPassQ", e.target.value);
   };
 
   return (

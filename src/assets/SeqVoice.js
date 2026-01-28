@@ -5,7 +5,7 @@ export default class SeqVoice {
     this.currentQuarterNote = 0;
     this.tempo = tempo;
     this.lookahead = 50; // How frequently to call scheduling function (in milliseconds)
-    this.scheduleAheadTime = 0.1; // How far ahead to schedule audio (sec)
+    this.scheduleAheadTime = 0.2; // How far ahead to schedule audio (sec)
     this.nextNoteTime = 0.0; // when the next note is due
     this.isRunning = false;
     this.intervalID = null;

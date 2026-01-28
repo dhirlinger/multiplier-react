@@ -33,24 +33,34 @@ export default function BaseMultiplierUI({
 
   const limits = getInputLimit();
 
+  // Arrow handlers compute the new value directly (no functional update)
+  // This works with setAudioParam which expects a direct value
   const handleUpArrow = () => {
-    setValue((prev) => {
-      const next = Number(prev) + Number(step);
-      if (next <= max && next >= min) {
-        return next;
-      }
-      return max;
-    });
+    const currentValue = Number(value);
+    const stepValue = Number(step);
+    const maxValue = Number(max);
+    const minValue = Number(min);
+
+    const next = currentValue + stepValue;
+    if (next <= maxValue && next >= minValue) {
+      setValue(next);
+    } else {
+      setValue(maxValue);
+    }
   };
 
   const handleDownArrow = () => {
-    setValue((prev) => {
-      const next = Number(prev) - Number(step);
-      if (next <= max && next >= min) {
-        return next;
-      }
-      return min;
-    });
+    const currentValue = Number(value);
+    const stepValue = Number(step);
+    const maxValue = Number(max);
+    const minValue = Number(min);
+
+    const next = currentValue - stepValue;
+    if (next <= maxValue && next >= minValue) {
+      setValue(next);
+    } else {
+      setValue(minValue);
+    }
   };
 
   const outOfBoundsSliderStyle = `

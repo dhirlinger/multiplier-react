@@ -1,4 +1,4 @@
-export default function Duration({ duration, setDuration }) {
+export default function Duration({ duration, setAudioParam }) {
   return (
     <div id="duration-container" className="w-full ml-2">
       <p className="block font-bold">Duration</p>
@@ -10,7 +10,7 @@ export default function Duration({ duration, setDuration }) {
           min="0.01"
           step="0.01"
           value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+          onChange={(e) => setAudioParam("duration", e.target.value)}
           className="w-68"
         />
         <p className="text-2xl">{Number(duration).toFixed(2)}</p>

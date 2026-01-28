@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { midiNoteToFrequency, noteNameToMidi } from "../assets/noteConversions";
 import { Arrow } from "./Icon";
 import BaseMultiplierUI from "./BaseMultiplerUI";
+
 export default function BaseMultiplier({
   base,
-  setBase,
   multiplier,
-  setMultiplier,
+  setAudioParam,
   freqObj,
   presetObj,
   paramsRef,
@@ -60,11 +60,12 @@ export default function BaseMultiplier({
     }
   }, [presetObj]);
 
+  // Validation handler for base text input
   const handleBaseChange = (e) => {
     let inputValue = e.target.value;
 
     if (inputValue === "") {
-      setBase("");
+      setAudioParam("base", "");
       return;
     }
 
@@ -79,49 +80,29 @@ export default function BaseMultiplier({
       inputValue = parts[0] + "." + parts[1].substring(0, 3);
     }
 
-    setBase(inputValue);
+    setAudioParam("base", inputValue);
   };
 
-  const handleBaseMinChange = (e) => {
-    let inputValue = e.target.value;
-    setBaseMin(inputValue);
-  };
-
-  const handleBaseMaxChange = (e) => {
-    let inputValue = e.target.value;
-    setBaseMax(inputValue);
-  };
-
-  const handleBaseStepChange = (e) => {
-    let inputValue = e.target.value;
-    setBaseStep(inputValue);
-  };
-
+  // Validation handler for multiplier text input
   const handleMultiplierChange = (e) => {
     let inputValue = e.target.value;
-    setMultiplier(inputValue);
+    setAudioParam("multiplier", inputValue);
   };
 
-  const handleMultiplierMinChange = (e) => {
-    let inputValue = e.target.value;
-    setMultiplierMin(inputValue);
+  // Wrapper for setAudioParam that handles direct values (for sliders)
+  const setBaseValue = (value) => {
+    setAudioParam("base", value);
   };
 
-  const handleMultiplierMaxChange = (e) => {
-    let inputValue = e.target.value;
-    setMultiplierMax(inputValue);
-  };
-
-  const handleMultiplierStepChange = (e) => {
-    let inputValue = e.target.value;
-    setMultiplierStep(inputValue);
+  const setMultiplierValue = (value) => {
+    setAudioParam("multiplier", value);
   };
 
   return (
     <div id="base-multiplier-container">
       <BaseMultiplierUI
         value={base}
-        setValue={setBase}
+        setValue={setBaseValue}
         handleValueChange={handleBaseChange}
         min={baseMin}
         max={baseMax}
@@ -134,7 +115,7 @@ export default function BaseMultiplier({
       <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
       <BaseMultiplierUI
         value={multiplier}
-        setValue={setMultiplier}
+        setValue={setMultiplierValue}
         handleValueChange={handleMultiplierChange}
         min={multiplierMin}
         max={multiplierMax}
@@ -144,48 +125,6 @@ export default function BaseMultiplier({
         setStep={setMultiplierStep}
         category={"multiplier"}
       />
-      {/* <label htmlFor="multipler" className="block font-bold">
-          Multiplier
-        </label>
-        <input
-          type="range"
-          max={multiplierMax}
-          min={multiplierMin}
-          step={multiplierStep}
-          value={multiplier}
-          onChange={handleMultiplierChange}
-        />
-        <span style={{ width: "50px" }}>{Number(multiplier).toFixed(3)}</span>
-        <div>
-          <label htmlFor="multi-min">multiplier min: </label>
-          <input
-            id="multi-min"
-            type="text" // use text to fully control input
-            value={multiplierMin}
-            // maxLength={10}
-            style={{ width: "50px", fontSize: "14px" }}
-            onChange={handleMultiplierMinChange}
-          ></input>
-          <label htmlFor="multi-max">multiplier max: </label>
-          <input
-            id="multi-max"
-            type="text" // use text to fully control input
-            value={multiplierMax}
-            // maxLength={10}
-            style={{ width: "50px", fontSize: "14px" }}
-            onChange={handleMultiplierMaxChange}
-          ></input>
-          <label htmlFor="multi-step">multiplier step: </label>
-          <input
-            id="multi-step"
-            type="text" // use text to fully control input
-            value={multiplierStep}
-            // maxLength={10}
-            style={{ width: "50px", fontSize: "14px" }}
-            onChange={handleMultiplierStepChange}
-          ></input> */}
-      {/* </div>
-      </div> */}
     </div>
   );
 }
