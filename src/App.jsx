@@ -576,6 +576,15 @@ export default function App() {
           handleChange={handleShapeChange}
         />
 
+        <Duration duration={duration} setDuration={setDuration} />
+
+        <LowPassFilter
+          value={lowPassFreq}
+          setValue={setLowPassFreq}
+          qValue={lowPassQ}
+          setQValue={setLowPassQ}
+        />
+
         <PresetUI
           data={freqData}
           presetNum={freqPresetNum}
@@ -661,18 +670,10 @@ export default function App() {
           setSubdivision={setSubdivision}
         />
 
-        <Duration duration={duration} setDuration={setDuration} />
-
-        <LowPassFilter
-          value={lowPassFreq}
-          setValue={setLowPassFreq}
-          qValue={lowPassQ}
-          setQValue={setLowPassQ}
-        />
-        <p className="text-xs text-gray-400 mb-1">Status: {getStatus()}</p>
         <StickyBottomControls
           toggleSequencer={toggleSequencer}
           seqIsPlaying={seqIsPlaying}
+          getStatus={getStatus}
         />
       </div>
     </MidiProvider>

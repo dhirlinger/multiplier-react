@@ -8,7 +8,7 @@ export default function LowPassFilter({ value, setValue, qValue, setQValue }) {
   };
 
   return (
-    <div id="lfo-container" className="w-full ml-2">
+    <div id="lfo-container" className="w-full ml-2 mb-2">
       <p className="block font-bold">LFO</p>
       <div className="flex items-center justify-start gap-2">
         <input
@@ -21,7 +21,7 @@ export default function LowPassFilter({ value, setValue, qValue, setQValue }) {
           onChange={handleFreqChange}
           className="w-68"
         />
-        <p>{value}Hz</p>
+        <p className="text-xl">{value}Hz</p>
       </div>
       <div className="flex items-center justify-start gap-2 mt-2">
         <input
@@ -34,7 +34,7 @@ export default function LowPassFilter({ value, setValue, qValue, setQValue }) {
           onChange={handleQChange}
           className="w-68"
         />
-        <p>Q: {qValue}</p>
+        <p className="text-2xl">Q: {qValue}</p>
       </div>
     </div>
   );
