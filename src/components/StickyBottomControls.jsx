@@ -1,7 +1,6 @@
 export default function StickyBottomControls({
   toggleSequencer,
   seqIsPlaying,
-  getStatus,
 }) {
   return (
     <>
@@ -13,7 +12,7 @@ export default function StickyBottomControls({
           {seqIsPlaying ? "Stop" : "Play"}
         </button>
         <div className="flex items-center gap-1 ml-1.5 w-full justify-center">
-          <a href="#global-container">
+          <a href="#global-grid">
             <button className="text-sm text-[#E6A60D] w-[70px] min-w-[70px] flex justify-center">
               Global
             </button>
@@ -29,9 +28,6 @@ export default function StickyBottomControls({
             </button>
           </a>
         </div>
-        {/* <p className="absolute bottom-[0.5px] text-xs text-gray-100 z-30 right-0.5">
-          Status: {getStatus()}
-        </p> */}
       </div>
     </>
   );
