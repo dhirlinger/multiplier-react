@@ -9,9 +9,8 @@ export default function FreqArray({
   freqObj,
   presetObj,
   base,
-  setBase,
   multiplier,
-  setMultiplier,
+  setAudioParam,
   globalFreqRecall,
 }) {
   const createFreqArray = () => {
@@ -80,9 +79,8 @@ export default function FreqArray({
       <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
       <BaseMultiplier
         base={base}
-        setBase={setBase}
         multiplier={multiplier}
-        setMultiplier={setMultiplier}
+        setAudioParam={setAudioParam}
         freqObj={freqObj}
         presetObj={presetObj}
         paramsRef={baseMultiplierParamsRef}
