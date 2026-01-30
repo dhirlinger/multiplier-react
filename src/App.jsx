@@ -103,61 +103,70 @@ export default function App() {
   // Sequencer update mode: 'immediate' or 'next_loop'
   const [updateMode, setUpdateMode] = useState("immediate");
 
+  const pendingDisplayUpdates = useRef({});
+  const frameRequested = useRef(false);
+
+  // frame callback - processes all pending display updates at once
+  const flushDisplayUpdates = useCallback(() => {
+    const pending = pendingDisplayUpdates.current;
+
+    if (pending.base !== undefined) setBase(pending.base);
+    if (pending.multiplier !== undefined) setMultiplier(pending.multiplier);
+    if (pending.duration !== undefined) setDuration(pending.duration);
+    if (pending.lowPassFreq !== undefined) setLowPassFreq(pending.lowPassFreq);
+    if (pending.lowPassQ !== undefined) setLowPassQ(pending.lowPassQ);
+
+    // Clear pending updates and flag
+    pendingDisplayUpdates.current = {};
+    frameRequested.current = false;
+  }, []);
+
   /**
-   * Helper to update audio parameters instantly without waiting for React re-render.
+   * update audio parameters instantly without waiting for React re-render.
    * Updates in order: ref (instant) → seqInstance (instant audio) → state (display update)
    * @param {string} param - Parameter name: 'base' | 'multiplier' | 'duration' | 'lowPassFreq' | 'lowPassQ'
    * @param {number|string} value - The new value
    */
-  const setAudioParam = useCallback((param, value) => {
-    // Convert to number for audio engine (keep original for display)
-    const numValue = Number(value);
+  const setAudioParam = useCallback(
+    (param, value) => {
+      const numValue = Number(value);
 
-    // 1. Update ref instantly (no re-render)
-    audioParamsRef.current[param] = numValue;
+      // 1. Update ref instantly (no re-render)
+      audioParamsRef.current[param] = numValue;
 
-    // 2. Update seqInstance instantly (immediate audio change)
-    if (seqInstance.current) {
-      switch (param) {
-        case "base":
-          if (value && value !== "") {
-            seqInstance.current.base = numValue;
-          }
-          break;
-        case "multiplier":
-          seqInstance.current.multiplier = numValue;
-          break;
-        case "duration":
-          seqInstance.current.noteLength = numValue;
-          break;
-        case "lowPassFreq":
-          seqInstance.current.lowPassFreq = numValue;
-          break;
-        case "lowPassQ":
-          seqInstance.current.qValue = numValue;
-          break;
+      // 2. Update seqInstance instantly (immediate audio change)
+      if (seqInstance.current) {
+        switch (param) {
+          case "base":
+            if (value && value !== "") {
+              seqInstance.current.base = numValue;
+            }
+            break;
+          case "multiplier":
+            seqInstance.current.multiplier = numValue;
+            break;
+          case "duration":
+            seqInstance.current.noteLength = numValue;
+            break;
+          case "lowPassFreq":
+            seqInstance.current.lowPassFreq = numValue;
+            break;
+          case "lowPassQ":
+            seqInstance.current.qValue = numValue;
+            break;
+        }
       }
-    }
 
-    // 3. Update display state (triggers re-render but audio already updated)
-    switch (param) {
-      case "base":
-        setBase(value);
-        break;
-      case "multiplier":
-        setMultiplier(value);
-        break;
-      case "duration":
-        setDuration(value);
-        break;
-      case "lowPassFreq":
-        setLowPassFreq(value);
-        break;
-      case "lowPassQ":
-        setLowPassQ(value);
-        break;
-    }
-  }, []);
+      // 3. Queue display update (batched to animation frame)
+      pendingDisplayUpdates.current[param] = value;
+
+      if (!frameRequested.current) {
+        frameRequested.current = true;
+        requestAnimationFrame(flushDisplayUpdates);
+      }
+    },
+    [flushDisplayUpdates],
+  );
 
   useEffect(() => {
     const init = async () => {
