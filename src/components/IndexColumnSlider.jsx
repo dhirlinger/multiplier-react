@@ -46,38 +46,6 @@ export default function IndexColumnSlider({
     }
   }, [setColumnRef]);
 
-  //replacing touch handler porque passive - false issue
-  // useEffect(() => {
-  //   const element = localColumnRef.current;
-  //   if (!element) return;
-
-  //   const handleTouch = (e) => {
-  //     e.preventDefault();
-  //     setIsDragging(true);
-  //     const touch = e.touches[0];
-  //     const cellValue = getCellValueFromPosition(touch.clientY);
-  //     if (cellValue !== null) {
-  //       lastCellValueRef.current = cellValue;
-  //       if (cellValue === "") {
-  //         updateValue(cellValue);
-  //       } else {
-  //         setValue(cellValue);
-  //         setIsRest(false);
-  //         setIsEmpty(false);
-  //         seqArrayRef.current[arrIndex] = String(cellValue);
-  //       }
-  //     }
-  //   };
-
-  //   element.addEventListener("touchstart", handleTouch, {
-  //     passive: false,
-  //   });
-  //   return () =>
-  //     element.removeEventListener("touchstart", handleTouch, {
-  //       passive: false,
-  //     });
-  // }, []);
-
   useEffect(() => {
     currentStateRef.current = { isEmpty, value, isRest, previousState };
   }, [isEmpty, value, isRest, previousState]);
@@ -318,7 +286,15 @@ export default function IndexColumnSlider({
   return (
     <div className="flex flex-col items-center w-full">
       <button
-        onClick={toggleRest}
+        onClick={(e) => {
+          // Only fire on actual mouse clicks, not touch-synthesized clicks
+          if (e.detail === 0) return; // detail is 0 for synthetic clicks on some browsers
+          toggleRest();
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault(); // Prevents synthetic click
+          toggleRest();
+        }}
         className={`w-full aspect-square mb-1 border border-pink-500/90 text-xs font-normal p-0
           ${isRest ? "bg-pink-500/60" : "bg-maxbg"}
           hover:bg-pink-500/20 hover:text-stone-300 transition-colors`}
