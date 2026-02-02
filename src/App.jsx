@@ -103,6 +103,7 @@ export default function App() {
   // Sequencer update mode: 'immediate' or 'next_loop'
   const [updateMode, setUpdateMode] = useState("immediate");
 
+  //for batching
   const pendingDisplayUpdates = useRef({});
   const frameRequested = useRef(false);
 
@@ -470,15 +471,6 @@ export default function App() {
     }
   }, [bpm, subdivision]);
 
-  // REMOVED: Old useEffects for high-frequency audio params
-  // These are now handled by setAudioParam() which updates seqInstance directly
-  // - duration → seqInstance.current.noteLength
-  // - lowPassFreq → seqInstance.current.lowPassFreq
-  // - lowPassQ → seqInstance.current.qValue
-  // - base → seqInstance.current.base
-  // - multiplier → seqInstance.current.multiplier
-
-  // Waveshape - infrequent updates, OK to use useEffect
   useEffect(() => {
     seqInstance.current.shape = waveshape;
   }, [waveshape]);
@@ -489,10 +481,10 @@ export default function App() {
   }, [indexObj, presetObj]);
 
   // wrap this in useCallBack
-  const toggleSequencer = () => {
+  const toggleSequencer = useCallback(() => {
     setSeqIsPlaying(!seqIsPlaying);
     seqInstance.current.startStop(seqArrayRef.current);
-  };
+  }, [seqIsPlaying]);
 
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
