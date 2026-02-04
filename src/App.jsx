@@ -648,21 +648,23 @@ export default function App() {
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
         />
+        <div className="bg-maxbg mt-1 mb-1">
+          <p className="text-sm ml-2 font-bold">Synth</p>
+          <WaveShapeSelect
+            waveshape={waveshape}
+            handleChange={handleShapeChange}
+          />
 
-        <WaveShapeSelect
-          waveshape={waveshape}
-          handleChange={handleShapeChange}
-        />
+          {/* Duration now receives setAudioParam for instant updates */}
+          <Duration duration={duration} setAudioParam={setAudioParam} />
 
-        {/* Duration now receives setAudioParam for instant updates */}
-        <Duration duration={duration} setAudioParam={setAudioParam} />
-
-        {/* LowPassFilter now receives setAudioParam for instant updates */}
-        <LowPassFilter
-          value={lowPassFreq}
-          qValue={lowPassQ}
-          setAudioParam={setAudioParam}
-        />
+          {/* LowPassFilter now receives setAudioParam for instant updates */}
+          <LowPassFilter
+            value={lowPassFreq}
+            qValue={lowPassQ}
+            setAudioParam={setAudioParam}
+          />
+        </div>
 
         <PresetUI
           data={freqData}

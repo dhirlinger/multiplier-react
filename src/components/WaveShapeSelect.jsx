@@ -4,7 +4,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
   return (
     <div
       id="waveshape"
-      className="grid grid-cols-4 gap-2 justify-center border-[.5px] border-[#E6A60D] mt-2 mb-2 p-2"
+      className="grid grid-cols-4 gap-2 justify-center border-[.5px] border-[#E6A60D] mt-1 mb-1 p-2 ml-1 mr-1"
     >
       <input
         type="radio"
