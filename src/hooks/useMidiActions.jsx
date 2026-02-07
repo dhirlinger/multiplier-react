@@ -112,25 +112,7 @@ export default function useMidiActions({
     },
 
     preset_recall: ({ category, presetNum }) => {
-      if (category === "global_preset") {
-        globalPresetActions.handleSelect(presetNum, presetObj?.preset_number);
-        const findBy = findByPresetNum(presetData, presetNum);
-        setGlobalPresetNum(presetNum);
-        setGlobalPresetName(findBy?.name || "-EMPTY-");
-        setGlobalInputRecalled(true);
-      } else if (category === "freq_preset") {
-        freqActions.handleSelect(presetNum, freqObj?.preset_number);
-        const findBy = findByPresetNum(freqData, presetNum);
-        setFreqPresetNum(presetNum);
-        setFreqPresetName(findBy?.name || "-EMPTY-");
-        setFreqInputRecalled(true);
-      } else if (category === "index_preset") {
-        indexActions.handleSelect(presetNum, indexObj?.preset_number);
-        const findBy = findByPresetNum(indexData, presetNum);
-        setIndexPresetNum(presetNum);
-        setIndexPresetName(findBy?.name || "-Empty-");
-        setIndexInputRecalled(true);
-      }
+      recallPresetByCategory(category, presetNum);
     },
 
     preset_list_up: ({ category }) => {
@@ -140,8 +122,8 @@ export default function useMidiActions({
       const currentIndex = list.indexOf(currentPresetNum);
       if (currentIndex !== -1) {
         const nextIndex = (currentIndex + 1) % list.length;
-        const nextPreset = list[nextIndex];
         console.log("Preset list up:", category);
+        recallPresetByCategory(category, list[nextIndex]);
       }
     },
     preset_list_down: ({ category }) => {
