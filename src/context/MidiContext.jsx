@@ -35,6 +35,7 @@ export function MidiProvider({ children, onMidiAction }) {
       duration: null,
       lowpass_freq: null,
       lowpass_q: null,
+      wave_shape: null,
     },
     index_array_inputs: {
       input_0: null,
@@ -118,6 +119,13 @@ export function MidiProvider({ children, onMidiAction }) {
       if (currentMappings.sequencer.start_stop === noteNumber) {
         console.log("Match found: start_stop");
         onMidiAction?.({ type: "start_stop" });
+        return;
+      }
+
+      //Check waveshape
+      if (currentMappings.synth_params.wave_shape === noteNumber) {
+        console.log("Match found: wave_shape");
+        onMidiAction?.({ type: "wave_shape" });
         return;
       }
 
@@ -216,7 +224,7 @@ export function MidiProvider({ children, onMidiAction }) {
         "Learning - captured note:",
         noteNumber,
         "for target:",
-        learningMode.target
+        learningMode.target,
       );
 
       // Parse the target path (e.g., 'sequencer.start_stop')
@@ -239,7 +247,7 @@ export function MidiProvider({ children, onMidiAction }) {
         "Learning - captured CC:",
         ccNumber,
         "for target:",
-        learningMode.target
+        learningMode.target,
       );
 
       // Parse the target path (e.g., 'synth_params.duration')
@@ -261,7 +269,7 @@ export function MidiProvider({ children, onMidiAction }) {
     } else if (learningMode.type === "cc") {
       midi.selectedInput.channels[1].addListener(
         "controlchange",
-        handleLearnCC
+        handleLearnCC,
       );
     }
 
@@ -269,7 +277,7 @@ export function MidiProvider({ children, onMidiAction }) {
       midi.selectedInput.channels[1].removeListener("noteon", handleLearnNote);
       midi.selectedInput.channels[1].removeListener(
         "controlchange",
-        handleLearnCC
+        handleLearnCC,
       );
     };
   }, [midi.midiEnabled, midi.selectedInput, learningMode]);
