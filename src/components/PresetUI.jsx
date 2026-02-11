@@ -15,7 +15,7 @@ export default function PresetUI({
   deletePreset,
   inputRecalled,
   setInputRecalled,
-  category,
+  category, //Global, Index Array, Frequency Array
   globalFreqRecall,
   setGlobalFreqRecall,
   globalIndexRecall,
@@ -25,6 +25,20 @@ export default function PresetUI({
   setMidiMappingCategory,
 }) {
   const findByPresetNumRef = useRef();
+
+  const getMidiCategory = () => {
+    if (category === "Index Array") {
+      return "index_preset";
+    }
+    if (category === "Frequency Array") {
+      return "freq_preset";
+    }
+    if (category === "Global") {
+      return "global_preset";
+    }
+  };
+
+  const midiCategory = getMidiCategory();
 
   const getColorClasses = () => {
     if (category === "Index Array") {
@@ -141,6 +155,8 @@ export default function PresetUI({
     }
   };
 
+  console.log(midiCategory);
+
   return (
     <>
       <div className="text-4xl text-center" id={divId().container}>
@@ -173,8 +189,8 @@ export default function PresetUI({
           <button
             className={`${colors.border} round`}
             onClick={() => {
+              setMidiMappingCategory(midiCategory);
               setDisplayMidiMapping(true);
-              setMidiMappingCategory(category.toLowerCase().replace(" ", "_"));
             }}
           >
             MIDI

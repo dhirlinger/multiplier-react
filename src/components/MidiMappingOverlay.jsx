@@ -1,15 +1,37 @@
 import { useState } from "react";
 import { useMidiContext } from "../context/MidiContext";
+import SynthFreqParamsView from "./MidiMappingViews/SynthFreqParamsView";
+import SequencerView from "./MidiMappingViews/SequencerView";
 
 export default function MidiMappingOverlay({
   displayMidiMapping,
   onClose,
-  category, // 'global_preset', 'freq_preset', 'index_preset'
+  activeView, // Passed from parent
+  setActiveView, // Also need setter from parent,
+  /* 'global_preset', 'freq_preset', 'index_preset', 
+  'synth_&_freq_params', 'index_params', 'sequencer_params', 'midi_settings' */
 }) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
   const [mappingTarget, setMappingTarget] = useState(null);
 
   if (!displayMidiMapping) return null;
+
+  const tabs = [
+    { id: "global_preset", buttonLabel: "G.Presets" },
+    { id: "freq_preset", buttonLabel: "F.Presets" },
+    { id: "index_preset", buttonLabel: "I.Presets" },
+    { id: "synth/freq_params", buttonLabel: "Synth/Freq" },
+    { id: "index_params", buttonLabel: "Index" },
+    { id: "sequencer_params", buttonLabel: "Sequencer" },
+    { id: "midi_settings", buttonLabel: "MIDI" },
+  ];
+
+  const activeTab = tabs.find((t) => t.id === activeView);
+  console.log(`aV: ${activeView}`);
+  const displayName =
+    activeTab?.id.replaceAll("_", " ").toUpperCase() || "Sequencer";
+
+  console.log(activeView);
 
   return (
     <div
@@ -24,184 +46,45 @@ export default function MidiMappingOverlay({
           displayMidiMapping ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="p-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-200">
-            MIDI Mapping - {category.replace("_", " ").toUpperCase()}
+        <div className="p-6 min-h-110.75">
+          <h2 className="text-base font-semibold mb-2 text-center text-gray-200">
+            MIDI MAPPING - {displayName}
           </h2>
 
-          {/* Sequencer Start/Stop */}
-          <div className="mb-4 p-3 bg-gray-800 rounded">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-200">Sequencer Start/Stop</span>
-              <div className="flex items-center gap-2">
-                {mappings.sequencer.start_stop ? (
-                  <span className="text-sm text-[#E6A60D]">
-                    Note {mappings.sequencer.start_stop}
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">Not mapped</span>
-                )}
-                <button
-                  className={`px-3 py-1 text-sm rounded ${
-                    learningMode?.target === "sequencer.start_stop"
-                      ? "bg-red-500 text-white animate-pulse"
-                      : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
-                  }`}
-                  onClick={() =>
-                    learningMode?.target === "sequencer.start_stop"
-                      ? setLearningMode(null)
-                      : setLearningMode({
-                          type: "note",
-                          target: "sequencer.start_stop",
-                        })
-                  }
-                >
-                  {learningMode?.target === "sequencer.start_stop"
-                    ? "Listening..."
-                    : "Map"}
-                </button>
-              </div>
-            </div>
+          {/* Tab Navigation */}
+          <div className="flex flex-wrap gap-1 border-b border-gray-700 bg-gray-800 mb-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveView(tab.id)}
+                className={`flex-1 px-2 py-2 text-xs font-medium whitespace-nowrap ${
+                  activeView === tab.id
+                    ? "bg-[#E6A60D] text-gray-900"
+                    : "text-gray-400 hover:text-gray-200"
+                }`}
+              >
+                {tab.buttonLabel}
+              </button>
+            ))}
           </div>
 
-          {/* Waveshape */}
-          <div className="mb-4 p-3 bg-gray-800 rounded">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-200">Waveshape</span>
-              <div className="flex items-center gap-2">
-                {mappings.synth_params.wave_shape ? (
-                  <span className="text-sm text-[#E6A60D]">
-                    Note {mappings.synth_params.wave_shape}
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">Not mapped</span>
-                )}
-                <button
-                  className={`px-3 py-1 text-sm rounded ${
-                    learningMode?.target === "synth_params.wave_shape"
-                      ? "bg-red-500 text-white animate-pulse"
-                      : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
-                  }`}
-                  onClick={() =>
-                    learningMode?.target === "synth_params.wave_shape"
-                      ? setLearningMode(null)
-                      : setLearningMode({
-                          type: "note",
-                          target: "synth_params.wave_shape",
-                        })
-                  }
-                >
-                  {learningMode?.target === "synth_params.wave_shape"
-                    ? "Listening..."
-                    : "Map"}
-                </button>
-              </div>
-            </div>
-          </div>
+          {/* Content Area - Scrollable */}
+          <div className="max-h-96 overflow-y-auto">
+            {activeView === "sequencer_params" && (
+              <SequencerView
+                mappings={mappings}
+                learningMode={learningMode}
+                setLearningMode={setLearningMode}
+              />
+            )}
 
-          {/* Duration CC */}
-          <div className="mb-4 p-3 bg-gray-800 rounded">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-200">Duration</span>
-              <div className="flex items-center gap-2">
-                {mappings.synth_params.duration ? (
-                  <span className="text-sm text-[#E6A60D]">
-                    CC {mappings.synth_params.duration}
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">Not mapped</span>
-                )}
-                <button
-                  className={`px-3 py-1 text-sm rounded ${
-                    learningMode?.target === "synth_params.duration"
-                      ? "bg-red-500 text-white animate-pulse"
-                      : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
-                  }`}
-                  onClick={() =>
-                    learningMode?.target === "synth_params.duration"
-                      ? setLearningMode(null)
-                      : setLearningMode({
-                          type: "cc",
-                          target: "synth_params.duration",
-                        })
-                  }
-                >
-                  {learningMode?.target === "synth_params.duration"
-                    ? "Listening..."
-                    : "Map"}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* LowPass Freq CC */}
-          <div className="mb-4 p-3 bg-gray-800 rounded">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-200">LowPass Frequency</span>
-              <div className="flex items-center gap-2">
-                {mappings.synth_params.lowpass_freq ? (
-                  <span className="text-sm text-[#E6A60D]">
-                    CC {mappings.synth_params.lowpass_freq}
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">Not mapped</span>
-                )}
-                <button
-                  className={`px-3 py-1 text-sm rounded ${
-                    learningMode?.target === "synth_params.lowpass_freq"
-                      ? "bg-red-500 text-white animate-pulse"
-                      : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
-                  }`}
-                  onClick={() =>
-                    learningMode?.target === "synth_params.lowpass_freq"
-                      ? setLearningMode(null)
-                      : setLearningMode({
-                          type: "cc",
-                          target: "synth_params.lowpass_freq",
-                        })
-                  }
-                >
-                  {learningMode?.target === "synth_params.lowpass_freq"
-                    ? "Listening..."
-                    : "Map"}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* LowPass Q CC */}
-          <div className="mb-4 p-3 bg-gray-800 rounded">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-200">LowPass Q</span>
-              <div className="flex items-center gap-2">
-                {mappings.synth_params.lowpass_q ? (
-                  <span className="text-sm text-[#E6A60D]">
-                    CC {mappings.synth_params.lowpass_q}
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">Not mapped</span>
-                )}
-                <button
-                  className={`px-3 py-1 text-sm rounded ${
-                    learningMode?.target === "synth_params.lowpass_q"
-                      ? "bg-red-500 text-white animate-pulse"
-                      : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
-                  }`}
-                  onClick={() =>
-                    learningMode?.target === "synth_params.lowpass_q"
-                      ? setLearningMode(null)
-                      : setLearningMode({
-                          type: "cc",
-                          target: "synth_params.lowpass_q",
-                        })
-                  }
-                >
-                  {learningMode?.target === "synth_params.lowpass_q"
-                    ? "Listening..."
-                    : "Map"}
-                </button>
-              </div>
-            </div>
+            {activeView === "synth/freq_params" && (
+              <SynthFreqParamsView
+                mappings={mappings}
+                learningMode={learningMode}
+                setLearningMode={setLearningMode}
+              />
+            )}
           </div>
         </div>
 

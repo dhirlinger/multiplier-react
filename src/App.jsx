@@ -680,7 +680,8 @@ export default function App() {
         <MidiMappingOverlay
           displayMidiMapping={displayMidiMapping}
           onClose={() => setDisplayMidiMapping(false)}
-          category={midiMappingCategory || "global_preset"}
+          activeView={midiMappingCategory || "global_preset"}
+          setActiveView={setMidiMappingCategory}
         />
 
         {/* Update Mode Toggle */}
