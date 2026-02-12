@@ -81,6 +81,13 @@ export function MidiProvider({ children, onMidiAction }) {
       const noteNumber = e.note.number;
       console.log("MIDI Note received:", noteNumber);
 
+      // IMPORTANT: If learning mode is active, ignore this handler
+      // Let the learning mode handler capture it instead
+      if (learningMode) {
+        console.log("Learning mode active - ignoring in action handler");
+        return;
+      }
+
       const currentMappings = mappingsRef.current;
 
       // Check preset_recalls for all categories
@@ -161,11 +168,17 @@ export function MidiProvider({ children, onMidiAction }) {
     return () => {
       midi.selectedInput.channels[1].removeListener("noteon", handleNoteOn);
     };
-  }, [midi.midiEnabled, midi.selectedInput, onMidiAction]);
+  }, [midi.midiEnabled, midi.selectedInput, onMidiAction, learningMode]);
 
   // Listen for CC messages and check mappings
   useEffect(() => {
     if (!midi.midiEnabled || !midi.selectedInput) return;
+
+    // IMPORTANT: If learning mode is active, ignore this handler
+    if (learningMode) {
+      console.log("Learning mode active - ignoring in action handler");
+      return;
+    }
 
     const handleCC = (e) => {
       const ccNumber = e.controller.number;
@@ -212,7 +225,7 @@ export function MidiProvider({ children, onMidiAction }) {
     return () => {
       midi.selectedInput.channels[1].removeListener("controlchange", handleCC);
     };
-  }, [midi.midiEnabled, midi.selectedInput, onMidiAction]);
+  }, [midi.midiEnabled, midi.selectedInput, onMidiAction, learningMode]);
 
   // Listen for MIDI during learning mode
   useEffect(() => {
@@ -227,18 +240,37 @@ export function MidiProvider({ children, onMidiAction }) {
         learningMode.target,
       );
 
-      // Parse the target path (e.g., 'sequencer.start_stop')
-      const [category, field] = learningMode.target.split(".");
+      const parts = learningMode.target.split(".");
 
-      setMappings((prev) => ({
-        ...prev,
-        [category]: {
-          ...prev[category],
-          [field]: noteNumber,
-        },
-      }));
+      // Handle preset_recalls (3 parts: "category.preset_recalls.presetNum")
+      if (parts.length === 3 && parts[1] === "preset_recalls") {
+        const [category, _, presetNum] = parts;
 
-      setLearningMode(null); // Exit learning mode
+        setMappings((prev) => ({
+          ...prev,
+          [category]: {
+            ...prev[category],
+            preset_recalls: {
+              ...prev[category].preset_recalls,
+              [presetNum]: noteNumber,
+            },
+          },
+        }));
+      }
+      // Handle regular mappings (2 parts: "category.field")
+      else {
+        const [category, field] = parts;
+
+        setMappings((prev) => ({
+          ...prev,
+          [category]: {
+            ...prev[category],
+            [field]: noteNumber,
+          },
+        }));
+      }
+
+      setLearningMode(null);
     };
 
     const handleLearnCC = (e) => {

@@ -1,8 +1,9 @@
-export default function SequencerView({
-  mappings,
-  learningMode,
-  setLearningMode,
-}) {
+import { useMidiContext } from "../../context/MidiContext";
+
+export default function SequencerView() {
+  const { mappings, setMappings, learningMode, setLearningMode } =
+    useMidiContext();
+
   return (
     <>
       {/* Sequencer Start/Stop */}

@@ -1,8 +1,9 @@
-export default function SynthFreqParamsView({
-  mappings,
-  learningMode,
-  setLearningMode,
-}) {
+import { useMidiContext } from "../../context/MidiContext";
+
+export default function SynthFreqParamsView() {
+  const { mappings, setMappings, learningMode, setLearningMode } =
+    useMidiContext();
+
   return (
     <>
       <div className="mb-4 p-3 bg-gray-800 rounded">

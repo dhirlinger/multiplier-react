@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useMidiContext } from "../context/MidiContext";
 import SynthFreqParamsView from "./MidiMappingViews/SynthFreqParamsView";
 import SequencerView from "./MidiMappingViews/SequencerView";
+import PresetsView from "./MidiMappingViews/PresetsView";
 
 export default function MidiMappingOverlay({
   displayMidiMapping,
@@ -11,7 +11,6 @@ export default function MidiMappingOverlay({
   /* 'global_preset', 'freq_preset', 'index_preset', 
   'synth_&_freq_params', 'index_params', 'sequencer_params', 'midi_settings' */
 }) {
-  const { mappings, learningMode, setLearningMode } = useMidiContext();
   const [mappingTarget, setMappingTarget] = useState(null);
 
   if (!displayMidiMapping) return null;
@@ -70,20 +69,16 @@ export default function MidiMappingOverlay({
 
           {/* Content Area - Scrollable */}
           <div className="max-h-96 overflow-y-auto">
-            {activeView === "sequencer_params" && (
-              <SequencerView
-                mappings={mappings}
-                learningMode={learningMode}
-                setLearningMode={setLearningMode}
-              />
+            {activeView === "sequencer_params" && <SequencerView />}
+            {activeView === "synth/freq_params" && <SynthFreqParamsView />}
+            {activeView === "global_preset" && (
+              <PresetsView category="global_preset" />
             )}
-
-            {activeView === "synth/freq_params" && (
-              <SynthFreqParamsView
-                mappings={mappings}
-                learningMode={learningMode}
-                setLearningMode={setLearningMode}
-              />
+            {activeView === "freq_preset" && (
+              <PresetsView category={"freq_preset"} />
+            )}
+            {activeView === "index_preset" && (
+              <PresetsView category={"index_preset"} />
             )}
           </div>
         </div>
