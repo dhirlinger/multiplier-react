@@ -58,6 +58,14 @@ export function MidiProvider({ children, onMidiAction }) {
     },
   });
 
+  const [presetLists, setPresetLists] = useState({
+    global_preset: [],
+    freq_preset: [],
+    index_preset: [],
+  });
+
+  const [subdivisionList, setSubdivisionList] = useState([]);
+
   // Hardcoded test: Note 60 = start/stop
   useEffect(() => {
     setMappings((prev) => ({
@@ -318,6 +326,10 @@ export function MidiProvider({ children, onMidiAction }) {
     ...midi,
     mappings,
     setMappings,
+    presetLists,
+    setPresetLists,
+    subdivisionList,
+    setSubdivisionList,
     learningMode,
     setLearningMode,
   };

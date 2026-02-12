@@ -1,11 +1,12 @@
 import PresetRecallsSection from "./PresetRecallsSection";
+import PresetListSection from "./PresetListSection";
 
 // category: 'global_preset', 'freq_preset', or 'index_preset'
 export default function PresetsView({ category }) {
   return (
     <>
       <PresetRecallsSection category={category} />
-      {/* PresetListSection */}
+      <PresetListSection category={category} />
       {/* PresetListNavigationSection*/}
     </>
   );
