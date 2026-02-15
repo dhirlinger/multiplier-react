@@ -103,7 +103,7 @@ export default function PresetRecallsSection({ category }) {
           </select>
 
           {/* Note display */}
-          <span className="text-sm flex-1">
+          <span className="text-sm ml-auto">
             {note ? (
               <span className="text-[#E6A60D]">Note {note}</span>
             ) : (

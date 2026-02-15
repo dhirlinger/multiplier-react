@@ -3,7 +3,14 @@ import useMidi from "../hooks/useMidi";
 
 const MidiContext = createContext();
 
-export function MidiProvider({ children, onMidiAction }) {
+export function MidiProvider({
+  children,
+  onMidiAction,
+  presetLists,
+  setPresetLists,
+  subdivisionList,
+  setSubdivisionList,
+}) {
   const midi = useMidi();
   const [learningMode, setLearningMode] = useState(null);
   // null or { type: 'note', target: 'sequencer.start_stop' }
@@ -58,14 +65,6 @@ export function MidiProvider({ children, onMidiAction }) {
     },
   });
 
-  const [presetLists, setPresetLists] = useState({
-    global_preset: [],
-    freq_preset: [],
-    index_preset: [],
-  });
-
-  const [subdivisionList, setSubdivisionList] = useState([]);
-
   // Hardcoded test: Note 60 = start/stop
   useEffect(() => {
     setMappings((prev) => ({
@@ -81,6 +80,12 @@ export function MidiProvider({ children, onMidiAction }) {
   useEffect(() => {
     mappingsRef.current = mappings;
   }, [mappings]);
+
+  const onMidiActionRef = useRef(onMidiAction);
+
+  useEffect(() => {
+    onMidiActionRef.current = onMidiAction;
+  }, [onMidiAction]);
 
   useEffect(() => {
     if (!midi.midiEnabled || !midi.selectedInput) return;
@@ -106,7 +111,7 @@ export function MidiProvider({ children, onMidiAction }) {
         for (const [presetNum, mappedNote] of Object.entries(recalls)) {
           if (mappedNote === noteNumber) {
             console.log("Match found: preset_recall", category, presetNum);
-            onMidiAction?.({
+            onMidiActionRef.current?.({
               type: "preset_recall",
               category,
               presetNum: Number(presetNum),
@@ -117,15 +122,15 @@ export function MidiProvider({ children, onMidiAction }) {
 
         // Check preset_list navigation
         if (currentMappings[category].preset_list_up === noteNumber) {
-          onMidiAction?.({ type: "preset_list_up", category });
+          onMidiActionRef.current?.({ type: "preset_list_up", category });
           return;
         }
         if (currentMappings[category].preset_list_down === noteNumber) {
-          onMidiAction?.({ type: "preset_list_down", category });
+          onMidiActionRef.current?.({ type: "preset_list_down", category });
           return;
         }
         if (currentMappings[category].preset_list_random === noteNumber) {
-          onMidiAction?.({ type: "preset_list_random", category });
+          onMidiActionRef.current?.({ type: "preset_list_random", category });
           return;
         }
       }
@@ -133,14 +138,14 @@ export function MidiProvider({ children, onMidiAction }) {
       // Check sequencer
       if (currentMappings.sequencer.start_stop === noteNumber) {
         console.log("Match found: start_stop");
-        onMidiAction?.({ type: "start_stop" });
+        onMidiActionRef.current?.({ type: "start_stop" });
         return;
       }
 
       //Check waveshape
       if (currentMappings.synth_params.wave_shape === noteNumber) {
         console.log("Match found: wave_shape");
-        onMidiAction?.({ type: "wave_shape" });
+        onMidiActionRef.current?.({ type: "wave_shape" });
         return;
       }
 
@@ -148,7 +153,7 @@ export function MidiProvider({ children, onMidiAction }) {
       const subRecalls = currentMappings.tempo_subdivision.preset_recalls;
       for (const [subValue, mappedNote] of Object.entries(subRecalls)) {
         if (mappedNote === noteNumber) {
-          onMidiAction?.({
+          onMidiActionRef.current?.({
             type: "subdivision_recall",
             value: Number(subValue),
           });
@@ -160,13 +165,13 @@ export function MidiProvider({ children, onMidiAction }) {
       if (
         currentMappings.tempo_subdivision.subdivision_list_up === noteNumber
       ) {
-        onMidiAction?.({ type: "subdivision_list_up" });
+        onMidiActionRef.current?.({ type: "subdivision_list_up" });
         return;
       }
       if (
         currentMappings.tempo_subdivision.subdivision_list_down === noteNumber
       ) {
-        onMidiAction?.({ type: "subdivision_list_down" });
+        onMidiActionRef.current?.({ type: "subdivision_list_down" });
         return;
       }
     };
@@ -197,32 +202,36 @@ export function MidiProvider({ children, onMidiAction }) {
 
       // Check freq_params
       if (currentMappings.freq_params.multiplier === ccNumber) {
-        onMidiAction?.({ type: "multiplier_cc", value: ccValue });
+        onMidiActionRef.current?.({ type: "multiplier_cc", value: ccValue });
         return;
       }
       if (currentMappings.freq_params.base === ccNumber) {
-        onMidiAction?.({ type: "base_cc", value: ccValue });
+        onMidiActionRef.current?.({ type: "base_cc", value: ccValue });
         return;
       }
 
       // Check synth_params
       if (currentMappings.synth_params.duration === ccNumber) {
-        onMidiAction?.({ type: "duration_cc", value: ccValue });
+        onMidiActionRef.current?.({ type: "duration_cc", value: ccValue });
         return;
       }
       if (currentMappings.synth_params.lowpass_freq === ccNumber) {
-        onMidiAction?.({ type: "lowpass_freq_cc", value: ccValue });
+        onMidiActionRef.current?.({ type: "lowpass_freq_cc", value: ccValue });
         return;
       }
       if (currentMappings.synth_params.lowpass_q === ccNumber) {
-        onMidiAction?.({ type: "lowpass_q_cc", value: ccValue });
+        onMidiActionRef.current?.({ type: "lowpass_q_cc", value: ccValue });
         return;
       }
 
       // Check index_array_inputs
       for (let i = 0; i < 9; i++) {
         if (currentMappings.index_array_inputs[`input_${i}`] === ccNumber) {
-          onMidiAction?.({ type: "index_input_cc", index: i, value: ccValue });
+          onMidiActionRef.current?.({
+            type: "index_input_cc",
+            index: i,
+            value: ccValue,
+          });
           return;
         }
       }
@@ -233,7 +242,7 @@ export function MidiProvider({ children, onMidiAction }) {
     return () => {
       midi.selectedInput.channels[1].removeListener("controlchange", handleCC);
     };
-  }, [midi.midiEnabled, midi.selectedInput, onMidiAction, learningMode]);
+  }, [midi.midiEnabled, midi.selectedInput, learningMode]);
 
   // Listen for MIDI during learning mode
   useEffect(() => {

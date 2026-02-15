@@ -306,6 +306,10 @@ export default function App() {
     }
   }, [globalInputRecalled, presetObj, setAudioParam]);
 
+  useEffect(() => {
+    console.log(`num: ${globalPresetNum} id: ${presetObj?.preset_id}`);
+  });
+
   const refreshFreqObj = () => {
     setAudioParam("base", freqObj.base_freq);
     setAudioParam("multiplier", freqObj.multiplier);
@@ -325,11 +329,16 @@ export default function App() {
   };
 
   const refreshPresetObj = () => {
+    console.log("refresh called");
     if (presetObj) {
-      const findBy = findByPresetNum(presetData, globalPresetNum);
+      //const findBy = findByPresetNum(presetData, globalPresetNum);
 
-      const currentObj = filterData(presetData, findBy.preset_id, "preset_id");
-
+      //const currentObj = filterData(presetData, findBy.preset_id, "preset_id");
+      const currentObj = filterData(
+        presetData,
+        presetObj.preset_id,
+        "preset_id",
+      );
       const selectedObj = { ...currentObj };
       setPresetObj(selectedObj);
     }
@@ -574,7 +583,13 @@ export default function App() {
   };
 
   return (
-    <MidiProvider onMidiAction={handleMidiAction}>
+    <MidiProvider
+      onMidiAction={handleMidiAction}
+      presetLists={presetLists} // local
+      setPresetLists={setPresetLists} // local
+      subdivisionList={subdivisionList}
+      setSubdivisionList={setSubdivisionList}
+    >
       <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
         <PatreonBanner loginStatusRef={loginStatusRef} />
 

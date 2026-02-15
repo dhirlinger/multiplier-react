@@ -155,8 +155,6 @@ export default function PresetUI({
     }
   };
 
-  console.log(midiCategory);
-
   return (
     <>
       <div className="text-4xl text-center" id={divId().container}>

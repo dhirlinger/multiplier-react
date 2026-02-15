@@ -8,7 +8,7 @@ export default function PresetListSection({ category }) {
   // Get current list for this category
   const currentList = presetLists[category] || [];
 
-  const handleSave = () => {
+  const handleUpdate = () => {
     // Parse: "1,5,10,1,20" → [1,5,10,1,20]
     const parsed = inputValue
       .split(",")
@@ -58,10 +58,10 @@ export default function PresetListSection({ category }) {
       {/* Buttons */}
       <div className="flex gap-2">
         <button
-          onClick={handleSave}
+          onClick={handleUpdate}
           className="flex-1 py-1 bg-[#E6A60D] text-gray-900 rounded hover:bg-yellow-500 text-sm"
         >
-          Save List
+          Update List
         </button>
         <button
           onClick={handleClear}

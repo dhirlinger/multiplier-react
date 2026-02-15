@@ -1,8 +1,7 @@
 import { useMidiContext } from "../../context/MidiContext";
 
 export default function SequencerView() {
-  const { mappings, setMappings, learningMode, setLearningMode } =
-    useMidiContext();
+  const { mappings, learningMode, setLearningMode } = useMidiContext();
 
   return (
     <>

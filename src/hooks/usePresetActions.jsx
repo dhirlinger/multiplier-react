@@ -27,6 +27,7 @@ export default function usePresetActions(config) {
 
   const handleSelect = useCallback(
     (presetNum, objPresetNum) => {
+      console.log("handle called");
       if (!presetNum) return;
       if (Number(objPresetNum) === presetNum) {
         refreshObj();
@@ -41,13 +42,13 @@ export default function usePresetActions(config) {
         const selectedObj = filterData(
           dataRef.current,
           findBy[idField],
-          idField
+          idField,
         );
         setObj(selectedObj);
         setInputRecalled(true);
       }
     },
-    [dataRef, idField, refreshObj, setInputRecalled, setObj]
+    [dataRef, idField, refreshObj, setInputRecalled, setObj],
   );
 
   const save = useCallback(async () => {
@@ -104,7 +105,7 @@ export default function usePresetActions(config) {
         save();
       }
     },
-    [dataRef, logged_in, confirmPropsRef, setDisplayConfirm, save]
+    [dataRef, logged_in, confirmPropsRef, setDisplayConfirm, save],
   );
 
   const deletePreset = useCallback(
@@ -114,7 +115,7 @@ export default function usePresetActions(config) {
       const findBy = findByPresetNum(dataRef.current, presetNum);
 
       const result = await del(
-        `multiplier-api/v1/${deletePath}/${findBy[idField]}`
+        `multiplier-api/v1/${deletePath}/${findBy[idField]}`,
       );
 
       const normalizedData = normalizePresets(result.updated_data);
@@ -129,7 +130,7 @@ export default function usePresetActions(config) {
       setData,
       setDisplayConfirm,
       setInputRecalled,
-    ]
+    ],
   );
 
   const confirmDelete = useCallback(
@@ -157,7 +158,7 @@ export default function usePresetActions(config) {
 
       setDisplayConfirm(true);
     },
-    [confirmPropsRef, dataRef, deletePreset, logged_in, setDisplayConfirm]
+    [confirmPropsRef, dataRef, deletePreset, logged_in, setDisplayConfirm],
   );
 
   return { handleSelect, confirmSave, confirmDelete };

@@ -118,19 +118,34 @@ export default function useMidiActions({
     preset_list_up: ({ category }) => {
       const list = presetLists[category];
       if (!list || list.length === 0) return;
+
       const currentPresetNum = getCurrentPresetNum(category);
       const currentIndex = list.indexOf(currentPresetNum);
-      if (currentIndex !== -1) {
-        const nextIndex = (currentIndex + 1) % list.length;
-        console.log("Preset list up:", category);
-        recallPresetByCategory(category, list[nextIndex]);
-      }
+
+      // If current preset not in list, start from beginning (index 0)
+      // Otherwise, move to next in list
+      const nextIndex =
+        currentIndex === -1 ? 0 : (currentIndex + 1) % list.length;
+
+      console.log("Preset list up:", category, "next preset:", list[nextIndex]);
+      recallPresetByCategory(category, list[nextIndex]);
     },
     preset_list_down: ({ category }) => {
       const list = presetLists[category];
       if (!list || list.length === 0) return;
-      // ... navigation logic
+
+      const currentPresetNum = getCurrentPresetNum(category);
+      const currentIndex = list.indexOf(currentPresetNum);
+
+      // If current preset not in list, start from the end
+      // Otherwise, move to next in list
+      const nextIndex =
+        currentIndex === -1
+          ? list.length - 1
+          : (currentIndex - 1 + list.length) % list.length;
+
       console.log("Preset list down:", category);
+      recallPresetByCategory(category, list[nextIndex]);
     },
     preset_list_random: ({ category }) => {
       const list = presetLists[category];
