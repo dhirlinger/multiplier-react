@@ -150,8 +150,10 @@ export default function useMidiActions({
     preset_list_random: ({ category }) => {
       const list = presetLists[category];
       if (!list || list.length === 0) return;
-      // ... navigation logic
+      const randomIndex = Math.floor(Math.random() * list.length);
+
       console.log("Preset list random:", category);
+      recallPresetByCategory(category, list[randomIndex]);
     },
 
     wave_shape: () => {

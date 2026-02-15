@@ -75,6 +75,40 @@ export default function PresetListNavigationSection({ category }) {
           </div>
         </div>
       </div>
+      {/* List Random */}
+      <div className="mb-4 p-3 bg-gray-800 rounded">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-200">Random From List</span>
+          <div className="flex items-center gap-2">
+            {mappings[category].preset_list_random ? (
+              <span className="text-sm text-[#E6A60D]">
+                Note {mappings[category].preset_list_random}
+              </span>
+            ) : (
+              <span className="text-sm text-gray-500">Not mapped</span>
+            )}
+            <button
+              className={`px-3 py-1 text-sm rounded ${
+                learningMode?.target === `${category}.preset_list_random`
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+              }`}
+              onClick={() =>
+                learningMode?.target === `${category}.preset_list_random`
+                  ? setLearningMode(null)
+                  : setLearningMode({
+                      type: "note",
+                      target: `${category}.preset_list_random`,
+                    })
+              }
+            >
+              {learningMode?.target === `${category}.preset_list_random`
+                ? "Listening..."
+                : "Map"}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
