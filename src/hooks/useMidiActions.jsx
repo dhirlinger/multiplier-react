@@ -102,8 +102,13 @@ export default function useMidiActions({
 
     subdivision_recall: ({ value }) => setSubdivision(value),
     subdivision_list_up: () => {
+      console.log("=== SUBDIVISION_LIST_UP DEBUG ===");
+      console.log("subdivisionList:", subdivisionList);
+      console.log("subdivision:", subdivision, typeof subdivision);
       if (!subdivisionList || subdivisionList.length === 0) return;
-      const currentIndex = subdivisionList.indexOf(subdivision);
+      const currentIndex = subdivisionList.indexOf(Number(subdivision));
+
+      console.log("currentIndex:", currentIndex);
 
       const nextIndex =
         currentIndex === -1 ? 0 : (currentIndex + 1) % subdivisionList.length;
@@ -114,12 +119,13 @@ export default function useMidiActions({
     },
     subdivision_list_down: () => {
       if (!subdivisionList || subdivisionList.length === 0) return;
-      const currentIndex = subdivisionList.indexOf(subdivision);
+      const currentIndex = subdivisionList.indexOf(Number(subdivision));
 
       const nextIndex =
         currentIndex === -1
           ? subdivisionList.length - 1
-          : (currentIndex - 1 + subdivisionList.length) % subdivision.length;
+          : (currentIndex - 1 + subdivisionList.length) %
+            subdivisionList.length;
 
       setSubdivision(subdivisionList[nextIndex]);
 

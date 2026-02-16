@@ -150,7 +150,7 @@ export function MidiProvider({
       }
 
       // Check subdivision recalls
-      const subRecalls = currentMappings.tempo_subdivision.preset_recalls;
+      const subRecalls = currentMappings.tempo_subdivision.subdivision_recalls;
       for (const [subValue, mappedNote] of Object.entries(subRecalls)) {
         if (mappedNote === noteNumber) {
           onMidiActionRef.current?.({
@@ -260,16 +260,19 @@ export function MidiProvider({
       const parts = learningMode.target.split(".");
 
       // Handle preset_recalls (3 parts: "category.preset_recalls.presetNum")
-      if (parts.length === 3 && parts[1] === "preset_recalls") {
-        const [category, _, presetNum] = parts;
+      if (
+        parts.length === 3 &&
+        (parts[1] === "preset_recalls" || parts[1] === "subdivision_recalls")
+      ) {
+        const [category, recallKey, Num] = parts;
 
         setMappings((prev) => ({
           ...prev,
           [category]: {
             ...prev[category],
-            preset_recalls: {
-              ...prev[category].preset_recalls,
-              [presetNum]: noteNumber,
+            [recallKey]: {
+              ...prev[category][recallKey],
+              [Num]: noteNumber,
             },
           },
         }));
