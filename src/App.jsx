@@ -13,14 +13,7 @@ import {
 import PresetUI from "./components/PresetUI";
 import PatreonBanner from "./components/PatreonBanner";
 import AppDescription from "./components/AppDescription";
-import {
-  normalizePresets,
-  filterData,
-  findByPresetNum,
-  scaleMidiExp,
-  scaleMidiToStep,
-  scaleMidiToSteppedFloat,
-} from "./assets/helpers";
+import { normalizePresets, filterData } from "./assets/helpers";
 import useFetch from "./hooks/useFetch";
 import ConfirmOverlay from "./components/ConfirmOverlay";
 import MidiMappingOverlay from "./components/MidiMappingOverlay";
@@ -551,6 +544,7 @@ export default function App() {
     toggleSequencer,
     setAudioParam,
     setWaveshape,
+    subdivision,
     setSubdivision,
     presetLists,
     subdivisionList,

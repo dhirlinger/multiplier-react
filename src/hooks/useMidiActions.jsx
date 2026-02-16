@@ -13,6 +13,7 @@ export default function useMidiActions({
   setSubdivision,
   presetLists,
   subdivisionList,
+  subdivision,
   globalPresetActions,
   freqActions,
   indexActions,
@@ -102,12 +103,26 @@ export default function useMidiActions({
     subdivision_recall: ({ value }) => setSubdivision(value),
     subdivision_list_up: () => {
       if (!subdivisionList || subdivisionList.length === 0) return;
-      // ... navigation logic
+      const currentIndex = subdivisionList.indexOf(subdivision);
+
+      const nextIndex =
+        currentIndex === -1 ? 0 : (currentIndex + 1) % subdivisionList.length;
+
+      setSubdivision(subdivisionList[nextIndex]);
+
       console.log("Subdivision list up");
     },
     subdivision_list_down: () => {
       if (!subdivisionList || subdivisionList.length === 0) return;
-      // ... navigation logic
+      const currentIndex = subdivisionList.indexOf(subdivision);
+
+      const nextIndex =
+        currentIndex === -1
+          ? subdivisionList.length - 1
+          : (currentIndex - 1 + subdivisionList.length) % subdivision.length;
+
+      setSubdivision(subdivisionList[nextIndex]);
+
       console.log("Subdivision list down");
     },
 

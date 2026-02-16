@@ -59,7 +59,7 @@ export function MidiProvider({
       start_stop: null,
     },
     tempo_subdivision: {
-      preset_recalls: {},
+      subdivision_recalls: {},
       subdivision_list_up: null,
       subdivision_list_down: null,
     },
