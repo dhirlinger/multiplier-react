@@ -3,6 +3,7 @@ import SynthFreqParamsView from "./MidiMappingViews/SynthFreqParamsView";
 import SequencerView from "./MidiMappingViews/SequencerView";
 import PresetsView from "./MidiMappingViews/PresetsView";
 import MidiSettingsView from "./MidiMappingViews/MidiSettingsView";
+import IndexParamsView from "./MidiMappingViews/IndexParamsView";
 
 export default function MidiMappingOverlay({
   displayMidiMapping,
@@ -82,6 +83,7 @@ export default function MidiMappingOverlay({
               <PresetsView category={"index_preset"} />
             )}
             {activeView === "midi_settings" && <MidiSettingsView />}
+            {activeView === "index_params" && <IndexParamsView />}
           </div>
         </div>
 
