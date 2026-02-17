@@ -587,8 +587,6 @@ export default function App() {
       <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
         <PatreonBanner loginStatusRef={loginStatusRef} />
 
-        <MidiTest />
-
         <AppDescription />
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
