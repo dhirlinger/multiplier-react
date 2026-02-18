@@ -10,6 +10,7 @@ export default function IndexColumnSlider({
   setIsDragging,
   columnRef: setColumnRef,
   registerUpdateFunction,
+  registerMidiUpdate,
   lastColumn,
 }) {
   const [value, setValue] = useState("");
@@ -108,6 +109,15 @@ export default function IndexColumnSlider({
       });
     }
   }, [registerUpdateFunction]);
+
+  // Add a new prop: registerMidiUpdate
+  useEffect(() => {
+    if (registerMidiUpdate) {
+      registerMidiUpdate((newValue) => {
+        updateValue(newValue);
+      });
+    }
+  }, [registerMidiUpdate]);
 
   useEffect(() => {
     if (!isDragging) {

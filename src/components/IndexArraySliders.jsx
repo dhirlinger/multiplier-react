@@ -6,6 +6,7 @@ export default function IndexArraySliders({
   indexObj,
   presetObj,
   globalIndexRecall,
+  updateIndexMidiRef,
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const columnRefs = useRef([]);
@@ -74,6 +75,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[0] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[0] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[0] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -86,6 +88,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[1] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[1] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[1] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -98,6 +101,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[2] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[2] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[2] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -110,6 +114,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[3] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[3] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[3] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -122,6 +127,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[4] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[4] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[4] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -134,6 +140,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[5] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[5] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[5] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -146,6 +153,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[6] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[6] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[6] = fn)}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -158,6 +166,7 @@ export default function IndexArraySliders({
           setIsDragging={setIsDragging}
           columnRef={(el) => (columnRefs.current[7] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[7] = fn)}
+          registerMidiUpdate={(fn) => (updateIndexMidiRef.current[7] = fn)}
           lastColumn={lastColumn}
         />
       </div>

@@ -35,6 +35,7 @@ export default function useMidiActions({
   globalPresetNum,
   freqPresetNum,
   indexPresetNum,
+  updateIndexMidiRef,
 }) {
   //for waveshape midi control
   const WAVESHAPES = ["sine", "triangle", "square", "sawtooth"];
@@ -215,7 +216,9 @@ export default function useMidiActions({
     },
 
     index_input_cc: ({ index, value }) => {
-      // TODO: Map CC value to index array input
+      let scaled = scaleMidiToStep(value, 0, 8);
+      if (scaled === 0) scaled = "";
+      updateIndexMidiRef.current[index]?.(scaled);
       console.log(`Index input ${index} CC:`, value);
     },
   };

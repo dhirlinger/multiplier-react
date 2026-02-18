@@ -13,30 +13,27 @@ export default function IndexParamsView() {
             <div className="flex items-center gap-2">
               {mappings.index_array_inputs[`input_${i}`] ? (
                 <span className="text-sm text-[#E6A60D]">
-                  CC {`mappings.index_array_inputs.input_${i}`}
+                  CC {mappings.index_array_inputs[`input_${i}`]}
                 </span>
               ) : (
                 <span className="text-sm text-gray-500">Not mapped</span>
               )}
               <button
                 className={`px-3 py-1 text-sm rounded ${
-                  learningMode?.target ===
-                  `mappings.index_array_inputs.input_${i}`
+                  learningMode?.target === `index_array_inputs.input_${i}`
                     ? "bg-red-500 text-white animate-pulse"
                     : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
                 }`}
                 onClick={() =>
-                  learningMode?.target ===
-                  `mappings.index_array_inputs.input_${i}`
+                  learningMode?.target === `index_array_inputs.input_${i}`
                     ? setLearningMode(null)
                     : setLearningMode({
                         type: "cc",
-                        target: `mappings.index_array_inputs.input_${i}`,
+                        target: `index_array_inputs.input_${i}`,
                       })
                 }
               >
-                {learningMode?.target ===
-                `mappings.index_array_inputs.input_${i}`
+                {learningMode?.target === `index_array_inputs.input_${i}`
                   ? "Listening..."
                   : "Map"}
               </button>

@@ -23,6 +23,8 @@ export default function PresetUI({
   obj,
   setDisplayMidiMapping,
   setMidiMappingCategory,
+  cursorInTextBox,
+  setCursorInTextBox,
 }) {
   const findByPresetNumRef = useRef();
 
@@ -244,6 +246,8 @@ export default function PresetUI({
               placeholder="PRESET NAME"
               value={presetName}
               onChange={handlePresetNameChange}
+              onFocus={() => setCursorInTextBox(true)}
+              onBlur={() => setCursorInTextBox(false)}
               maxLength={15}
             ></input>
             <button

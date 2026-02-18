@@ -18,9 +18,7 @@ import useFetch from "./hooks/useFetch";
 import ConfirmOverlay from "./components/ConfirmOverlay";
 import MidiMappingOverlay from "./components/MidiMappingOverlay";
 import usePresetActions from "./hooks/usePresetActions";
-import MidiTest from "./components/MidiTest";
 import { MidiProvider } from "./context/MidiContext";
-import IndexColumnSlider from "./components/IndexColumnSlider";
 import IndexArraySliders from "./components/IndexArraySliders";
 import Toggle from "./components/Toggle";
 import StickyBottomControls from "./components/StickyBottomControls";
@@ -80,6 +78,9 @@ export default function App() {
     lowPassQ: 0,
   });
 
+  //for index UI midi mapping
+  const updateIndexMidiRef = useRef([]);
+
   const [seqIsPlaying, setSeqIsPlaying] = useState(false);
   const [index, setIndex] = useState();
   const [seqVoiceArr, setSeqVoiceArr] = useState();
@@ -105,6 +106,8 @@ export default function App() {
   });
 
   const [subdivisionList, setSubdivisionList] = useState([]);
+
+  const [cursorInTextBox, setCursorInTextBox] = useState(false);
 
   //for batching
   const pendingDisplayUpdates = useRef({});
@@ -527,7 +530,7 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === " ") {
+      if (!cursorInTextBox && e.key === " ") {
         e.preventDefault(); // stops page scroll
         toggleSequencer();
       }
@@ -538,7 +541,7 @@ export default function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [toggleSequencer]);
+  }, [toggleSequencer, cursorInTextBox]);
 
   const { midiActions } = useMidiActions({
     toggleSequencer,
@@ -569,6 +572,7 @@ export default function App() {
     globalPresetNum,
     freqPresetNum,
     indexPresetNum,
+    updateIndexMidiRef,
   });
 
   const handleMidiAction = (action) => {
@@ -583,6 +587,7 @@ export default function App() {
       setPresetLists={setPresetLists} // local
       subdivisionList={subdivisionList}
       setSubdivisionList={setSubdivisionList}
+      loginStatusRef={loginStatusRef}
     >
       <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
         <PatreonBanner loginStatusRef={loginStatusRef} />
@@ -610,6 +615,8 @@ export default function App() {
           obj={presetObj}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
+          cursorInTextBox={cursorInTextBox}
+          setCursorInTextBox={setCursorInTextBox}
         />
         <div className="bg-maxbg mt-1 mb-1">
           <p className="text-sm ml-2 font-bold">Synth</p>
@@ -644,6 +651,8 @@ export default function App() {
           obj={freqObj}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
+          cursorInTextBox={cursorInTextBox}
+          setCursorInTextBox={setCursorInTextBox}
         />
 
         {/* FreqArray now receives setAudioParam for instant updates */}
@@ -674,6 +683,8 @@ export default function App() {
           obj={indexObj}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
+          cursorInTextBox={cursorInTextBox}
+          setCursorInTextBox={setCursorInTextBox}
         />
 
         <ConfirmOverlay
@@ -706,6 +717,7 @@ export default function App() {
           presetObj={presetObj}
           globalIndexRecall={globalIndexRecall}
           updateSeqArray={updateSeqArray}
+          updateIndexMidiRef={updateIndexMidiRef}
         />
 
         <Tempo

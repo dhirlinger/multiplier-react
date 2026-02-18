@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import useMidi from "../hooks/useMidi";
+import useFetch from "../hooks/useFetch";
 
 const MidiContext = createContext();
 
@@ -10,8 +11,13 @@ export function MidiProvider({
   setPresetLists,
   subdivisionList,
   setSubdivisionList,
+  loginStatusRef,
 }) {
   const midi = useMidi();
+  const { get, post, del } = useFetch(
+    window.MultiplierAPI?.restUrl || "http://192.168.1.195:8888/wp-json/",
+    window.MultiplierAPI?.nonce || "",
+  );
   const [learningMode, setLearningMode] = useState(null);
   // null or { type: 'note', target: 'sequencer.start_stop' }
   // or { type: 'cc', target: 'synth_params.duration' }
@@ -66,14 +72,14 @@ export function MidiProvider({
   });
 
   // Hardcoded test: Note 60 = start/stop
-  useEffect(() => {
-    setMappings((prev) => ({
-      ...prev,
-      sequencer: { start_stop: 60 },
-      freq_preset: { preset_recalls: { 1: 61, 2: 62, 3: 63 } },
-      synth_params: { duration: 1, lowpass_freq: 2, lowpass_q: 3 },
-    }));
-  }, []);
+  // useEffect(() => {
+  //   setMappings((prev) => ({
+  //     ...prev,
+  //     sequencer: { start_stop: 60 },
+  //     freq_preset: { preset_recalls: { 1: 61, 2: 62, 3: 63 } },
+  //     synth_params: { duration: 1, lowpass_freq: 2, lowpass_q: 3 },
+  //   }));
+  // }, []);
 
   const mappingsRef = useRef(mappings);
 
