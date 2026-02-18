@@ -23,7 +23,6 @@ export default function PresetUI({
   obj,
   setDisplayMidiMapping,
   setMidiMappingCategory,
-  cursorInTextBox,
   setCursorInTextBox,
 }) {
   const findByPresetNumRef = useRef();

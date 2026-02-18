@@ -109,6 +109,9 @@ export default function App() {
 
   const [cursorInTextBox, setCursorInTextBox] = useState(false);
 
+  //for midi CRUD w MidiContext & MidiOverlay -> MidiPresetUI
+  const [loggedIn, setLoggedIn] = useState(false);
+
   //for batching
   const pendingDisplayUpdates = useRef({});
   const frameRequested = useRef(false);
@@ -181,6 +184,7 @@ export default function App() {
         if (window.MultiplierAPI) {
           const data = await get("multiplier-api/v1/login-status");
           loginStatusRef.current = data;
+          if (data?.logged_in) setLoggedIn(true);
         }
       } catch (err) {
         console.error(err);
@@ -588,6 +592,7 @@ export default function App() {
       subdivisionList={subdivisionList}
       setSubdivisionList={setSubdivisionList}
       loginStatusRef={loginStatusRef}
+      loggedIn={loggedIn}
     >
       <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
         <PatreonBanner loginStatusRef={loginStatusRef} />
@@ -615,7 +620,6 @@ export default function App() {
           obj={presetObj}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
-          cursorInTextBox={cursorInTextBox}
           setCursorInTextBox={setCursorInTextBox}
         />
         <div className="bg-maxbg mt-1 mb-1">
@@ -651,7 +655,6 @@ export default function App() {
           obj={freqObj}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
-          cursorInTextBox={cursorInTextBox}
           setCursorInTextBox={setCursorInTextBox}
         />
 
@@ -683,7 +686,6 @@ export default function App() {
           obj={indexObj}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
-          cursorInTextBox={cursorInTextBox}
           setCursorInTextBox={setCursorInTextBox}
         />
 
@@ -700,6 +702,8 @@ export default function App() {
           onClose={() => setDisplayMidiMapping(false)}
           activeView={midiMappingCategory || "global_preset"}
           setActiveView={setMidiMappingCategory}
+          loginStatusRef={loginStatusRef}
+          setCursorInTextBox={setCursorInTextBox}
         />
 
         {/* Update Mode Toggle */}

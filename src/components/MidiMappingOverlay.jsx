@@ -1,19 +1,22 @@
-import { useState } from "react";
 import SynthFreqParamsView from "./MidiMappingViews/SynthFreqParamsView";
 import SequencerView from "./MidiMappingViews/SequencerView";
 import PresetsView from "./MidiMappingViews/PresetsView";
 import MidiSettingsView from "./MidiMappingViews/MidiSettingsView";
 import IndexParamsView from "./MidiMappingViews/IndexParamsView";
+import MidiPresetUI from "./MidiMappingViews/MidiPresetUI";
 
 export default function MidiMappingOverlay({
+  loginStatusRef,
   displayMidiMapping,
   onClose,
+  cursorInTextBox,
+  setCursorInTextBox,
   activeView, // Passed from parent
   setActiveView, // Also need setter from parent,
   /* 'global_preset', 'freq_preset', 'index_preset', 
   'synth_&_freq_params', 'index_params', 'sequencer_params', 'midi_settings' */
 }) {
-  const [mappingTarget, setMappingTarget] = useState(null);
+  // const [mappingTarget, setMappingTarget] = useState(null);
 
   if (!displayMidiMapping) return null;
 
@@ -32,8 +35,6 @@ export default function MidiMappingOverlay({
   const displayName =
     activeTab?.id.replaceAll("_", " ").toUpperCase() || "Sequencer";
 
-  console.log(activeView);
-
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-950 transition-colors duration-500 ease-in-out ${
@@ -48,6 +49,10 @@ export default function MidiMappingOverlay({
         }`}
       >
         <div className="p-6 min-h-110.75">
+          <MidiPresetUI
+            loginStatusRef={loginStatusRef}
+            setCursorInTextBox={setCursorInTextBox}
+          />
           <h2 className="text-base font-semibold mb-2 text-center text-gray-200">
             MIDI MAPPING - {displayName}
           </h2>
