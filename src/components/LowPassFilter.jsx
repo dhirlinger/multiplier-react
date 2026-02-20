@@ -21,7 +21,7 @@ export default function LowPassFilter({ value, qValue, setAudioParam }) {
           onChange={handleFreqChange}
           className="w-68"
         />
-        <p className="text-xl">{value}Hz</p>
+        <p className="text-xl">{Math.round(value)}Hz</p>
       </div>
       <div className="flex items-center justify-start gap-2 mt-2">
         <input
