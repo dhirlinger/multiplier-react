@@ -32,19 +32,27 @@ export const findByPresetNum = (data, presetNum) => {
 
 //scale midi input
 export const scaleMidiExp = (value, outMin, outMax) => {
+  outMin = Number(outMin);
+  outMax = Number(outMax);
   const norm = value / 127; // 0–1
   return outMin * Math.pow(outMax / outMin, norm);
 };
 
 export const scaleMidi = (value, outMin, outMax) => {
+  outMin = Number(outMin);
+  outMax = Number(outMax);
   return outMin + ((value - 0) * (outMax - outMin)) / (127 - 0);
 };
 
 export const scaleMidiRounded = (value, outMin, outMax) => {
+  outMin = Number(outMin);
+  outMax = Number(outMax);
   return Math.round(outMin + (value / 127) * (outMax - outMin));
 };
 
 export const scaleMidiToStep = (value, outMin, outMax) => {
+  outMin = Number(outMin);
+  outMax = Number(outMax);
   const steps = outMax - outMin;
   return outMin + Math.floor((value / 127) * steps);
 };
@@ -55,6 +63,8 @@ export const scaleMidiToSteppedFloat = (
   outMax,
   decimals = 2,
 ) => {
+  outMin = Number(outMin);
+  outMax = Number(outMax);
   const v = Math.min(127, Math.max(0, value));
 
   const factor = Math.pow(10, decimals);

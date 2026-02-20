@@ -577,6 +577,7 @@ export default function App() {
     freqPresetNum,
     indexPresetNum,
     updateIndexMidiRef,
+    baseMultiplierParamsRef,
   });
 
   const handleMidiAction = (action) => {

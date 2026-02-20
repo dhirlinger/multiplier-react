@@ -9,7 +9,6 @@ export default function MidiMappingOverlay({
   loginStatusRef,
   displayMidiMapping,
   onClose,
-  cursorInTextBox,
   setCursorInTextBox,
   activeView, // Passed from parent
   setActiveView, // Also need setter from parent,

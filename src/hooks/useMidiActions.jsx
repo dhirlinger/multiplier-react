@@ -36,6 +36,7 @@ export default function useMidiActions({
   freqPresetNum,
   indexPresetNum,
   updateIndexMidiRef,
+  baseMultiplierParamsRef,
 }) {
   //for waveshape midi control
   const WAVESHAPES = ["sine", "triangle", "square", "sawtooth"];
@@ -189,13 +190,20 @@ export default function useMidiActions({
     // MIDI CC handlers now use setAudioParam for instant audio updates
     multiplier_cc: ({ value }) => {
       // TODO: Map CC value (0-127) to multiplier range using baseMultiplierParamsRef
-      const scaled = scaleMidiToSteppedFloat(value, 0.1, 10); // Example range
+      const scaled = scaleMidiToSteppedFloat(
+        value,
+        baseMultiplierParamsRef.current.multiplier_min,
+        baseMultiplierParamsRef.current.multiplier_max,
+      ); // Example range
       setAudioParam("multiplier", scaled);
       console.log("Multiplier CC:", value, "→", scaled);
     },
     base_cc: ({ value }) => {
-      // TODO: Map CC value to base range using baseMultiplierParamsRef
-      const scaled = scaleMidiExp(value, 40, 10000); // Example range
+      const scaled = scaleMidiExp(
+        value,
+        baseMultiplierParamsRef.current.base_min,
+        baseMultiplierParamsRef.current.base_max,
+      ); // Example range
       setAudioParam("base", scaled);
       console.log("Base CC:", value, "→", scaled);
     },

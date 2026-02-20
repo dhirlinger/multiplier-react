@@ -5,6 +5,8 @@ export default function SynthFreqParamsView() {
 
   return (
     <>
+      <h3 className="text-sm font-semibold text-gray-300 mb-1">Synth Params</h3>
+      {/*wave shape*/}
       <div className="mb-4 p-3 bg-gray-800 rounded">
         <div className="flex justify-between items-center">
           <span className="text-gray-200">Waveshape</span>
@@ -137,6 +139,77 @@ export default function SynthFreqParamsView() {
               }
             >
               {learningMode?.target === "synth_params.lowpass_q"
+                ? "Listening..."
+                : "Map"}
+            </button>
+          </div>
+        </div>
+      </div>
+      <h3 className="text-sm font-semibold text-gray-300 mb-1">
+        Frequency Params
+      </h3>
+      {/* Base CC */}
+      <div className="mb-4 p-3 bg-gray-800 rounded">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-200">Base</span>
+          <div className="flex items-center gap-2">
+            {mappings.freq_params.base ? (
+              <span className="text-sm text-[#E6A60D]">
+                CC {mappings.freq_params.base}
+              </span>
+            ) : (
+              <span className="text-sm text-gray-500">Not mapped</span>
+            )}
+            <button
+              className={`px-3 py-1 text-sm rounded ${
+                learningMode?.target === "freq_params.base"
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+              }`}
+              onClick={() =>
+                learningMode?.target === "freq_params.base"
+                  ? setLearningMode(null)
+                  : setLearningMode({
+                      type: "cc",
+                      target: "freq_params.base",
+                    })
+              }
+            >
+              {learningMode?.target === "freq_params.base"
+                ? "Listening..."
+                : "Map"}
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Multipler CC */}
+      <div className="mb-4 p-3 bg-gray-800 rounded">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-200">Multiplier</span>
+          <div className="flex items-center gap-2">
+            {mappings.freq_params.multiplier ? (
+              <span className="text-sm text-[#E6A60D]">
+                CC {mappings.freq_params.multiplier}
+              </span>
+            ) : (
+              <span className="text-sm text-gray-500">Not mapped</span>
+            )}
+            <button
+              className={`px-3 py-1 text-sm rounded ${
+                learningMode?.target === "freq_params.multiplier"
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+              }`}
+              onClick={() =>
+                learningMode?.target === "freq_params.multiplier"
+                  ? setLearningMode(null)
+                  : setLearningMode({
+                      type: "cc",
+                      target: "freq_params.multiplier",
+                    })
+              }
+            >
+              {learningMode?.target === "freq_params.multiplier"
                 ? "Listening..."
                 : "Map"}
             </button>
