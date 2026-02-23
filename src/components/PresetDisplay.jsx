@@ -4,40 +4,61 @@ import {
 } from "../assets/noteConversions";
 
 export default function PreviewDisplay({ findByPresetNumRef, category }) {
+  // const createFreqArray = () => {
+  //   const arr = [];
+  //   if (category === "Frequency Array") {
+  //     if (findByPresetNumRef.current.multiplier === "1") {
+  //       arr.push(formatDecimal(findByPresetNumRef.current.base_freq, 3));
+
+  //       for (let i = 2; i < 9; i++) {
+  //         arr.push(
+  //           formatDecimal(
+  //             findByPresetNumRef.current.base_freq *
+  //               i *
+  //               findByPresetNumRef.current.multiplier,
+  //             3,
+  //           ),
+  //         );
+  //       }
+  //     } else {
+  //       arr.push(formatDecimal(findByPresetNumRef.current.base_freq, 3));
+  //       arr.push(
+  //         formatDecimal(
+  //           findByPresetNumRef.current.base_freq *
+  //             findByPresetNumRef.current.multiplier,
+  //           3,
+  //         ),
+  //       );
+  //       for (let i = 2; i < 8; i++) {
+  //         arr.push(
+  //           formatDecimal(
+  //             findByPresetNumRef.current.base_freq *
+  //               i *
+  //               findByPresetNumRef.current.multiplier,
+  //             3,
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   }
+  //   return arr;
+  // };
+
   const createFreqArray = () => {
     const arr = [];
     if (category === "Frequency Array") {
-      if (findByPresetNumRef.current.multiplier === "1") {
-        arr.push(formatDecimal(findByPresetNumRef.current.base_freq, 3));
-
+      const baseFreq = Number(findByPresetNumRef.current.base_freq);
+      const mult = Number(findByPresetNumRef.current.multiplier);
+      if (mult === 1) {
+        arr.push(formatDecimal(baseFreq, 3));
         for (let i = 2; i < 9; i++) {
-          arr.push(
-            formatDecimal(
-              findByPresetNumRef.current.base_freq *
-                i *
-                findByPresetNumRef.current.multiplier,
-              3
-            )
-          );
+          arr.push(formatDecimal(baseFreq * i * mult, 3));
         }
       } else {
-        arr.push(formatDecimal(findByPresetNumRef.current.base_freq, 3));
-        arr.push(
-          formatDecimal(
-            findByPresetNumRef.current.base_freq *
-              findByPresetNumRef.current.multiplier,
-            3
-          )
-        );
+        arr.push(formatDecimal(baseFreq, 3));
+        arr.push(formatDecimal(baseFreq * mult, 3));
         for (let i = 2; i < 8; i++) {
-          arr.push(
-            formatDecimal(
-              findByPresetNumRef.current.base_freq *
-                i *
-                findByPresetNumRef.current.multiplier,
-              3
-            )
-          );
+          arr.push(formatDecimal(baseFreq * i * mult, 3));
         }
       }
     }
@@ -49,7 +70,7 @@ export default function PreviewDisplay({ findByPresetNumRef, category }) {
     if (strNum.includes(".")) {
       const parts = strNum.split(".");
       if (parts[1].length > maxDecimalPlaces) {
-        return Number(number.toFixed(maxDecimalPlaces));
+        return Number(Number(number).toFixed(maxDecimalPlaces));
       }
     }
     return number;

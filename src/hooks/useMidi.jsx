@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { WebMidi } from "webmidi";
 
 export default function useMidi() {
@@ -17,7 +17,8 @@ export default function useMidi() {
         setInputs(WebMidi.inputs);
 
         if (WebMidi.inputs.length > 0) {
-          setSelectedInput(WebMidi.inputs[0]);
+          // Default to listening on all devices
+          setSelectedInput("all");
         }
       })
       .catch((err) => {
@@ -26,5 +27,19 @@ export default function useMidi() {
       });
   }, []);
 
-  return { midiEnabled, midiError, inputs, selectedInput, setSelectedInput };
+  // Resolve selectedInput to an array of devices to listen on
+  const getActiveInputs = useCallback(() => {
+    if (selectedInput === "all") return inputs;
+    if (selectedInput) return [selectedInput];
+    return [];
+  }, [selectedInput, inputs]);
+
+  return {
+    midiEnabled,
+    midiError,
+    inputs,
+    selectedInput,
+    setSelectedInput,
+    getActiveInputs,
+  };
 }

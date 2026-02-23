@@ -18,7 +18,7 @@ export default function PreviewPresetParameters({
         PREVIEW PRESET PARAMETERS
       </p>
       <p className={`${paramsVisible ? "block" : "hidden"} bg-maxbg py-1.5`}>
-        {findByPresetNumRef.current === undefined ? (
+        {!findByPresetNumRef.current ? (
           "EMPTY PRESET"
         ) : (
           <PreviewDisplay

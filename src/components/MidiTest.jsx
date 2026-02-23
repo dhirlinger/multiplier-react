@@ -9,6 +9,7 @@ export default function MidiTest() {
     inputs,
     selectedInput,
     setSelectedInput,
+    getActiveInputs,
     mappings,
   } = useMidiContext();
   const [lastNote, setLastNote] = useState(null);
@@ -16,7 +17,10 @@ export default function MidiTest() {
 
   // Listen for notes and display them
   useEffect(() => {
-    if (!midiEnabled || !selectedInput) return;
+    if (!midiEnabled) return;
+
+    const activeInputs = getActiveInputs();
+    if (activeInputs.length === 0) return;
 
     const handleNoteOn = (e) => {
       console.log("Note pressed:", e.note.identifier);
@@ -27,16 +31,23 @@ export default function MidiTest() {
       });
     };
 
-    selectedInput.channels[1].addListener("noteon", handleNoteOn);
+    activeInputs.forEach((input) => {
+      input.channels[1].addListener("noteon", handleNoteOn);
+    });
 
     return () => {
-      selectedInput.channels[1].removeListener("noteon", handleNoteOn);
+      activeInputs.forEach((input) => {
+        input.channels[1].removeListener("noteon", handleNoteOn);
+      });
     };
-  }, [midiEnabled, selectedInput]);
+  }, [midiEnabled, selectedInput, inputs]);
 
   // Listen for CC messages
   useEffect(() => {
-    if (!midiEnabled || !selectedInput) return;
+    if (!midiEnabled) return;
+
+    const activeInputs = getActiveInputs();
+    if (activeInputs.length === 0) return;
 
     const handleCC = (e) => {
       console.log("CC#", e.controller.number, "Value:", e.rawValue);
@@ -47,12 +58,16 @@ export default function MidiTest() {
       });
     };
 
-    selectedInput.channels[1].addListener("controlchange", handleCC);
+    activeInputs.forEach((input) => {
+      input.channels[1].addListener("controlchange", handleCC);
+    });
 
     return () => {
-      selectedInput.channels[1].removeListener("controlchange", handleCC);
+      activeInputs.forEach((input) => {
+        input.channels[1].removeListener("controlchange", handleCC);
+      });
     };
-  }, [midiEnabled, selectedInput]);
+  }, [midiEnabled, selectedInput, inputs]);
 
   return (
     <div
@@ -66,13 +81,17 @@ export default function MidiTest() {
       <h3>MIDI Test</h3>
       <p>Devices: {inputs.length}</p>
       <select
-        value={selectedInput?.id || ""}
+        value={selectedInput === "all" ? "all" : selectedInput?.id || ""}
         onChange={(e) => {
-          const input = inputs.find((i) => i.id === e.target.value);
-          setSelectedInput(input);
+          if (e.target.value === "all") {
+            setSelectedInput("all");
+          } else {
+            const input = inputs.find((i) => i.id === e.target.value);
+            setSelectedInput(input);
+          }
         }}
       >
-        <option>Select Device</option>
+        <option value="all">All Devices</option>
         {inputs.map((input) => (
           <option key={input.id} value={input.id}>
             {input.name}
