@@ -3,7 +3,11 @@ import { useMidiContext } from "../../context/MidiContext";
 import { Arrow } from "../Icon";
 import { findByPresetNum } from "../../assets/helpers";
 
-export default function MidiPresetUI({ loginStatusRef, setCursorInTextBox }) {
+export default function MidiPresetUI({
+  loginStatusRef,
+  setCursorInTextBox,
+  setMidiConfirm,
+}) {
   const {
     midiPresetNum,
     setMidiPresetNum,
@@ -24,7 +28,7 @@ export default function MidiPresetUI({ loginStatusRef, setCursorInTextBox }) {
     if (!midiPresetNum) return;
 
     const preset = findByPresetNum(midiPresetData, midiPresetNum);
-    setMidiPresetName(preset?.name || "--EMPTY--");
+    setMidiPresetName(preset?.name || "-EMPTY-");
   }, [midiPresetNum, midiPresetData, setMidiPresetName]);
 
   const handleLeftArrow = () => {
@@ -43,22 +47,38 @@ export default function MidiPresetUI({ loginStatusRef, setCursorInTextBox }) {
   };
 
   const handleSave = () => {
-    const logged_in = loginStatusRef?.current?.logged_in;
+    // const logged_in = loginStatusRef?.current?.logged_in;
 
-    console.log(`logged_in: ${logged_in}`);
-
-    console.log("loginStatusRef:", loginStatusRef);
-    console.log("current:", loginStatusRef?.current);
-
-    if (!logged_in) {
-      alert("You must login via patreon to access this feature");
+    // if (!logged_in) {
+    //   alert("You must login via patreon to access this feature");
+    //   return;
+    // }
+    if (midiPresetName === "-EMPTY-") {
+      setMidiConfirm({
+        action: "Name",
+        handler: () => {
+          setMidiConfirm(null);
+        },
+      });
       return;
     }
-    if (midiPresetName === "--EMPTY--") {
-      alert("Please enter a preset name");
-      return;
+
+    const findBy = findByPresetNum(midiPresetData, midiPresetNum);
+
+    if (findBy) {
+      setMidiConfirm({
+        action: "Overwrite",
+        presetNum: midiPresetNum,
+        presetName: midiPresetName,
+        filler: " with",
+        handler: () => {
+          saveMidiPreset();
+          setMidiConfirm(null);
+        },
+      });
+    } else {
+      saveMidiPreset();
     }
-    saveMidiPreset();
   };
 
   const handleDelete = () => {
@@ -74,8 +94,8 @@ export default function MidiPresetUI({ loginStatusRef, setCursorInTextBox }) {
 
   const handleNameChange = (e) => {
     const value = e.target.value;
-    if (value === "--EMPTY--") {
-      alert("--EMPTY-- is a forbidden preset name.");
+    if (value === "-EMPTY-") {
+      alert("-EMPTY- is a forbidden preset name.");
       return;
     }
     setMidiPresetName(value);

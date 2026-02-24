@@ -4,6 +4,7 @@ import PresetsView from "./MidiMappingViews/PresetsView";
 import MidiSettingsView from "./MidiMappingViews/MidiSettingsView";
 import IndexParamsView from "./MidiMappingViews/IndexParamsView";
 import MidiPresetUI from "./MidiMappingViews/MidiPresetUI";
+import { useState } from "react";
 
 export default function MidiMappingOverlay({
   loginStatusRef,
@@ -16,6 +17,8 @@ export default function MidiMappingOverlay({
   'synth_&_freq_params', 'index_params', 'sequencer_params', 'midi_settings' */
 }) {
   // const [mappingTarget, setMappingTarget] = useState(null);
+  const [midiConfirm, setMidiConfirm] = useState(null);
+  // shape: { action: "Save" | "Delete", handler: () => void, presetNum, presetName }
 
   if (!displayMidiMapping) return null;
 
@@ -30,7 +33,6 @@ export default function MidiMappingOverlay({
   ];
 
   const activeTab = tabs.find((t) => t.id === activeView);
-  console.log(`aV: ${activeView}`);
   const displayName =
     activeTab?.id.replaceAll("_", " ").toUpperCase() || "Sequencer";
 
@@ -51,6 +53,7 @@ export default function MidiMappingOverlay({
           <MidiPresetUI
             loginStatusRef={loginStatusRef}
             setCursorInTextBox={setCursorInTextBox}
+            setMidiConfirm={setMidiConfirm}
           />
           <h2 className="text-base font-semibold mb-2 text-center text-gray-200">
             MIDI MAPPING - {displayName}
@@ -90,6 +93,50 @@ export default function MidiMappingOverlay({
             {activeView === "index_params" && <IndexParamsView />}
           </div>
         </div>
+        {midiConfirm && (
+          <div
+            className={`absolute inset-0 flex items-center justify-center 
+               bg-gray-950/90 transition-colors duration-500 ease-in-out z-10`}
+          >
+            <div className="bg-gray-900 rounded-lg shadow-lg max-w-sm w-full transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D]">
+              <div className="p-10 text-gray-200 text-lg text-center font-semibold">
+                {midiConfirm.action !== "Name" && (
+                  <>
+                    {midiConfirm.action} MIDI Preset {midiConfirm.presetNum}
+                    {midiConfirm.filler} {midiConfirm.presetName}?
+                  </>
+                )}
+                {midiConfirm.action === "Name" && (
+                  <>Please enter a preset name.</>
+                )}
+              </div>
+
+              <div className="flex justify-end p-4 space-x-3 bg-gray-700 rounded-b-lg">
+                {midiConfirm.action !== "Name" && (
+                  <>
+                    <button
+                      onClick={() => setMidiConfirm(null)}
+                      className="px-4 py-2 text-lg bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                )}
+                <button
+                  onClick={midiConfirm.handler}
+                  className={`px-4 py-2 text-lg text-white rounded ${
+                    midiConfirm.action !== "Name"
+                      ? "bg-red-500 hover:bg-red-400 border-red-600 border-[.5]"
+                      : "bg-[#E6A60D] hover:bg-gray-300"
+                  }`}
+                >
+                  {midiConfirm.action !== "Name" && midiConfirm.action}
+                  {midiConfirm.action === "Name" && "OK"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-end p-4 space-x-3 bg-gray-700 rounded-b-lg">
           <button
