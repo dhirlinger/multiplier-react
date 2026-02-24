@@ -1,10 +1,12 @@
 export default function StickyBottomControls({
   toggleSequencer,
   seqIsPlaying,
+  setMidiMappingCategory,
+  setDisplayMidiMapping,
 }) {
   return (
     <>
-      <div className="sticky bottom-0 w-full flex p-2 border-t-8 border-x-0 border-b-0 border-t-[#242424] z-20 bg-[#E6A60D] m-0">
+      <div className="sticky bottom-0 w-full flex p-2 border-t-8 border-x-0 border-b-0 border-t-[#242424] z-20 bg-[#E6A60D] m-0 relative">
         <button
           className="w-[118px] min-w-[118px] border-stone-400 border"
           onClick={toggleSequencer}
@@ -28,6 +30,15 @@ export default function StickyBottomControls({
             </button>
           </a>
         </div>
+        <button
+          className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mb-2 mr-2 absolute bottom-0 left-2"
+          onClick={() => {
+            setMidiMappingCategory("sequencer_params");
+            setDisplayMidiMapping(true);
+          }}
+        >
+          MAP
+        </button>
       </div>
     </>
   );

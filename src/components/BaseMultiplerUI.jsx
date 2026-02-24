@@ -13,6 +13,8 @@ export default function BaseMultiplierUI({
   setMax,
   setStep,
   category,
+  setMidiMappingCategory,
+  setDisplayMidiMapping,
 }) {
   const [stepOutOfBounds, setStepOutOfBounds] = useState();
 
@@ -73,7 +75,22 @@ export default function BaseMultiplierUI({
   return (
     <>
       <div id={category}>
-        <p className="block font-bold">{capitalizeFirstLetter(category)}</p>
+        <div className="flex justify-between items-center">
+          <p className="block font-bold">{capitalizeFirstLetter(category)}</p>
+          {category === "base" && (
+            <>
+              <button
+                className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1"
+                onClick={() => {
+                  setMidiMappingCategory("synth/freq_params");
+                  setDisplayMidiMapping(true);
+                }}
+              >
+                MAP
+              </button>
+            </>
+          )}
+        </div>
         <div className="">
           <div className="flex items-center gap-2 mb-2">
             <button

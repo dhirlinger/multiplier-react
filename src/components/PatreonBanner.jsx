@@ -19,6 +19,7 @@ export default function PatreonBanner({ loginStatusRef }) {
             <b>
               {" "}
               <a
+                className="text-pink-600"
                 href="https://www.patreon.com/user?u=90105560&amp;utm_source=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post%2F&amp;utm_medium=patreon_wordpress_plugin&amp;utm_campaign=14548621&amp;utm_term=&amp;utm_content=creator_profile_link_in_text_over_interface"
                 target="_blank"
               >
@@ -28,6 +29,7 @@ export default function PatreonBanner({ loginStatusRef }) {
             </b>{" "}
             or more.{" "}
             <a
+              className="text-pink-600"
               href="http://localhost:8888/patreon-flow/?patreon-unlock-post=8"
               target="_blank"
             >
@@ -35,6 +37,7 @@ export default function PatreonBanner({ loginStatusRef }) {
             </a>{" "}
             Already a qualifying Patreon member?{" "}
             <a
+              className="text-pink-600"
               href="http://localhost:8888/patreon-flow/?patreon-login=yes&amp;patreon-final-redirect=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post"
               rel="nofollow"
             >

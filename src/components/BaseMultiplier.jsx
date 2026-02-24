@@ -11,6 +11,8 @@ export default function BaseMultiplier({
   presetObj,
   paramsRef,
   globalFreqRecall,
+  setMidiMappingCategory,
+  setDisplayMidiMapping,
 }) {
   const [multiplierMin, setMultiplierMin] = useState("0.1");
   const [multiplierMax, setMultiplierMax] = useState("10");
@@ -111,6 +113,8 @@ export default function BaseMultiplier({
         setMax={setBaseMax}
         setStep={setBaseStep}
         category={"base"}
+        setDisplayMidiMapping={setDisplayMidiMapping}
+        setMidiMappingCategory={setMidiMappingCategory}
       />
       <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
       <BaseMultiplierUI

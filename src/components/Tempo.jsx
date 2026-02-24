@@ -1,6 +1,13 @@
 import { Arrow } from "./Icon";
 
-export default function Tempo({ bpm, setBpm, subdivision, setSubdivision }) {
+export default function Tempo({
+  bpm,
+  setBpm,
+  subdivision,
+  setSubdivision,
+  setDisplayMidiMapping,
+  setMidiMappingCategory,
+}) {
   const handleRightArrowBpm = () => {
     setBpm((prev) => {
       if (Number(prev) < 995) {
@@ -40,12 +47,9 @@ export default function Tempo({ bpm, setBpm, subdivision, setSubdivision }) {
   return (
     <div
       id="tempo"
-      className="mt-2 text-sm font-bold w-full border-[0.5px] border-[#E6A60D] p-2"
+      className="mt-2 text-sm font-bold w-full border-[0.5px] border-[#E6A60D] p-2 relative"
     >
-      <div
-        className="flex items-center w-full
-      "
-      >
+      <div className="flex items-center w-full">
         <label htmlFor="bpm" className="w-22">
           BPM{" "}
         </label>
@@ -101,6 +105,15 @@ export default function Tempo({ bpm, setBpm, subdivision, setSubdivision }) {
           <Arrow />
         </button>
       </div>
+      <button
+        className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mb-2 mr-2 absolute bottom-0 right-0"
+        onClick={() => {
+          setMidiMappingCategory("sequencer_params");
+          setDisplayMidiMapping(true);
+        }}
+      >
+        MAP
+      </button>
     </div>
   );
 }

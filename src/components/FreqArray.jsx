@@ -12,6 +12,8 @@ export default function FreqArray({
   multiplier,
   setAudioParam,
   globalFreqRecall,
+  setDisplayMidiMapping,
+  setMidiMappingCategory,
 }) {
   const createFreqArray = () => {
     const arr = [];
@@ -85,6 +87,8 @@ export default function FreqArray({
         presetObj={presetObj}
         paramsRef={baseMultiplierParamsRef}
         globalFreqRecall={globalFreqRecall}
+        setMidiMappingCategory={setMidiMappingCategory}
+        setDisplayMidiMapping={setDisplayMidiMapping}
       />
     </div>
   );

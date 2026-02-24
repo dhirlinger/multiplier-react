@@ -624,7 +624,19 @@ export default function App() {
           setCursorInTextBox={setCursorInTextBox}
         />
         <div className="bg-maxbg mt-1 mb-1">
-          <p className="text-sm ml-2 font-bold">Synth</p>
+          {/*text-xs py-0.5 px-2 absolute top-0.5 right-1.25 border-pink-800 border bg-pink-600*/}
+          <div className="flex justify-between items-center">
+            <p className="text-sm ml-2 font-bold">Synth</p>
+            <button
+              className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1 mr-2"
+              onClick={() => {
+                setMidiMappingCategory("synth/freq_params");
+                setDisplayMidiMapping(true);
+              }}
+            >
+              MAP
+            </button>
+          </div>
           <WaveShapeSelect
             waveshape={waveshape}
             handleChange={handleShapeChange}
@@ -670,6 +682,8 @@ export default function App() {
           presetObj={presetObj}
           baseMultiplierParamsRef={baseMultiplierParamsRef}
           globalFreqRecall={globalFreqRecall}
+          setMidiMappingCategory={setMidiMappingCategory}
+          setDisplayMidiMapping={setDisplayMidiMapping}
         />
 
         <PresetUI
@@ -706,7 +720,18 @@ export default function App() {
           loginStatusRef={loginStatusRef}
           setCursorInTextBox={setCursorInTextBox}
         />
-
+        <div className="w-full flex justify-between items-center">
+          <p className="text-sm ml-2 font-bold">Index Array</p>
+          <button
+            className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1 mr-2"
+            onClick={() => {
+              setMidiMappingCategory("index_params");
+              setDisplayMidiMapping(true);
+            }}
+          >
+            MAP
+          </button>
+        </div>
         {/* Update Mode Toggle */}
         <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">
           <Toggle
@@ -730,12 +755,16 @@ export default function App() {
           setBpm={setBpm}
           subdivision={subdivision}
           setSubdivision={setSubdivision}
+          setDisplayMidiMapping={setDisplayMidiMapping}
+          setMidiMappingCategory={setMidiMappingCategory}
         />
 
         <StickyBottomControls
           toggleSequencer={toggleSequencer}
           seqIsPlaying={seqIsPlaying}
           getStatus={getStatus}
+          setMidiMappingCategory={setMidiMappingCategory}
+          setDisplayMidiMapping={setDisplayMidiMapping}
         />
       </div>
     </MidiProvider>
