@@ -49,7 +49,7 @@ export default function SubdivisionListSection({ setInputRecalled }) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="3,5,7,9"
-        className="w-full px-2 py-1 bg-gray-700 text-white rounded text-sm mb-2"
+        className="w-full px-2 py-1 bg-gray-700 text-white rounded text-sm mb-2 border-[#E6A60D]"
       />
 
       {/* Buttons */}

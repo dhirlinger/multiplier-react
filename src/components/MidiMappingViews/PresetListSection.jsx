@@ -54,7 +54,7 @@ export default function PresetListSection({ category, setInputRecalled }) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="1,5,10,15,20"
-        className="w-full px-2 py-1 bg-gray-700 text-white rounded text-sm mb-2"
+        className="w-full px-2 py-1 bg-gray-700 text-white rounded text-sm mb-2 border-[#E6A60D]"
       />
 
       {/* Buttons */}

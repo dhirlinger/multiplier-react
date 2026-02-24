@@ -156,7 +156,7 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
         {/* Add button */}
         <button
           onClick={addRecall}
-          className="w-full py-2 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 text-sm"
+          className="w-full py-2 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 text-sm border-[#E6A60D]"
         >
           + Add Subdivision Recall
         </button>

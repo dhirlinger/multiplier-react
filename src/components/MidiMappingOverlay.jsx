@@ -57,7 +57,7 @@ export default function MidiMappingOverlay({
             inputRecalled={inputRecalled}
             setInputRecalled={setInputRecalled}
           />
-          <h2 className="text-base font-semibold mb-2 text-center text-gray-200">
+          <h2 className="font-semibold mb-2 text-center text-gray-200 text-sm">
             MIDI MAPPING - {displayName}
           </h2>
 
@@ -67,10 +67,10 @@ export default function MidiMappingOverlay({
               <button
                 key={tab.id}
                 onClick={() => setActiveView(tab.id)}
-                className={`flex-1 px-2 py-2 text-xs font-medium whitespace-nowrap ${
+                className={`flex-1 px-2 py-2 text-xs font-medium border whitespace-nowrap ${
                   activeView === tab.id
-                    ? "bg-[#E6A60D] text-gray-900"
-                    : "text-gray-400 hover:text-gray-200"
+                    ? "border-cyan-500 text-cyan-500"
+                    : "border-[#E6A60D]"
                 }`}
               >
                 {tab.buttonLabel}

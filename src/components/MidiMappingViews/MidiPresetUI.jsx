@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMidiContext } from "../../context/MidiContext";
 import { Arrow } from "../Icon";
 import { findByPresetNum } from "../../assets/helpers";
@@ -122,7 +122,7 @@ export default function MidiPresetUI({
       <div className="flex gap-1 mb-1">
         <button
           onClick={handleRecall}
-          className="flex-1 px-2 py-2 text-xs bg-gray-700 text-gray-200 rounded hover:bg-gray-600"
+          className="flex-1 px-2 py-2 text-xs text-gray-200 rounded border-[#E6A60D]"
         >
           RECALL
         </button>
@@ -141,21 +141,21 @@ export default function MidiPresetUI({
       </div>
 
       {/* Number, arrows, name row */}
-      <div className="flex gap-1">
+      <div className="flex gap-0.5">
         <button
           onClick={handleLeftArrow}
-          className="flex items-center w-1/9 aspect-square p-0 border bg-gray-700 text-[#E6A60D] rounded hover:bg-gray-600"
+          className="flex items-center w-1/9 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] rounded hover:bg-gray-600"
         >
           <Arrow />
         </button>
 
-        <div className="flex items-center justify-center w-8 aspect-square bg-gray-800 text-[#E6A60D] text-sm font-bold rounded">
+        <div className="flex items-center justify-center w-8 aspect-square text-[#E6A60D] border border-[#E6A60D] text-sm font-bold rounded">
           {midiPresetNum}
         </div>
 
         <button
           onClick={handleRightArrow}
-          className="flex items-center w-1/9 aspect-square p-0 border bg-gray-700 text-[#E6A60D] rounded hover:bg-gray-600 scale-x-[-1]"
+          className="flex items-center w-1/9 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] rounded hover:bg-gray-600 scale-x-[-1]"
         >
           <Arrow />
         </button>
@@ -168,7 +168,8 @@ export default function MidiPresetUI({
           onBlur={() => setCursorInTextBox(false)}
           placeholder="MIDI PRESET NAME"
           maxLength={15}
-          className={`flex-1 px-2 bg-gray-700 ${
+          //flex-1 px-2 bg-gray-700
+          className={`flex-1 px-2 border border-[#E6A60D] text-center ${
             inputRecalled ? "text-inherit" : "text-mix"
           } text-sm rounded`}
         />
