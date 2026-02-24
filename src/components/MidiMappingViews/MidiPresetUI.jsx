@@ -82,14 +82,19 @@ export default function MidiPresetUI({
   };
 
   const handleDelete = () => {
-    if (!logged_in) {
-      alert("You must login via patreon to access this feature");
-      return;
-    }
-    const preset = findByPresetNum(midiPresetData, midiPresetNum);
-    if (!preset) return;
+    const findBy = findByPresetNum(midiPresetData, midiPresetNum);
+    if (!findBy) return;
 
-    deleteMidiPreset(midiPresetNum);
+    setMidiConfirm({
+      action: "Delete",
+      presetNum: midiPresetNum,
+      presetName: midiPresetName,
+      filler: ":",
+      handler: () => {
+        deleteMidiPreset(midiPresetNum);
+        setMidiConfirm(null);
+      },
+    });
   };
 
   const handleNameChange = (e) => {
