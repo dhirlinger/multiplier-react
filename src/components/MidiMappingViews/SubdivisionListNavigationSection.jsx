@@ -1,6 +1,6 @@
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function SubdivisionListNavigationSection() {
+export default function SubdivisionListNavigationSection({ setInputRecalled }) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
 
   return (
@@ -28,15 +28,16 @@ export default function SubdivisionListNavigationSection() {
                     ? "bg-red-500 text-white animate-pulse"
                     : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
                 }`}
-                onClick={() =>
+                onClick={() => {
                   learningMode?.target ===
                   `tempo_subdivision.subdivision_list_up`
                     ? setLearningMode(null)
                     : setLearningMode({
                         type: "note",
                         target: `tempo_subdivision.subdivision_list_up`,
-                      })
-                }
+                      });
+                  setInputRecalled(false);
+                }}
               >
                 {learningMode?.target ===
                 `tempo_subdivision.subdivision_list_up`
@@ -65,15 +66,16 @@ export default function SubdivisionListNavigationSection() {
                     ? "bg-red-500 text-white animate-pulse"
                     : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
                 }`}
-                onClick={() =>
+                onClick={() => {
                   learningMode?.target ===
                   `tempo_subdivision.subdivision_list_down`
                     ? setLearningMode(null)
                     : setLearningMode({
                         type: "note",
                         target: `tempo_subdivision.subdivision_list_down`,
-                      })
-                }
+                      });
+                  setInputRecalled(false);
+                }}
               >
                 {learningMode?.target ===
                 `tempo_subdivision.subdivision_list_down`

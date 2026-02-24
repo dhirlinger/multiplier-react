@@ -16,7 +16,7 @@ export default function MidiMappingOverlay({
   /* 'global_preset', 'freq_preset', 'index_preset', 
   'synth_&_freq_params', 'index_params', 'sequencer_params', 'midi_settings' */
 }) {
-  // const [mappingTarget, setMappingTarget] = useState(null);
+  const [inputRecalled, setInputRecalled] = useState(false);
   const [midiConfirm, setMidiConfirm] = useState(null);
   // shape: { action: "Save" | "Delete", handler: () => void, presetNum, presetName }
 
@@ -54,6 +54,8 @@ export default function MidiMappingOverlay({
             loginStatusRef={loginStatusRef}
             setCursorInTextBox={setCursorInTextBox}
             setMidiConfirm={setMidiConfirm}
+            inputRecalled={inputRecalled}
+            setInputRecalled={setInputRecalled}
           />
           <h2 className="text-base font-semibold mb-2 text-center text-gray-200">
             MIDI MAPPING - {displayName}
@@ -78,19 +80,51 @@ export default function MidiMappingOverlay({
 
           {/* Content Area - Scrollable */}
           <div className="max-h-96 overflow-y-auto">
-            {activeView === "sequencer_params" && <SequencerView />}
-            {activeView === "synth/freq_params" && <SynthFreqParamsView />}
+            {activeView === "sequencer_params" && (
+              <SequencerView
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
+            )}
+            {activeView === "synth/freq_params" && (
+              <SynthFreqParamsView
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
+            )}
             {activeView === "global_preset" && (
-              <PresetsView category="global_preset" />
+              <PresetsView
+                category="global_preset"
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
             )}
             {activeView === "freq_preset" && (
-              <PresetsView category={"freq_preset"} />
+              <PresetsView
+                category={"freq_preset"}
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
             )}
             {activeView === "index_preset" && (
-              <PresetsView category={"index_preset"} />
+              <PresetsView
+                category={"index_preset"}
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
             )}
-            {activeView === "midi_settings" && <MidiSettingsView />}
-            {activeView === "index_params" && <IndexParamsView />}
+            {activeView === "midi_settings" && (
+              <MidiSettingsView
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
+            )}
+            {activeView === "index_params" && (
+              <IndexParamsView
+                inputRecalled={inputRecalled}
+                setInputRecalled={setInputRecalled}
+              />
+            )}
           </div>
         </div>
         {midiConfirm && (

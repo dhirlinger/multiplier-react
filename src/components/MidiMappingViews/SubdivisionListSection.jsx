@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function SubdivisionListSection() {
+export default function SubdivisionListSection({ setInputRecalled }) {
   const { subdivisionList, setSubdivisionList } = useMidiContext();
   const [inputValue, setInputValue] = useState("");
 
@@ -17,12 +17,14 @@ export default function SubdivisionListSection() {
       .filter((n) => !isNaN(n) && n >= 1 && n <= 16); // Only valid subdivision numbers
 
     setSubdivisionList(parsed);
+    setInputRecalled(false);
 
     setInputValue(""); // Clear input after save
   };
 
   const handleClear = () => {
     setSubdivisionList([]);
+    setInputRecalled(false);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function SubdivisionRecallsSection() {
+export default function SubdivisionRecallsSection({ setInputRecalled }) {
   const { mappings, setMappings, learningMode, setLearningMode } =
     useMidiContext();
 
@@ -44,6 +44,7 @@ export default function SubdivisionRecallsSection() {
     if (learningMode?.target === `tempo_subdivision.subdivision_recalls`) {
       setLearningMode(null);
     }
+    setInputRecalled(false);
     setMappings((prev) => {
       const newRecalls = { ...prev.tempo_subdivision.subdivision_recalls };
       delete newRecalls[subdivisionNum];
@@ -125,15 +126,16 @@ export default function SubdivisionRecallsSection() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target ===
                 `tempo_subdivision.subdivision_recalls.${subdivisionNum}`
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "note",
                       target: `tempo_subdivision.subdivision_recalls.${subdivisionNum}`,
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target ===
               `tempo_subdivision.subdivision_recalls.${subdivisionNum}`

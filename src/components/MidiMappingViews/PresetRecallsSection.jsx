@@ -1,6 +1,6 @@
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function PresetRecallsSection({ category }) {
+export default function PresetRecallsSection({ category, setInputRecalled }) {
   const { mappings, setMappings, learningMode, setLearningMode } =
     useMidiContext();
 
@@ -43,6 +43,7 @@ export default function PresetRecallsSection({ category }) {
     if (learningMode?.target === `${category}.preset_recalls.${presetNum}`) {
       setLearningMode(null);
     }
+    setInputRecalled(false);
     setMappings((prev) => {
       const newRecalls = { ...prev[category].preset_recalls };
       delete newRecalls[presetNum];
@@ -118,14 +119,15 @@ export default function PresetRecallsSection({ category }) {
                 ? "bg-red-500 text-white animate-pulse"
                 : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
             }`}
-            onClick={() =>
+            onClick={() => {
               learningMode?.target === `${category}.preset_recalls.${presetNum}`
                 ? setLearningMode(null)
                 : setLearningMode({
                     type: "note",
                     target: `${category}.preset_recalls.${presetNum}`,
-                  })
-            }
+                  });
+              setInputRecalled(false);
+            }}
           >
             {learningMode?.target === `${category}.preset_recalls.${presetNum}`
               ? "Listening..."

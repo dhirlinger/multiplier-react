@@ -3,7 +3,7 @@ import SubdivisionListNavigationSection from "./SubdivisionListNavigationSection
 import SubdivisionListSection from "./SubdivisionListSection";
 import SubdivisionRecallsSection from "./SubdivisionRecallsSection";
 
-export default function SequencerView() {
+export default function SequencerView({ setInputRecalled }) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
 
   return (
@@ -26,14 +26,15 @@ export default function SequencerView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "sequencer.start_stop"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "note",
                       target: "sequencer.start_stop",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "sequencer.start_stop"
                 ? "Listening..."
@@ -43,9 +44,9 @@ export default function SequencerView() {
         </div>
       </div>
 
-      <SubdivisionRecallsSection />
-      <SubdivisionListSection />
-      <SubdivisionListNavigationSection />
+      <SubdivisionRecallsSection setInputRecalled={setInputRecalled} />
+      <SubdivisionListSection setInputRecalled={setInputRecalled} />
+      <SubdivisionListNavigationSection setInputRecalled={setInputRecalled} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMidiContext } from "../../context/MidiContext";
 import { Arrow } from "../Icon";
 import { findByPresetNum } from "../../assets/helpers";
@@ -7,6 +7,8 @@ export default function MidiPresetUI({
   loginStatusRef,
   setCursorInTextBox,
   setMidiConfirm,
+  inputRecalled,
+  setInputRecalled,
 }) {
   const {
     midiPresetNum,
@@ -32,10 +34,12 @@ export default function MidiPresetUI({
   }, [midiPresetNum, midiPresetData, setMidiPresetName]);
 
   const handleLeftArrow = () => {
+    setInputRecalled(false);
     setMidiPresetNum((prev) => (prev <= 1 ? 50 : prev - 1));
   };
 
   const handleRightArrow = () => {
+    setInputRecalled(false);
     setMidiPresetNum((prev) => (prev >= 50 ? 1 : prev + 1));
   };
 
@@ -43,6 +47,9 @@ export default function MidiPresetUI({
     const preset = findByPresetNum(midiPresetData, midiPresetNum);
     if (preset) {
       recallMidiPreset(midiPresetNum);
+      setInputRecalled(true);
+    } else {
+      setInputRecalled(false);
     }
   };
 
@@ -73,11 +80,13 @@ export default function MidiPresetUI({
         filler: " with",
         handler: () => {
           saveMidiPreset();
+          setInputRecalled(true);
           setMidiConfirm(null);
         },
       });
     } else {
       saveMidiPreset();
+      setInputRecalled(true);
     }
   };
 
@@ -92,6 +101,7 @@ export default function MidiPresetUI({
       filler: ":",
       handler: () => {
         deleteMidiPreset(midiPresetNum);
+        setInputRecalled(false);
         setMidiConfirm(null);
       },
     });
@@ -158,7 +168,9 @@ export default function MidiPresetUI({
           onBlur={() => setCursorInTextBox(false)}
           placeholder="MIDI PRESET NAME"
           maxLength={15}
-          className="flex-1 px-2 bg-gray-700 text-white text-sm rounded"
+          className={`flex-1 px-2 bg-gray-700 ${
+            inputRecalled ? "text-inherit" : "text-mix"
+          } text-sm rounded`}
         />
       </div>
     </div>

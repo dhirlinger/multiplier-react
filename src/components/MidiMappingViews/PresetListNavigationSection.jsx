@@ -1,6 +1,9 @@
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function PresetListNavigationSection({ category }) {
+export default function PresetListNavigationSection({
+  category,
+  setInputRecalled,
+}) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
   return (
     <div className="mt-4">
@@ -25,14 +28,15 @@ export default function PresetListNavigationSection({ category }) {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === `${category}.preset_list_up`
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "note",
                       target: `${category}.preset_list_up`,
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === `${category}.preset_list_up`
                 ? "Listening..."
@@ -59,14 +63,15 @@ export default function PresetListNavigationSection({ category }) {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === `${category}.preset_list_down`
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "note",
                       target: `${category}.preset_list_down`,
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === `${category}.preset_list_down`
                 ? "Listening..."
@@ -93,14 +98,15 @@ export default function PresetListNavigationSection({ category }) {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === `${category}.preset_list_random`
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "note",
                       target: `${category}.preset_list_random`,
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === `${category}.preset_list_random`
                 ? "Listening..."

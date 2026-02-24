@@ -1,6 +1,6 @@
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function IndexParamsView() {
+export default function IndexParamsView({ setInputRecalled }) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
 
   return (
@@ -24,14 +24,15 @@ export default function IndexParamsView() {
                     ? "bg-red-500 text-white animate-pulse"
                     : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
                 }`}
-                onClick={() =>
+                onClick={() => {
                   learningMode?.target === `index_array_inputs.input_${i}`
                     ? setLearningMode(null)
                     : setLearningMode({
                         type: "cc",
                         target: `index_array_inputs.input_${i}`,
-                      })
-                }
+                      });
+                  setInputRecalled(false);
+                }}
               >
                 {learningMode?.target === `index_array_inputs.input_${i}`
                   ? "Listening..."

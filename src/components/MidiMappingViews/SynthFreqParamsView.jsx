@@ -1,6 +1,6 @@
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function SynthFreqParamsView() {
+export default function SynthFreqParamsView({ setInputRecalled }) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
 
   return (
@@ -24,14 +24,15 @@ export default function SynthFreqParamsView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "synth_params.wave_shape"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "note",
                       target: "synth_params.wave_shape",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "synth_params.wave_shape"
                 ? "Listening..."
@@ -59,14 +60,15 @@ export default function SynthFreqParamsView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "synth_params.duration"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "cc",
                       target: "synth_params.duration",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "synth_params.duration"
                 ? "Listening..."
@@ -94,14 +96,15 @@ export default function SynthFreqParamsView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "synth_params.lowpass_freq"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "cc",
                       target: "synth_params.lowpass_freq",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "synth_params.lowpass_freq"
                 ? "Listening..."
@@ -129,14 +132,15 @@ export default function SynthFreqParamsView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "synth_params.lowpass_q"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "cc",
                       target: "synth_params.lowpass_q",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "synth_params.lowpass_q"
                 ? "Listening..."
@@ -166,14 +170,15 @@ export default function SynthFreqParamsView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "freq_params.base"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "cc",
                       target: "freq_params.base",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "freq_params.base"
                 ? "Listening..."
@@ -200,14 +205,15 @@ export default function SynthFreqParamsView() {
                   ? "bg-red-500 text-white animate-pulse"
                   : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
               }`}
-              onClick={() =>
+              onClick={() => {
                 learningMode?.target === "freq_params.multiplier"
                   ? setLearningMode(null)
                   : setLearningMode({
                       type: "cc",
                       target: "freq_params.multiplier",
-                    })
-              }
+                    });
+                setInputRecalled(false);
+              }}
             >
               {learningMode?.target === "freq_params.multiplier"
                 ? "Listening..."

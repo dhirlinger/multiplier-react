@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMidiContext } from "../../context/MidiContext";
 
-export default function PresetListSection({ category }) {
+export default function PresetListSection({ category, setInputRecalled }) {
   const { presetLists, setPresetLists } = useMidiContext();
   const [inputValue, setInputValue] = useState("");
 
@@ -23,6 +23,7 @@ export default function PresetListSection({ category }) {
     }));
 
     setInputValue(""); // Clear input after save
+    setInputRecalled(false);
   };
 
   const handleClear = () => {
@@ -30,6 +31,7 @@ export default function PresetListSection({ category }) {
       ...prev,
       [category]: [],
     }));
+    setInputRecalled(false);
   };
 
   return (
