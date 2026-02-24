@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
-import useMidi from "../hooks/useMidi";
 import { useMidiContext } from "../context/MidiContext";
 
 export default function MidiTest() {
   const {
     midiEnabled,
-    midiError,
     inputs,
     selectedInput,
     setSelectedInput,
     getActiveInputs,
-    mappings,
   } = useMidiContext();
   const [lastNote, setLastNote] = useState(null);
   const [lastCC, setLastCC] = useState(null);
