@@ -4,8 +4,8 @@ export default class SeqVoice {
     this.notesInQueue = []; // notes that have been put into the web audio and may or may not have been played yet {note, time}
     this.currentQuarterNote = 0;
     this.tempo = tempo;
-    this.lookahead = 50; // How frequently to call scheduling function (in milliseconds)
-    this.scheduleAheadTime = 0.1; // How far ahead to schedule audio (sec)
+    this.lookahead = 25; // How frequently to call scheduling function (in milliseconds)
+    this.scheduleAheadTime = 0.075; // How far ahead to schedule audio (sec)
     this.nextNoteTime = 0.0; // when the next note is due
     this.isRunning = false;
     this.intervalID = null;
@@ -163,15 +163,16 @@ export default class SeqVoice {
     if (this.audioContext == null) {
       this.audioContext = new (
         window.AudioContext || window.webkitAudioContext
-      )();
+      )({ latencyHint: "interactive" });
     }
 
     this.isRunning = true;
 
     this.currentQuarterNote = 0;
-    this.nextNoteTime = this.audioContext.currentTime + 0.05;
+    this.nextNoteTime = this.audioContext.currentTime + 0.005;
 
     this.intervalID = setInterval(() => this.scheduler(), this.lookahead);
+    this.scheduler();
   }
 
   stop() {

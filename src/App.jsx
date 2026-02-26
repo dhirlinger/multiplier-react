@@ -519,13 +519,13 @@ export default function App() {
     seqInstance.current.startStop(seqArrayRef.current);
   }, [seqIsPlaying]);
 
-  const togglePlayMode = useCallback(() => {
-    if (playMode === "loop") {
-      setPlayMode("one-shot");
-    } else {
-      setPlayMode("loop");
-    }
-  }, [playMode]);
+  // const togglePlayMode = useCallback(() => {
+  //   if (playMode === "loop") {
+  //     setPlayMode("one-shot");
+  //   } else {
+  //     setPlayMode("loop");
+  //   }
+  // }, [playMode]);
 
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
