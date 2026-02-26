@@ -17,17 +17,18 @@ export default function FreqArray({
 }) {
   const createFreqArray = () => {
     const arr = [];
-    if (multiplier === "1") {
-      arr.push(formatDecimal(base, 3));
-
+    const b = Number(base);
+    const m = Number(multiplier);
+    if (m === 1) {
+      arr.push(formatDecimal(b, 3));
       for (let i = 2; i < 9; i++) {
-        arr.push(formatDecimal(base * i * multiplier, 3));
+        arr.push(formatDecimal(b * i * m, 3));
       }
     } else {
-      arr.push(formatDecimal(base, 3));
-      arr.push(formatDecimal(base * multiplier, 3));
+      arr.push(formatDecimal(b, 3));
+      arr.push(formatDecimal(b * m, 3));
       for (let i = 2; i < 8; i++) {
-        arr.push(formatDecimal(base * i * multiplier, 3));
+        arr.push(formatDecimal(b * i * m, 3));
       }
     }
     return arr;
