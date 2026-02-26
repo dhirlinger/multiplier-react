@@ -97,6 +97,8 @@ export default function App() {
 
   // Sequencer update mode: 'immediate' or 'next_loop'
   const [updateMode, setUpdateMode] = useState("immediate");
+  // Sequencer play mode: 'loop' or 'one-shot'
+  const [playMode, setPlayMode] = useState("loop");
 
   //For midi navigation of preset and subdivisions lists
   const [presetLists, setPresetLists] = useState({
@@ -450,6 +452,11 @@ export default function App() {
     seqInstance.current.statusCallback = (code) => {
       setStatusCode(code);
       //if (code === 0) setSeqIsPlaying(false);
+      seqInstance.current.seqStopCallback = (message) => {
+        if (message === "stop") {
+          setSeqIsPlaying(false);
+        }
+      };
     };
     // Initialize seqInstance with current audioParamsRef values
     seqInstance.current.base = audioParamsRef.current.base;
@@ -466,6 +473,13 @@ export default function App() {
     }
   }, [updateMode]);
 
+  //Sync play mode with SeqVoice instance
+  useEffect(() => {
+    if (seqInstance.current) {
+      seqInstance.current.setPlayMode(playMode);
+      console.log("setPlayMode");
+    }
+  }, [playMode]);
   //save this function for visual sync later
   // useEffect(() => {
   //   seqInstance.current.onBeatCallback = (beatNumber) => {
@@ -505,6 +519,14 @@ export default function App() {
     seqInstance.current.startStop(seqArrayRef.current);
   }, [seqIsPlaying]);
 
+  const togglePlayMode = useCallback(() => {
+    if (playMode === "loop") {
+      setPlayMode("one-shot");
+    } else {
+      setPlayMode("loop");
+    }
+  }, [playMode]);
+
   const handleShapeChange = (event) => {
     setWaveshape(event.target.value);
   };
@@ -512,6 +534,10 @@ export default function App() {
   // Handler for update mode toggle
   const handleUpdateModeChange = (mode) => {
     setUpdateMode(mode);
+  };
+
+  const handleUpdatePlayModeChange = (mode) => {
+    setPlayMode(mode);
   };
 
   // Function to update array via SeqVoice.updateArray() - pass to child components
@@ -736,8 +762,10 @@ export default function App() {
         <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">
           <Toggle
             handleChange={handleUpdateModeChange}
-            updateMode={updateMode}
+            paramMode={updateMode}
             id="mode"
+            param1={"immediate"}
+            param2={"next_loop"}
           />
         </div>
 
@@ -749,6 +777,16 @@ export default function App() {
           updateSeqArray={updateSeqArray}
           updateIndexMidiRef={updateIndexMidiRef}
         />
+        {/* Play Mode Toggle */}
+        <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">
+          <Toggle
+            handleChange={handleUpdatePlayModeChange}
+            paramMode={playMode}
+            id="playMode"
+            param1={"loop"}
+            param2={"one-shot"}
+          />
+        </div>
 
         <Tempo
           bpm={bpm}

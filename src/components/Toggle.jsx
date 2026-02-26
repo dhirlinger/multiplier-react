@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { capitalizeFirstLetter } from "../assets/helpers";
 
-export default function Toggle({ handleChange, id, updateMode }) {
+export default function Toggle({
+  handleChange,
+  id,
+  paramMode,
+  param1,
+  param2,
+}) {
   const [checked, setChecked] = useState(true);
   const modeTrim = (string) => {
     return string.split("_")[0];
+  };
+  const capitalizeHyphen = (string) => {
+    string.replace(/-(\w)/g, (match, p1) => {
+      return "-" + p1.toUpperCase();
+    });
   };
   return (
     <>
@@ -14,7 +25,7 @@ export default function Toggle({ handleChange, id, updateMode }) {
           id={id}
           checked={checked}
           onChange={(e) => {
-            const mode = e.target.checked ? "immediate" : "next_loop";
+            const mode = e.target.checked ? param1 : param2;
             handleChange(mode);
             setChecked(e.target.checked);
           }}
@@ -26,7 +37,7 @@ export default function Toggle({ handleChange, id, updateMode }) {
         Update Mode:
         <span className="font-normal">
           {" "}
-          {capitalizeFirstLetter(modeTrim(updateMode))}
+          {capitalizeFirstLetter(modeTrim(paramMode))}
         </span>
       </p>
     </>

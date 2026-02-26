@@ -17,11 +17,13 @@ export default class SeqVoice {
     this.onBeatCallback = null;
     this.arrCallback = null;
     this.statusCallback = null;
+    this.seqStopCallback = null;
     this.noteLength = 0.05;
     this.lowPassFreq = 15000;
     this.qValue = 0;
     this.base = 110;
     this.multiplier = 2;
+    this.playMode = "loop";
 
     // Update mode: 'immediate' or 'next_loop'
     this.updateMode = "immediate";
@@ -39,8 +41,17 @@ export default class SeqVoice {
     }
   }
 
+  setPlayMode(mode) {
+    if (mode === "loop" || mode === "one-shot") {
+      this.playMode = mode;
+      console.log("play mode: " + mode);
+    } else {
+      console.warn("Invalid play mode. Use 'loop' or 'one-shot'");
+    }
+  }
+
   nextNote() {
-    // Advance current note and time by a quarter note (crotchet if you're posh)
+    // Advance current note and time by a quarter note
     let secondsPerBeat = 60.0 / this.tempo; // Notice this picks up the CURRENT tempo value to calculate beat length.
     this.nextNoteTime += secondsPerBeat; // Add beat length to last beat time
 
@@ -77,6 +88,12 @@ export default class SeqVoice {
       });
       beatNumber = beatNumber % this.array.length;
       this.currentQuarterNote = beatNumber;
+    }
+
+    //in one-shot play mode stop sequence from looping
+    if (this.playMode === "one-shot" && beatNumber === this.array.length - 1) {
+      this.stop();
+      this.seqStopCallback("stop");
     }
 
     // push the note on the queue, even if we're not playing.
