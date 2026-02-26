@@ -78,7 +78,7 @@ export default function MidiSettingsView() {
       <h3>MIDI Settings</h3>
       <p>Devices: {inputs.length}</p>
       <select
-        value={selectedInput?.id || ""}
+        value={selectedInput === "all" ? "all" : selectedInput?.id || ""}
         onChange={(e) => {
           if (e.target.value === "all") {
             setSelectedInput("all");
