@@ -35,6 +35,8 @@ export default function useMidiActions({
   globalPresetNum,
   freqPresetNum,
   indexPresetNum,
+  playMode,
+  setPlayMode,
   updateIndexMidiRef,
   baseMultiplierParamsRef,
 }) {
@@ -101,6 +103,9 @@ export default function useMidiActions({
   // MIDI action mapping - uses setAudioParam for high-frequency params
   const midiActions = {
     start_stop: () => toggleSequencer(),
+
+    play_mode: () =>
+      playMode === "loop" ? setPlayMode("one-shot") : setPlayMode("loop"),
 
     subdivision_recall: ({ value }) => setSubdivision(value),
     subdivision_list_up: () => {

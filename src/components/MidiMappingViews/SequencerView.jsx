@@ -44,6 +44,42 @@ export default function SequencerView({ setInputRecalled }) {
         </div>
       </div>
 
+      {/* Sequencer PlayMode (loop/one-shot) */}
+      <div className="mb-4 p-3 bg-gray-800 rounded">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-200">Play Mode Loop/One-Shot</span>
+          <div className="flex items-center gap-2">
+            {mappings.sequencer.play_mode ? (
+              <span className="text-sm text-[#E6A60D]">
+                Note {mappings.sequencer.play_mode}
+              </span>
+            ) : (
+              <span className="text-sm text-gray-500">Not mapped</span>
+            )}
+            <button
+              className={`px-3 py-1 text-sm rounded ${
+                learningMode?.target === "sequencer.play_mode"
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+              }`}
+              onClick={() => {
+                learningMode?.target === "sequencer.play_mode"
+                  ? setLearningMode(null)
+                  : setLearningMode({
+                      type: "note",
+                      target: "sequencer.play_mode",
+                    });
+                setInputRecalled(false);
+              }}
+            >
+              {learningMode?.target === "sequencer.play_mode"
+                ? "Listening..."
+                : "Map"}
+            </button>
+          </div>
+        </div>
+      </div>
+
       <SubdivisionRecallsSection setInputRecalled={setInputRecalled} />
       <SubdivisionListSection setInputRecalled={setInputRecalled} />
       <SubdivisionListNavigationSection setInputRecalled={setInputRecalled} />

@@ -308,10 +308,6 @@ export default function App() {
     }
   }, [globalInputRecalled, presetObj, setAudioParam]);
 
-  useEffect(() => {
-    console.log(`num: ${globalPresetNum} id: ${presetObj?.preset_id}`);
-  });
-
   const refreshFreqObj = () => {
     setAudioParam("base", freqObj.base_freq);
     setAudioParam("multiplier", freqObj.multiplier);
@@ -605,6 +601,8 @@ export default function App() {
     globalPresetNum,
     freqPresetNum,
     indexPresetNum,
+    playMode,
+    setPlayMode,
     updateIndexMidiRef,
     baseMultiplierParamsRef,
   });

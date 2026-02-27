@@ -37,7 +37,7 @@ export default function Toggle({
         Update Mode:
         <span className="font-normal">
           {" "}
-          {capitalizeFirstLetter(modeTrim(paramMode))}
+          {paramMode && capitalizeFirstLetter(modeTrim(paramMode))}
         </span>
       </p>
     </>

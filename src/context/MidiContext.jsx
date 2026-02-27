@@ -227,6 +227,7 @@ export function MidiProvider({
             subdivision_list_up: null,
             subdivision_list_down: null,
           },
+          play_mode: null,
         });
 
         setPresetLists({
@@ -325,6 +326,13 @@ export function MidiProvider({
       if (currentMappings.sequencer.start_stop === noteNumber) {
         console.log("Match found: start_stop");
         onMidiActionRef.current?.({ type: "start_stop" });
+        return;
+      }
+
+      //Check playmode
+      if (currentMappings.sequencer.play_mode === noteNumber) {
+        console.log("Match found: play_mode");
+        onMidiActionRef.current?.({ type: "play_mode" });
         return;
       }
 
