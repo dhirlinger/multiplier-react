@@ -364,12 +364,12 @@ export function MidiProvider({
 
     // Attach listener to all active inputs
     activeInputs.forEach((input) => {
-      input.channels[1].addListener("noteon", handleNoteOn);
+      input.addListener("noteon", handleNoteOn);
     });
 
     return () => {
       activeInputs.forEach((input) => {
-        input.channels[1].removeListener("noteon", handleNoteOn);
+        input.removeListener("noteon", handleNoteOn);
       });
     };
   }, [
@@ -439,12 +439,12 @@ export function MidiProvider({
 
     // Attach listener to all active inputs
     activeInputs.forEach((input) => {
-      input.channels[1].addListener("controlchange", handleCC);
+      input.addListener("controlchange", handleCC);
     });
 
     return () => {
       activeInputs.forEach((input) => {
-        input.channels[1].removeListener("controlchange", handleCC);
+        input.removeListener("controlchange", handleCC);
       });
     };
   }, [midi.midiEnabled, midi.selectedInput, midi.inputs, learningMode]);
@@ -527,16 +527,16 @@ export function MidiProvider({
     // Attach learning listeners to all active inputs
     activeInputs.forEach((input) => {
       if (learningMode.type === "note") {
-        input.channels[1].addListener("noteon", handleLearnNote);
+        input.addListener("noteon", handleLearnNote);
       } else if (learningMode.type === "cc") {
-        input.channels[1].addListener("controlchange", handleLearnCC);
+        input.addListener("controlchange", handleLearnCC);
       }
     });
 
     return () => {
       activeInputs.forEach((input) => {
-        input.channels[1].removeListener("noteon", handleLearnNote);
-        input.channels[1].removeListener("controlchange", handleLearnCC);
+        input.removeListener("noteon", handleLearnNote);
+        input.removeListener("controlchange", handleLearnCC);
       });
     };
   }, [midi.midiEnabled, midi.selectedInput, midi.inputs, learningMode]);

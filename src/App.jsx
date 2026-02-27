@@ -477,7 +477,6 @@ export default function App() {
   useEffect(() => {
     if (seqInstance.current) {
       seqInstance.current.setPlayMode(playMode);
-      console.log("setPlayMode");
     }
   }, [playMode]);
   //save this function for visual sync later
@@ -515,8 +514,12 @@ export default function App() {
 
   // wrap this in useCallBack
   const toggleSequencer = useCallback(() => {
-    setSeqIsPlaying(!seqIsPlaying);
-    seqInstance.current.startStop(seqArrayRef.current);
+    if (playMode === "one-shot" && seqIsPlaying === true) {
+      seqInstance.current.startStop(seqArrayRef.current);
+    } else {
+      setSeqIsPlaying(!seqIsPlaying);
+      seqInstance.current.startStop(seqArrayRef.current);
+    }
   }, [seqIsPlaying]);
 
   // const togglePlayMode = useCallback(() => {

@@ -158,21 +158,30 @@ export default class SeqVoice {
   }
 
   start() {
-    if (this.isRunning) return;
+    if (this.isRunning && this.playMode === "loop") return;
 
-    if (this.audioContext == null) {
-      this.audioContext = new (
-        window.AudioContext || window.webkitAudioContext
-      )({ latencyHint: "interactive" });
+    if (
+      this.playMode === "loop" ||
+      (this.playMode === "one-shot" && this.isRunning === false)
+    ) {
+      if (this.audioContext == null) {
+        this.audioContext = new (
+          window.AudioContext || window.webkitAudioContext
+        )({ latencyHint: "interactive" });
+      }
+
+      this.isRunning = true;
+
+      this.currentQuarterNote = 0;
+      this.nextNoteTime = this.audioContext.currentTime + 0.005;
+
+      this.intervalID = setInterval(() => this.scheduler(), this.lookahead);
+      this.scheduler();
+      //if in one-shot play mode and currently playing
+    } else {
+      this.stop();
+      this.start();
     }
-
-    this.isRunning = true;
-
-    this.currentQuarterNote = 0;
-    this.nextNoteTime = this.audioContext.currentTime + 0.005;
-
-    this.intervalID = setInterval(() => this.scheduler(), this.lookahead);
-    this.scheduler();
   }
 
   stop() {
@@ -182,7 +191,7 @@ export default class SeqVoice {
   }
 
   startStop(array) {
-    if (this.isRunning) {
+    if (this.isRunning && this.playMode === "loop") {
       this.stop();
     } else {
       this.array = array;
