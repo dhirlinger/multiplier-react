@@ -806,6 +806,7 @@ export default function App() {
           getStatus={getStatus}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
+          playMode={playMode}
         />
       </div>
     </MidiProvider>

@@ -3,15 +3,16 @@ export default function StickyBottomControls({
   seqIsPlaying,
   setMidiMappingCategory,
   setDisplayMidiMapping,
+  playMode,
 }) {
   return (
     <>
       <div className="sticky bottom-0 w-full flex p-2 border-t-8 border-x-0 border-b-0 border-t-[#242424] z-20 bg-[#E6A60D] m-0 relative">
         <button
-          className="w-[118px] min-w-[118px] border-stone-400 border"
+          className={`w-[118px] min-w-[118px] border-stone-400 border ${playMode === "one-shot" ? "text-pink-500" : ""}`}
           onClick={toggleSequencer}
         >
-          {seqIsPlaying ? "Stop" : "Play"}
+          {seqIsPlaying && playMode === "loop" ? "Stop" : "Play"}
         </button>
         <div className="flex items-center gap-1 ml-1.5 w-full justify-center">
           <a href="#global-grid">
