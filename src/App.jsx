@@ -25,6 +25,7 @@ import StickyBottomControls from "./components/StickyBottomControls";
 import Tempo from "./components/Tempo";
 import Duration from "./components/Duration";
 import useMidiActions from "./hooks/useMidiActions";
+import VolumePanning from "./components/VolumePanning";
 
 export default function App() {
   //preset + rest api related vars
@@ -68,6 +69,8 @@ export default function App() {
   const [lowPassQ, setLowPassQ] = useState("0");
   const [base, setBase] = useState("110");
   const [multiplier, setMultiplier] = useState("2");
+  const [volume, setVolume] = useState("-6");
+  const [panning, setPanning] = useState("0.0");
 
   // Ref for instant audio updates (bypasses React re-render cycle)
   const audioParamsRef = useRef({
@@ -76,6 +79,8 @@ export default function App() {
     duration: 0.05,
     lowPassFreq: 15000,
     lowPassQ: 0,
+    volume: Math.pow(10, -6 / 20),
+    panning: 0.0,
   });
 
   //for index UI midi mapping
@@ -127,6 +132,10 @@ export default function App() {
     if (pending.duration !== undefined) setDuration(pending.duration);
     if (pending.lowPassFreq !== undefined) setLowPassFreq(pending.lowPassFreq);
     if (pending.lowPassQ !== undefined) setLowPassQ(pending.lowPassQ);
+    if (pending.volume !== undefined) {
+      setVolume(Math.round(20 * Math.log10(pending.volume)));
+    }
+    if (pending.panning !== undefined) setPanning(pending.panning);
 
     // Clear pending updates and flag
     pendingDisplayUpdates.current = {};
@@ -166,6 +175,11 @@ export default function App() {
           case "lowPassQ":
             seqInstance.current.qValue = numValue;
             break;
+          case "volume":
+            seqInstance.current.volume = numValue;
+            break;
+          case "panning":
+            seqInstance.current.panning = numValue;
         }
       }
 
@@ -409,6 +423,8 @@ export default function App() {
         lowpass_q: lowPassQ,
         wave_shape: waveshape,
         lowpass_freq: lowPassFreq,
+        volume: volume,
+        panning: panning,
       },
       freq_json: {
         base_freq: base,
@@ -460,6 +476,8 @@ export default function App() {
     seqInstance.current.noteLength = audioParamsRef.current.duration;
     seqInstance.current.lowPassFreq = audioParamsRef.current.lowPassFreq;
     seqInstance.current.qValue = audioParamsRef.current.lowPassQ;
+    seqInstance.current.volume = audioParamsRef.current.volume;
+    seqInstance.current.panning = audioParamsRef.current.panning;
   }, []);
 
   // Sync update mode with SeqVoice instance
@@ -796,6 +814,13 @@ export default function App() {
           setSubdivision={setSubdivision}
           setDisplayMidiMapping={setDisplayMidiMapping}
           setMidiMappingCategory={setMidiMappingCategory}
+        />
+        <VolumePanning
+          volume={volume}
+          panning={panning}
+          setVolume={setVolume}
+          setPanning={setPanning}
+          setAudioParam={setAudioParam}
         />
 
         <StickyBottomControls

@@ -24,6 +24,8 @@ export default class SeqVoice {
     this.base = 110;
     this.multiplier = 2;
     this.playMode = "loop";
+    this.volume = 0.5;
+    this.panning = 0.0;
 
     // Update mode: 'immediate' or 'next_loop'
     this.updateMode = "immediate";
@@ -103,6 +105,7 @@ export default class SeqVoice {
     const osc = this.audioContext.createOscillator();
     const lowpass = this.audioContext.createBiquadFilter();
     const env = this.audioContext.createGain();
+    const stereo = this.audioContext.createStereoPanner();
 
     //do math for freq but avoid out of range values and errors
     if (this.array[beatNumber] == 1) {
@@ -137,11 +140,17 @@ export default class SeqVoice {
     lowpass.frequency.setValueAtTime(this.lowPassFreq, time);
     lowpass.Q.value = this.qValue;
 
-    env.gain.value = 0.5;
-    env.gain.exponentialRampToValueAtTime(0.5, time + 0.001);
+    //env.gain.value = this.volume;
+    env.gain.exponentialRampToValueAtTime(this.volume, time + 0.001);
     env.gain.exponentialRampToValueAtTime(0.001, time + this.noteLength);
 
-    osc.connect(lowpass).connect(env).connect(this.audioContext.destination);
+    stereo.pan.value = this.panning;
+
+    osc
+      .connect(lowpass)
+      .connect(env)
+      .connect(stereo)
+      .connect(this.audioContext.destination);
     osc.start(time);
     osc.stop(time + this.noteLength);
   }
