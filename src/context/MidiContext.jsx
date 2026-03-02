@@ -370,14 +370,20 @@ export function MidiProvider({
       }
     };
 
-    // Attach listener to all active inputs
+    // Attach listener
     activeInputs.forEach((input) => {
-      input.addListener("noteon", handleNoteOn);
+      const targets = midi.getChannelTargets(input);
+      targets.forEach((target) => {
+        target.addListener("noteon", handleNoteOn);
+      });
     });
 
     return () => {
       activeInputs.forEach((input) => {
-        input.removeListener("noteon", handleNoteOn);
+        const targets = midi.getChannelTargets(input);
+        targets.forEach((target) => {
+          target.removeListener("noteon", handleNoteOn);
+        });
       });
     };
   }, [
@@ -386,6 +392,7 @@ export function MidiProvider({
     midi.inputs,
     onMidiAction,
     learningMode,
+    midi.selectedChannel,
   ]);
 
   // Listen for CC messages and check mappings
@@ -447,15 +454,27 @@ export function MidiProvider({
 
     // Attach listener to all active inputs
     activeInputs.forEach((input) => {
-      input.addListener("controlchange", handleCC);
+      const targets = midi.getChannelTargets(input);
+      targets.forEach((target) => {
+        target.addListener("controlchange", handleCC);
+      });
     });
 
     return () => {
       activeInputs.forEach((input) => {
-        input.removeListener("controlchange", handleCC);
+        const targets = midi.getChannelTargets(input);
+        targets.forEach((target) => {
+          target.removeListener("controlchange", handleCC);
+        });
       });
     };
-  }, [midi.midiEnabled, midi.selectedInput, midi.inputs, learningMode]);
+  }, [
+    midi.midiEnabled,
+    midi.selectedInput,
+    midi.inputs,
+    learningMode,
+    midi.selectedChannel,
+  ]);
 
   // Listen for MIDI during learning mode
   useEffect(() => {
@@ -534,20 +553,32 @@ export function MidiProvider({
 
     // Attach learning listeners to all active inputs
     activeInputs.forEach((input) => {
-      if (learningMode.type === "note") {
-        input.addListener("noteon", handleLearnNote);
-      } else if (learningMode.type === "cc") {
-        input.addListener("controlchange", handleLearnCC);
-      }
+      const targets = midi.getChannelTargets(input);
+      targets.forEach((target) => {
+        if (learningMode.type === "note") {
+          target.addListener("noteon", handleLearnNote);
+        } else if (learningMode.type === "cc") {
+          target.addListener("controlchange", handleLearnCC);
+        }
+      });
     });
 
     return () => {
       activeInputs.forEach((input) => {
-        input.removeListener("noteon", handleLearnNote);
-        input.removeListener("controlchange", handleLearnCC);
+        const targets = midi.getChannelTargets(input);
+        targets.forEach((target) => {
+          target.removeListener("noteon", handleLearnNote);
+          target.removeListener("controlchange", handleLearnCC);
+        });
       });
     };
-  }, [midi.midiEnabled, midi.selectedInput, midi.inputs, learningMode]);
+  }, [
+    midi.midiEnabled,
+    midi.selectedInput,
+    midi.inputs,
+    learningMode,
+    midi.selectedChannel,
+  ]);
 
   const value = {
     ...midi,

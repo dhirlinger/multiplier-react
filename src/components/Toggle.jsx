@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { capitalizeFirstLetter } from "../assets/helpers";
+import { capitalizeAllWords, modeTrim } from "../assets/helpers";
 
 export default function Toggle({
   handleChange,
@@ -9,14 +9,7 @@ export default function Toggle({
   param2,
 }) {
   const [checked, setChecked] = useState(true);
-  const modeTrim = (string) => {
-    return string.split("_")[0];
-  };
-  const capitalizeHyphen = (string) => {
-    string.replace(/-(\w)/g, (match, p1) => {
-      return "-" + p1.toUpperCase();
-    });
-  };
+
   return (
     <>
       <label className="relative inline-block w-15 h-8.5 border border-pink-500/90 rounded-[34px] ml-1 mr-1">
@@ -37,7 +30,7 @@ export default function Toggle({
         Update Mode:
         <span className="font-normal">
           {" "}
-          {paramMode && capitalizeFirstLetter(modeTrim(paramMode))}
+          {paramMode && capitalizeAllWords(modeTrim(paramMode))}
         </span>
       </p>
     </>

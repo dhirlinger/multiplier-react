@@ -81,3 +81,11 @@ export const capitalizeFirstLetter = (string) => {
   }
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+export const modeTrim = (string) => {
+  return string.split("_")[0];
+};
+
+export const capitalizeAllWords = (string) => {
+  return string.replace(/(^\w|-\w)/g, (match) => match.toUpperCase());
+};

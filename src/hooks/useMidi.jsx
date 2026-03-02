@@ -7,6 +7,19 @@ export default function useMidi() {
   const [inputs, setInputs] = useState([]);
   const [selectedInput, setSelectedInput] = useState(null);
   //const listenersRef = useRef(new Map());
+  const [selectedChannel, setSelectedChannel] = useState("all");
+
+  // Returns array of channel objects to attach listeners to
+  const getChannelTargets = useCallback(
+    (input) => {
+      if (selectedChannel === "all") {
+        // input itself listens on all channels in WebMidi.js
+        return [input];
+      }
+      return [input.channels[selectedChannel]];
+    },
+    [selectedChannel],
+  );
 
   useEffect(() => {
     WebMidi.enable()
@@ -41,5 +54,8 @@ export default function useMidi() {
     selectedInput,
     setSelectedInput,
     getActiveInputs,
+    selectedChannel,
+    setSelectedChannel,
+    getChannelTargets,
   };
 }

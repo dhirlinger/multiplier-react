@@ -3,6 +3,9 @@ import { useMidiContext } from "../../context/MidiContext";
 
 export default function MidiSettingsView() {
   const {
+    selectedChannel,
+    setSelectedChannel,
+    getChannelTargets,
     midiEnabled,
     inputs,
     selectedInput,
@@ -77,26 +80,42 @@ export default function MidiSettingsView() {
     >
       <h3>MIDI Settings</h3>
       <p>Devices: {inputs.length}</p>
-      <select
-        value={selectedInput === "all" ? "all" : selectedInput?.id || ""}
-        onChange={(e) => {
-          if (e.target.value === "all") {
-            setSelectedInput("all");
-          } else {
-            const input = inputs.find((i) => i.id === e.target.value);
-            setSelectedInput(input);
-          }
-        }}
-      >
-        <option>Select Device</option>
-        <option value="all">All Devices</option>
+      <div className="flex justify-start gap-2">
+        <select
+          value={selectedInput === "all" ? "all" : selectedInput?.id || ""}
+          onChange={(e) => {
+            if (e.target.value === "all") {
+              setSelectedInput("all");
+            } else {
+              const input = inputs.find((i) => i.id === e.target.value);
+              setSelectedInput(input);
+            }
+          }}
+        >
+          <option>Select Device</option>
+          <option value="all">All Devices</option>
 
-        {inputs.map((input) => (
-          <option key={input.id} value={input.id}>
-            {input.name}
-          </option>
-        ))}
-      </select>
+          {inputs.map((input) => (
+            <option key={input.id} value={input.id}>
+              {input.name}
+            </option>
+          ))}
+        </select>
+        <select
+          value={selectedChannel}
+          onChange={(e) => {
+            const val = e.target.value;
+            setSelectedChannel(val === "all" ? "all" : Number(val));
+          }}
+        >
+          <option value="all">All Channels</option>
+          {Array.from({ length: 16 }, (_, i) => (
+            <option key={i + 1} value={i + 1}>
+              Channel {i + 1}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div
         style={{
