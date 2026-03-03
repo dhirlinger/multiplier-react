@@ -2,7 +2,7 @@ export default function PatreonBanner({ loginStatusRef }) {
   return (
     <>
       <div className="patreon-text">
-        <h1 className="text-center my-0">Multiplier:</h1>
+        {/* <h1 className="text-center my-0">Multiplier:</h1> */}
 
         {!loginStatusRef.current.logged_in && (
           <p

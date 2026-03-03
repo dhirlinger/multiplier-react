@@ -21,9 +21,9 @@ export default function MidiPresetUI({
     deleteMidiPreset,
   } = useMidiContext();
 
-  const logged_in = loginStatusRef?.current?.logged_in;
+  // const logged_in = loginStatusRef?.current?.logged_in;
 
-  console.log(`logged_in: ${logged_in}`);
+  // console.log(`logged_in: ${logged_in}`);
 
   // Update name when preset number changes
   useEffect(() => {
@@ -54,12 +54,12 @@ export default function MidiPresetUI({
   };
 
   const handleSave = () => {
-    // const logged_in = loginStatusRef?.current?.logged_in;
+    const logged_in = loginStatusRef?.current?.logged_in;
 
-    // if (!logged_in) {
-    //   alert("You must login via patreon to access this feature");
-    //   return;
-    // }
+    if (!logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
     if (midiPresetName === "-EMPTY-") {
       setMidiConfirm({
         action: "Name",
