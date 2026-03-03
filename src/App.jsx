@@ -48,7 +48,7 @@ export default function App() {
 
   // initialize hook
   const { get, post, del, loading, error } = useFetch(
-    window.MultiplierAPI?.restUrl || "http://192.168.1.195:8888/wp-json/",
+    window.MultiplierAPI?.restUrl || "/wp-json/",
     window.MultiplierAPI?.nonce || "",
   );
 
@@ -214,7 +214,7 @@ export default function App() {
 
   const fetchPresetData = async () => {
     const userID = loginStatusRef.current.user_id || null;
-    console.log(`user: ${userID}`);
+
     if (userID === null) {
       setFreqData(freqArrDefault);
       setIndexData(indexArrDefault);
@@ -342,7 +342,6 @@ export default function App() {
   };
 
   const refreshPresetObj = () => {
-    console.log("refresh called");
     if (presetObj) {
       //const findBy = findByPresetNum(presetData, globalPresetNum);
 
@@ -524,7 +523,6 @@ export default function App() {
 
   useEffect(() => {
     seqInstance.current.arrayHold = seqArrayRef.current;
-    console.log(`seqIns Arr: ${seqArrayRef.current}`);
   }, [indexObj, presetObj]);
 
   // wrap this in useCallBack
@@ -628,7 +626,6 @@ export default function App() {
   });
 
   const handleMidiAction = (action) => {
-    console.log("MIDI Action received:", action);
     midiActions[action.type]?.(action);
   };
 

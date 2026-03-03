@@ -46,7 +46,6 @@ export default class SeqVoice {
   setPlayMode(mode) {
     if (mode === "loop" || mode === "one-shot") {
       this.playMode = mode;
-      console.log("play mode: " + mode);
     } else {
       console.warn("Invalid play mode. Use 'loop' or 'one-shot'");
     }
@@ -60,7 +59,6 @@ export default class SeqVoice {
     this.currentQuarterNote++; // Advance the beat number, wrap to zero
     if (this.currentQuarterNote == this.beatsPerBar) {
       this.currentQuarterNote = 0;
-      //console.log("wrap to 0");
     }
   }
 
@@ -79,7 +77,7 @@ export default class SeqVoice {
     }
     //status is ok
     this.statusCallback(1);
-    //console.log(`arrHold: ${this.arrayHold}`);
+
     this.beatsPerBar = this.array.length;
 
     //guarding against array being out of bounds - use modulo wraparound

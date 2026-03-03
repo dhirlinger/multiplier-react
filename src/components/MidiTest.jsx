@@ -20,7 +20,6 @@ export default function MidiTest() {
     if (activeInputs.length === 0) return;
 
     const handleNoteOn = (e) => {
-      console.log("Note pressed:", e.note.identifier);
       setLastNote({
         name: e.note.identifier,
         number: e.note.number,
@@ -47,7 +46,6 @@ export default function MidiTest() {
     if (activeInputs.length === 0) return;
 
     const handleCC = (e) => {
-      console.log("CC#", e.controller.number, "Value:", e.rawValue);
       setLastCC({
         number: e.controller.number,
         name: e.controller.name,

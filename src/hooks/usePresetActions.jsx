@@ -27,7 +27,6 @@ export default function usePresetActions(config) {
 
   const handleSelect = useCallback(
     (presetNum, objPresetNum) => {
-      console.log("handle called");
       if (!presetNum) return;
       if (Number(objPresetNum) === presetNum) {
         refreshObj();

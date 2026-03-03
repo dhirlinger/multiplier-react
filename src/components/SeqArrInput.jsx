@@ -38,7 +38,6 @@ export default function NumberInput({
       setValue(inputValue);
       seqArrayRef = seqArrayRef.current;
       seqArrayRef[arrIndex] = inputValue;
-      console.log(seqArrayRef);
     }
     // If input is invalid, do nothing (no update)
   };

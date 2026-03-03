@@ -14,13 +14,13 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
 
   const addRecall = () => {
     // Find first unused subdivision number
-    console.log("add sub recall");
+
     const usedNums = new Set(Object.keys(recalls).map(Number));
     let nextNum = 1;
     while (usedNums.has(nextNum) && nextNum <= 16) {
       nextNum++;
     }
-    console.log(`rec: ${JSON.stringify(recalls)}`);
+
     if (nextNum > 16) {
       console.log(`Maximum 16 subdivision recalls`);
       return;
