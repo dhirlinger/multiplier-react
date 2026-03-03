@@ -49,7 +49,10 @@ export default function MidiMappingOverlay({
           displayMidiMapping ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="p-6 min-h-110.75">
+        <div className="p-6 pt-4 min-h-110.75">
+          <p className="text-xs text-center mt-0 pb-0.5">
+            ONLY CHROME PROPERLY SUPPORTS MIDI
+          </p>
           <MidiPresetUI
             loginStatusRef={loginStatusRef}
             setCursorInTextBox={setCursorInTextBox}

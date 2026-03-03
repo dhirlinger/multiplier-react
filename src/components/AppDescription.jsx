@@ -11,7 +11,7 @@ export default function AppDescription() {
       first value is the base value itself, and the second is the base x
       multiplier only (except if multiplier = 1), and the third through eight
       are valued at 2-7 respectively. Make music recalling presets, altering Base and Multipler, updating
-      Index order, with the LFO, and use MIDI instruments or a DAW.`;
+      Index order, with the LFO, and use MIDI instruments or a DAW. Almost all parameters are MIDI mappable!`;
 
   return (
     <p
