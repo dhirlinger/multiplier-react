@@ -807,21 +807,26 @@ export default function App() {
           />
         </div>
 
-        <Tempo
-          bpm={bpm}
-          setBpm={setBpm}
-          subdivision={subdivision}
-          setSubdivision={setSubdivision}
-          setDisplayMidiMapping={setDisplayMidiMapping}
-          setMidiMappingCategory={setMidiMappingCategory}
-        />
-        <VolumePanning
-          volume={volume}
-          panning={panning}
-          setVolume={setVolume}
-          setPanning={setPanning}
-          setAudioParam={setAudioParam}
-        />
+        <div className="w-full  bg-maxbg">
+          <Tempo
+            bpm={bpm}
+            setBpm={setBpm}
+            subdivision={subdivision}
+            setSubdivision={setSubdivision}
+            setDisplayMidiMapping={setDisplayMidiMapping}
+            setMidiMappingCategory={setMidiMappingCategory}
+          />
+          <div className="w-11/12 h-[.5px] bg-[#E6A60D] ml-2 mt-1 mr-2"></div>
+          <VolumePanning
+            volume={volume}
+            panning={panning}
+            setVolume={setVolume}
+            setPanning={setPanning}
+            setAudioParam={setAudioParam}
+            setDisplayMidiMapping={setDisplayMidiMapping}
+            setMidiMappingCategory={setMidiMappingCategory}
+          />
+        </div>
 
         <StickyBottomControls
           toggleSequencer={toggleSequencer}

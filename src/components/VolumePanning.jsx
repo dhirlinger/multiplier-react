@@ -4,12 +4,25 @@ export default function VolumePanning({
   panning,
   setPanning,
   setAudioParam,
+  setMidiMappingCategory,
+  setDisplayMidiMapping,
 }) {
   return (
     <>
-      <div id="volume-panning-container">
+      <div id="volume-panning-container" className="pl-2 pb-2 mt-1">
         <div>
-          <p className="block font-bold">Volume</p>
+          <div className="flex justify-between items-center">
+            <p className="block font-bold">Volume</p>
+            <button
+              className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1 mr-2"
+              onClick={() => {
+                setMidiMappingCategory("synth/freq_params");
+                setDisplayMidiMapping(true);
+              }}
+            >
+              MAP
+            </button>
+          </div>
           <div className="flex items-center justify-start gap-2">
             <input
               type="range"
@@ -55,7 +68,7 @@ export default function VolumePanning({
               }}
               className={`w-68`}
             />
-            <p className="text-2xl">{panning}</p>
+            <p className="text-2xl">{Number(panning).toFixed(2)}</p>
           </div>
         </div>
       </div>

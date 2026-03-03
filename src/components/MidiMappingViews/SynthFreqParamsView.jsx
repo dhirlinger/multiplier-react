@@ -149,6 +149,76 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
           </div>
         </div>
       </div>
+      {/* Volume CC */}
+      <div className="mb-4 p-3 bg-gray-800 rounded">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-200">Volume</span>
+          <div className="flex items-center gap-2">
+            {mappings.synth_params.volume ? (
+              <span className="text-sm text-[#E6A60D]">
+                CC {mappings.synth_params.volume}
+              </span>
+            ) : (
+              <span className="text-sm text-gray-500">Not mapped</span>
+            )}
+            <button
+              className={`px-3 py-1 text-sm rounded ${
+                learningMode?.target === "synth_params.volume"
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+              }`}
+              onClick={() => {
+                learningMode?.target === "synth_params.volume"
+                  ? setLearningMode(null)
+                  : setLearningMode({
+                      type: "cc",
+                      target: "synth_params.volume",
+                    });
+                setInputRecalled(false);
+              }}
+            >
+              {learningMode?.target === "synth_params.volume"
+                ? "Listening..."
+                : "Map"}
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Panning CC */}
+      <div className="mb-4 p-3 bg-gray-800 rounded">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-200">Panning</span>
+          <div className="flex items-center gap-2">
+            {mappings.synth_params.panning ? (
+              <span className="text-sm text-[#E6A60D]">
+                CC {mappings.synth_params.panning}
+              </span>
+            ) : (
+              <span className="text-sm text-gray-500">Not mapped</span>
+            )}
+            <button
+              className={`px-3 py-1 text-sm rounded ${
+                learningMode?.target === "synth_params.panning"
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+              }`}
+              onClick={() => {
+                learningMode?.target === "synth_params.panning"
+                  ? setLearningMode(null)
+                  : setLearningMode({
+                      type: "cc",
+                      target: "synth_params.panning",
+                    });
+                setInputRecalled(false);
+              }}
+            >
+              {learningMode?.target === "synth_params.panning"
+                ? "Listening..."
+                : "Map"}
+            </button>
+          </div>
+        </div>
+      </div>
       <h3 className="text-sm font-semibold text-gray-300 mb-1">
         Frequency Params
       </h3>

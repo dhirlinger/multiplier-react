@@ -32,6 +32,8 @@ export default function useMidiActions({
   setIndexPresetNum,
   setIndexPresetName,
   setIndexInputRecalled,
+  setVolume,
+  setPanning,
   globalPresetNum,
   freqPresetNum,
   indexPresetNum,
@@ -226,6 +228,19 @@ export default function useMidiActions({
       const scaled = scaleMidiToStep(value, 0, 22);
       setAudioParam("lowPassQ", scaled);
       console.log("LowPass Q CC:", value, "→", scaled);
+    },
+
+    volume: ({ value }) => {
+      const db = (value / 127) * 60 - 60; // maps 0-127 to -60 to 0 dB
+      const gain = Math.pow(10, db / 20);
+      setAudioParam("volume", gain);
+      setVolume(String(Math.round(db)));
+    },
+
+    panning: ({ value }) => {
+      const pan = (value / 127) * 2 - 1; // maps 0-127 to -1 to 1
+      setAudioParam("panning", pan);
+      setPanning(pan);
     },
 
     index_input_cc: ({ index, value }) => {

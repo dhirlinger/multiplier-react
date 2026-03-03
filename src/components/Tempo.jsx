@@ -45,10 +45,7 @@ export default function Tempo({
   };
 
   return (
-    <div
-      id="tempo"
-      className="mt-0 text-sm font-bold w-full border-[0.5px] border-[#E6A60D] p-2 relative"
-    >
+    <div id="tempo" className="mt-0 text-sm font-bold w-full p-2 relative">
       <div className="flex items-center w-full">
         <label htmlFor="bpm" className="w-22">
           BPM{" "}

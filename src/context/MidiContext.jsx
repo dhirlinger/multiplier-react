@@ -64,6 +64,8 @@ export function MidiProvider({
       lowpass_freq: null,
       lowpass_q: null,
       wave_shape: null,
+      volume: null,
+      panning: null,
     },
     index_array_inputs: {
       input_0: null,
@@ -209,6 +211,8 @@ export function MidiProvider({
             lowpass_freq: null,
             lowpass_q: null,
             wave_shape: null,
+            volume: null,
+            panning: null,
           },
           index_array_inputs: {
             input_0: null,
@@ -322,7 +326,7 @@ export function MidiProvider({
         }
       }
 
-      // Check sequencer
+      // Check start stop
       if (currentMappings.sequencer.start_stop === noteNumber) {
         console.log("Match found: start_stop");
         onMidiActionRef.current?.({ type: "start_stop" });
@@ -436,6 +440,19 @@ export function MidiProvider({
       }
       if (currentMappings.synth_params.lowpass_q === ccNumber) {
         onMidiActionRef.current?.({ type: "lowpass_q_cc", value: ccValue });
+        return;
+      }
+
+      //Check volume and panning
+      if (currentMappings.synth_params.volume === ccNumber) {
+        console.log("Match found: volume");
+        onMidiActionRef.current?.({ type: "volume", value: ccValue });
+        return;
+      }
+
+      if (currentMappings.synth_params.panning === ccNumber) {
+        console.log("Match found: panning");
+        onMidiActionRef.current?.({ type: "panning", value: ccValue });
         return;
       }
 
