@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { capitalizeAllWords, modeTrim } from "../assets/helpers";
+import {
+  capitalizeAllWords,
+  modeTrim,
+  camelCaseToNormal,
+} from "../assets/helpers";
 
 export default function Toggle({
   handleChange,
@@ -27,7 +31,7 @@ export default function Toggle({
         <span className="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-black rounded-[34px] transition-all duration-100 peer-checked:bg-pink-500/90 peer-focus:shadow-[0_0_1px_rgb(236_72_153/0.9)] before:content-[''] before:absolute before:h-6.5 before:w-6.5 before:left-1 before:bottom-1 before:bg-white before:rounded-full before:transition-all before:duration-100 peer-checked:before:translate-x-6.5"></span>
       </label>
       <p className="leading-[2.4] font-bold">
-        Update Mode:
+        {camelCaseToNormal(capitalizeAllWords(id))}:
         <span className="font-normal">
           {" "}
           {paramMode && capitalizeAllWords(modeTrim(paramMode))}

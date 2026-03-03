@@ -89,3 +89,8 @@ export const modeTrim = (string) => {
 export const capitalizeAllWords = (string) => {
   return string.replace(/(^\w|-\w)/g, (match) => match.toUpperCase());
 };
+
+export const camelCaseToNormal = (string) => {
+  // Insert a space before each uppercase letter
+  return string.replace(/([A-Z])/g, " $1");
+};
