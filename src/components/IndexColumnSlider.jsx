@@ -11,6 +11,7 @@ export default function IndexColumnSlider({
   columnRef: setColumnRef,
   registerUpdateFunction,
   registerMidiUpdate,
+  restMidiUpdatersRef,
   lastColumn,
 }) {
   const [value, setValue] = useState("");
@@ -24,7 +25,9 @@ export default function IndexColumnSlider({
   const localColumnRef = useRef(null);
   const lastToggleTimeRef = useRef(0);
   const lastCellValueRef = useRef(null);
-  const currentStateRef = useRef({ isEmpty, value, isRest, previousState });
+
+  const prevValueRef = useRef(seqArrayRef.current[arrIndex]);
+  const currentStateRef = useRef({ isEmpty, value, isRest, prevValueRef });
 
   const colors = [
     "bg-blue-300", // 0
@@ -70,6 +73,23 @@ export default function IndexColumnSlider({
       setValue(Number(newValue));
     }
   }, [indexObj]);
+
+  useEffect(() => {
+    if (restMidiUpdatersRef) {
+      restMidiUpdatersRef.current[arrIndex] = () => {
+        if (isRest) {
+          setIsRest(false);
+          setIsEmpty(false);
+          seqArrayRef.current[arrIndex] = prevValueRef.current;
+        } else {
+          prevValueRef.current = seqArrayRef.current[arrIndex];
+          setIsRest(true);
+          setIsEmpty(false);
+          seqArrayRef.current[arrIndex] = "R";
+        }
+      };
+    }
+  }, [restMidiUpdatersRef, isRest, arrIndex]);
 
   // Update from presetObj (global preset recall)
   useEffect(() => {

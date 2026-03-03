@@ -7,6 +7,7 @@ export default function IndexArraySliders({
   presetObj,
   globalIndexRecall,
   updateIndexMidiRef,
+  restMidiUpdatersRef,
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const columnRefs = useRef([]);
@@ -76,6 +77,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[0] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[0] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[0] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[0] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -89,6 +92,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[1] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[1] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[1] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[1] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -102,6 +107,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[2] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[2] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[2] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[2] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -115,6 +122,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[3] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[3] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[3] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[3] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -128,6 +137,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[4] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[4] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[4] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[4] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -141,6 +152,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[5] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[5] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[5] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[5] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -154,6 +167,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[6] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[6] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[6] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[6] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
         <IndexColumnSlider
@@ -167,6 +182,8 @@ export default function IndexArraySliders({
           columnRef={(el) => (columnRefs.current[7] = el)}
           registerUpdateFunction={(fn) => (updateFunctionsRef.current[7] = fn)}
           registerMidiUpdate={(fn) => (updateIndexMidiRef.current[7] = fn)}
+          registerRestToggle={(fn) => (restMidiUpdatersRef.current[7] = fn)}
+          restMidiUpdatersRef={restMidiUpdatersRef}
           lastColumn={lastColumn}
         />
       </div>

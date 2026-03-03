@@ -76,7 +76,17 @@ export function MidiProvider({
       input_5: null,
       input_6: null,
       input_7: null,
-      input_8: null, // implement later
+      input_8: null, //later
+      rest_buttons: {
+        rest_0: null,
+        rest_1: null,
+        rest_2: null,
+        rest_3: null,
+        rest_4: null,
+        rest_5: null,
+        rest_6: null,
+        rest_7: null,
+      },
     },
     sequencer: {
       start_stop: null,
@@ -224,6 +234,16 @@ export function MidiProvider({
             input_6: null,
             input_7: null,
             input_8: null,
+            rest_buttons: {
+              rest_0: null,
+              rest_1: null,
+              rest_2: null,
+              rest_3: null,
+              rest_4: null,
+              rest_5: null,
+              rest_6: null,
+              rest_7: null,
+            },
           },
           sequencer: { start_stop: null },
           tempo_subdivision: {
@@ -372,6 +392,26 @@ export function MidiProvider({
         onMidiActionRef.current?.({ type: "subdivision_list_down" });
         return;
       }
+      //check index reset buttons
+      for (let i = 0; i < 9; i++) {
+        if (
+          currentMappings.index_array_inputs.rest_buttons[`rest_${i}`] ===
+          noteNumber
+        ) {
+          console.log(
+            "MidiContext: matched rest button",
+            i,
+            "noteNumber:",
+            noteNumber,
+          );
+          onMidiActionRef.current?.({
+            type: "rest_buttons",
+            index: i,
+            value: value,
+          });
+          return;
+        }
+      }
     };
 
     // Attach listener
@@ -514,7 +554,9 @@ export function MidiProvider({
       // Handle preset_recalls (3 parts: "category.preset_recalls.presetNum")
       if (
         parts.length === 3 &&
-        (parts[1] === "preset_recalls" || parts[1] === "subdivision_recalls")
+        (parts[1] === "preset_recalls" ||
+          parts[1] === "subdivision_recalls" ||
+          parts[1] === "rest_buttons")
       ) {
         const [category, recallKey, Num] = parts;
 

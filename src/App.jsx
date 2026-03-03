@@ -85,6 +85,7 @@ export default function App() {
 
   //for index UI midi mapping
   const updateIndexMidiRef = useRef([]);
+  const restMidiUpdatersRef = useRef([]);
 
   const [seqIsPlaying, setSeqIsPlaying] = useState(false);
   const [index, setIndex] = useState();
@@ -622,6 +623,7 @@ export default function App() {
     playMode,
     setPlayMode,
     updateIndexMidiRef,
+    restMidiUpdatersRef,
     baseMultiplierParamsRef,
   });
 
@@ -795,6 +797,7 @@ export default function App() {
           globalIndexRecall={globalIndexRecall}
           updateSeqArray={updateSeqArray}
           updateIndexMidiRef={updateIndexMidiRef}
+          restMidiUpdatersRef={restMidiUpdatersRef}
         />
         {/* Play Mode Toggle */}
         <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">

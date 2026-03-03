@@ -5,6 +5,9 @@ export default function IndexParamsView({ setInputRecalled }) {
 
   return (
     <>
+      <h3 className="text-sm font-semibold text-gray-300 mb-1">
+        Index Columns
+      </h3>
       {/* Index Inputs 0-7 (1-8) CC */}
       {Array.from({ length: 8 }, (_, i) => i).map((i) => (
         <div key={i} className="mb-4 p-3 bg-gray-800 rounded">
@@ -35,6 +38,47 @@ export default function IndexParamsView({ setInputRecalled }) {
                 }}
               >
                 {learningMode?.target === `index_array_inputs.input_${i}`
+                  ? "Listening..."
+                  : "Map"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+      <h3 className="text-sm font-semibold text-gray-300 mb-1">Rest Buttons</h3>
+      {/* Index Rest Buttons 0-7 (1-8) MIDI Notes */}
+      {Array.from({ length: 8 }, (_, i) => i).map((i) => (
+        <div key={i} className="mb-4 p-3 bg-gray-800 rounded">
+          <div className="flex justify-between items-center">
+            <span className="text-gray-200">Index Rest Button {i + 1}</span>
+            <div className="flex items-center gap-2">
+              {mappings.index_array_inputs.rest_buttons[`rest_${i}`] ? (
+                <span className="text-sm text-[#E6A60D]">
+                  Note {mappings.index_array_inputs.rest_buttons[`rest_${i}`]}
+                </span>
+              ) : (
+                <span className="text-sm text-gray-500">Not mapped</span>
+              )}
+              <button
+                className={`px-3 py-1 text-sm rounded ${
+                  learningMode?.target ===
+                  `index_array_inputs.rest_buttons.rest_${i}`
+                    ? "bg-red-500 text-white animate-pulse"
+                    : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                }`}
+                onClick={() => {
+                  learningMode?.target ===
+                  `index_array_inputs.rest_buttons.rest_${i}`
+                    ? setLearningMode(null)
+                    : setLearningMode({
+                        type: "note",
+                        target: `index_array_inputs.rest_buttons.rest_${i}`,
+                      });
+                  setInputRecalled(false);
+                }}
+              >
+                {learningMode?.target ===
+                `index_array_inputs.rest_buttons.rest_${i}`
                   ? "Listening..."
                   : "Map"}
               </button>

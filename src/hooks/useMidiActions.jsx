@@ -40,6 +40,7 @@ export default function useMidiActions({
   playMode,
   setPlayMode,
   updateIndexMidiRef,
+  restMidiUpdatersRef,
   baseMultiplierParamsRef,
 }) {
   //for waveshape midi control
@@ -248,6 +249,12 @@ export default function useMidiActions({
       if (scaled === 0) scaled = "";
       updateIndexMidiRef.current[index]?.(scaled);
       console.log(`Index input ${index} CC:`, value);
+    },
+    rest_buttons: ({ index }) => {
+      console.log("rest_buttons action fired, index:", index);
+      console.log("restMidiUpdatersRef:", restMidiUpdatersRef);
+      console.log("ref value:", restMidiUpdatersRef?.current?.[index]);
+      restMidiUpdatersRef.current[index]?.();
     },
   };
   return { midiActions };
