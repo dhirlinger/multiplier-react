@@ -781,7 +781,7 @@ export default function App() {
           <Toggle
             handleChange={handleUpdateModeChange}
             paramMode={updateMode}
-            id="mode"
+            id="updateMode"
             param1={"immediate"}
             param2={"next_loop"}
           />
