@@ -38,14 +38,14 @@ export default function MidiMappingOverlay({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-950 transition-colors duration-500 ease-in-out ${
+      className={`fixed inset-0 z-50 flex items-start justify-center overflow-y-auto w-full h-full bg-gray-950 transition-colors duration-500 ease-in-out ${
         displayMidiMapping
           ? "bg-gray-950/90"
           : "bg-gray-950/0 pointer-events-none"
       }`}
     >
       <div
-        className={`bg-gray-900 rounded-lg shadow-lg max-w-sm w-full transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D] ${
+        className={`bg-gray-900 rounded-lg shadow-lg max-w-sm w-full my-4 transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D] ${
           displayMidiMapping ? "opacity-100" : "opacity-0"
         }`}
       >
