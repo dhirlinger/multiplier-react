@@ -28,18 +28,18 @@ export default function SubdivisionListSection({ setInputRecalled }) {
   };
 
   return (
-    <div className="mt-4">
-      <h3 className="text-sm font-semibold text-gray-300 mb-1">
+    <div className="tw:mt-4">
+      <h3 className="tw:text-sm tw:font-semibold tw:text-gray-300 tw:mb-1">
         Subdivision List
       </h3>
 
       {/* Current list display */}
-      <div className="mb-2 p-2 bg-gray-800 rounded text-sm">
-        <span className="text-gray-400">Current: </span>
+      <div className="tw:mb-2 tw:p-2 tw:bg-gray-800 tw:rounded tw:text-sm">
+        <span className="tw:text-gray-400">Current: </span>
         {currentList.length > 0 ? (
-          <span className="text-[#E6A60D]">{currentList.join(", ")}</span>
+          <span className="tw:text-[#E6A60D]">{currentList.join(", ")}</span>
         ) : (
-          <span className="text-gray-500">None (navigation disabled)</span>
+          <span className="tw:text-gray-500">None (navigation disabled)</span>
         )}
       </div>
 
@@ -49,20 +49,20 @@ export default function SubdivisionListSection({ setInputRecalled }) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="3,5,7,9"
-        className="w-full px-2 py-1 bg-gray-700 text-white rounded text-sm mb-2 border-[#E6A60D]"
+        className="tw:w-full tw:px-2 tw:py-1 tw:bg-gray-700 tw:text-white tw:rounded tw:text-sm tw:mb-2 tw:border-[#E6A60D]"
       />
 
       {/* Buttons */}
-      <div className="flex gap-2">
+      <div className="tw:flex tw:gap-2">
         <button
           onClick={handleUpdate}
-          className="flex-1 py-1 bg-[#E6A60D] text-gray-900 rounded hover:bg-yellow-500 text-sm"
+          className="tw:flex-1 tw:py-1 tw:bg-[#E6A60D] tw:text-gray-900 tw:rounded hover:tw:bg-yellow-500 tw:text-sm"
         >
           Update List
         </button>
         <button
           onClick={handleClear}
-          className="px-3 py-1 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 text-sm"
+          className="tw:px-3 tw:py-1 tw:bg-gray-700 tw:text-gray-200 tw:rounded hover:tw:bg-gray-600 tw:text-sm"
         >
           Clear
         </button>

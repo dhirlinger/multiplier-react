@@ -61,11 +61,11 @@ export default function IndexArraySliders({
   };
 
   return (
-    <div className="relative w-full" onTouchMove={handleGlobalTouchMove}>
-      <div className="absolute bottom-16 left-0 right-0 text-center text-sm text-white/70 pointer-events-none z-10">
+    <div className="tw:relative tw:w-full" onTouchMove={handleGlobalTouchMove}>
+      <div className="tw:absolute tw:bottom-16 tw:left-0 tw:right-0 tw:text-center tw:text-sm tw:text-white/70 tw:pointer-events-none tw:z-10">
         - SKIP / RECALL -
       </div>
-      <div className="grid grid-cols-8 w-full">
+      <div className="tw:grid tw:grid-cols-8 tw:w-full">
         <IndexColumnSlider
           arrIndex={0}
           seqArrayRef={seqArrayRef}

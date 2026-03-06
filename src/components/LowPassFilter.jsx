@@ -8,9 +8,9 @@ export default function LowPassFilter({ value, qValue, setAudioParam }) {
   };
 
   return (
-    <div id="lfo-container" className="w-full ml-2 mb-2">
-      <p className="block font-bold">LFO</p>
-      <div className="flex items-center justify-start gap-2">
+    <div id="lfo-container" className="tw:w-full tw:ml-2 tw:mb-2">
+      <p className="tw:block tw:font-bold">LFO</p>
+      <div className="tw:flex tw:items-center tw:justify-start tw:gap-2">
         <input
           type="range"
           min="500"
@@ -19,11 +19,11 @@ export default function LowPassFilter({ value, qValue, setAudioParam }) {
           name="lopass"
           value={value}
           onChange={handleFreqChange}
-          className="w-68"
+          className="tw:w-68"
         />
-        <p className="text-xl">{Math.round(value)}Hz</p>
+        <p className="tw:text-xl">{Math.round(value)}Hz</p>
       </div>
-      <div className="flex items-center justify-start gap-2 mt-2">
+      <div className="tw:flex tw:items-center tw:justify-start tw:gap-2 tw:mt-2">
         <input
           type="range"
           min="0"
@@ -32,9 +32,9 @@ export default function LowPassFilter({ value, qValue, setAudioParam }) {
           name="q"
           value={qValue}
           onChange={handleQChange}
-          className="w-68"
+          className="tw:w-68"
         />
-        <p className="text-2xl">Q: {qValue}</p>
+        <p className="tw:text-2xl">Q: {qValue}</p>
       </div>
     </div>
   );

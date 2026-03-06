@@ -10,14 +10,14 @@ export default function PreviewPresetParameters({
   const [paramsVisible, setParamsVisible] = useState(false);
 
   return (
-    <div className="text-sm mb-1.5" style={{ overflowWrap: "anywhere" }}>
+    <div className="tw:text-sm tw:mb-1.5" style={{ overflowWrap: "anywhere" }}>
       <p
-        className={`cursor-pointer p-2.5 bg-maxbg hover:bg-stone-700 border-solid ${colors.border} border-[0.5px]`}
+        className={`tw:cursor-pointer tw:p-2.5 tw:bg-maxbg hover:tw:bg-stone-700 tw:border-solid ${colors.border} tw:border-[0.5px]`}
         onClick={() => setParamsVisible(!paramsVisible)}
       >
         PREVIEW PRESET PARAMETERS
       </p>
-      <p className={`${paramsVisible ? "block" : "hidden"} bg-maxbg py-1.5`}>
+      <p className={`${paramsVisible ? "tw:block" : "tw:hidden"} tw:bg-maxbg tw:py-1.5`}>
         {!findByPresetNumRef.current ? (
           "EMPTY PRESET"
         ) : (

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" prefix(tw);
 @plugin "@tailwindcss/forms" {
   strategy: "class"; /* only generate classes */
 }
@@ -18,7 +18,7 @@
 }
 
 @utility form-checkbox {
-  @apply text-[#E6A60D] bg-[#3b3b3b] border border-[#E6A60D] focus:outline-0 focus:outline-offset-0 focus:border-[#E6A60D] focus:ring-offset-0 focus:ring-transparent;
+  @apply tw:text-[#E6A60D] tw:bg-[#3b3b3b] tw:border tw:border-[#E6A60D] tw:focus:outline-0 tw:focus:outline-offset-0 tw:focus:border-[#E6A60D] tw:focus:ring-offset-0 tw:focus:ring-transparent;
 }
 
 @layer base {
@@ -28,7 +28,7 @@
     border: solid rgb(133, 133, 133) 0.5px;
     border-radius: 3px;
     cursor: pointer;
-    @apply text-4xl font-medium bg-maxbg hover:bg-stone-700;
+    @apply tw:text-4xl tw:font-medium tw:bg-maxbg tw:hover:bg-stone-700;
   }
   button.refresh {
     display: inline-flex;
@@ -37,15 +37,15 @@
     border-radius: 0;
     border: 1px rgb(133, 133, 133) solid;
     padding: 0.1em;
-    @apply bg-maxbg;
+    @apply tw:bg-maxbg;
   }
 
   button.round {
-    @apply m-0 mr-1 rounded-full w-[calc(95%*1/4)] aspect-square inline-flex flex-col justify-center items-center text-center p-0 border-[#E6A60D] border text-lg font-sans;
+    @apply tw:m-0 tw:mr-1 tw:rounded-full tw:w-[calc(95%*1/4)] tw:aspect-square tw:inline-flex tw:flex-col tw:justify-center tw:items-center tw:text-center tw:p-0 tw:border-[#E6A60D] tw:border tw:text-lg tw:font-sans;
   }
 
   #waveshape label {
-    @apply text-sm p-2.5 border-2 flex justify-center;
+    @apply tw:text-sm tw:p-2.5 tw:border-2 tw:flex tw:justify-center;
   }
 
   input,
@@ -56,62 +56,62 @@
   }
 
   #waveshape input[type="radio"] {
-    @apply opacity-0 absolute;
+    @apply tw:opacity-0 tw:absolute;
   }
 
   #base-multiplier-container input[type="text"] {
-    @apply border-cyan-400;
+    @apply tw:border-cyan-400;
   }
 
   #base-multiplier-container input[type="range"],
   #duration-container input[type="range"],
   #lfo-container input[type="range"],
   #volume-panning-container input[type="range"] {
-    @apply h-14 appearance-none border-0;
+    @apply tw:h-14 tw:appearance-none tw:border-0;
   }
 
   #base-multiplier-container input[type="range"]::-webkit-slider-thumb {
-    @apply appearance-none w-14 h-14 bg-cyan-400 cursor-pointer rounded-full;
+    @apply tw:appearance-none tw:w-14 tw:h-14 tw:bg-cyan-400 tw:cursor-pointer tw:rounded-full;
   }
 
   #duration-container input[type="range"]::-webkit-slider-thumb,
   #lfo-container input[type="range"]::-webkit-slider-thumb,
   #volume-panning-container input[type="range"]::-webkit-slider-thumb {
-    @apply appearance-none w-14 h-14 bg-[#E6A60D] cursor-pointer rounded-full;
+    @apply tw:appearance-none tw:w-14 tw:h-14 tw:bg-[#E6A60D] tw:cursor-pointer tw:rounded-full;
   }
 
   #base-multiplier-container input[type="range"]::-moz-range-thumb {
-    @apply w-14 h-14 bg-cyan-400 cursor-pointer rounded-full border-0;
+    @apply tw:w-14 tw:h-14 tw:bg-cyan-400 tw:cursor-pointer tw:rounded-full tw:border-0;
   }
 
   #duration-container input[type="range"]::-moz-range-thumb,
   #lfo-container input[type="range"]::-moz-range-thumb,
   #volume-panning-container input[type="range"]::-moz-range-thumb {
-    @apply w-14 h-14 bg-[#E6A60D] cursor-pointer rounded-full border-0;
+    @apply tw:w-14 tw:h-14 tw:bg-[#E6A60D] tw:cursor-pointer tw:rounded-full tw:border-0;
   }
 
   #base-multiplier-container input[type="range"]::-webkit-slider-runnable-track,
   #lfo-container input[type="range"]::-webkit-slider-runnable-track {
-    @apply h-14 bg-cyan-400/50 rounded;
+    @apply tw:h-14 tw:bg-cyan-400/50 tw:rounded;
   }
 
   #duration-container input[type="range"]::-webkit-slider-runnable-track,
   #volume-panning-container input[type="range"]::-webkit-slider-runnable-track {
-    @apply h-14 bg-[#E6A60D]/50 rounded;
+    @apply tw:h-14 tw:bg-[#E6A60D]/50 tw:rounded;
   }
 
   #base-multiplier-container input[type="range"]::-moz-range-track,
   #lfo-container input[type="range"]::-moz-range-track {
-    @apply h-14 bg-cyan-400/50 rounded;
+    @apply tw:h-14 tw:bg-cyan-400/50 tw:rounded;
   }
 
   #duration-multiplier-container input[type="range"]::-moz-range-track,
   #volume-panning-container input[type="range"]::-moz-range-track {
-    @apply h-14 bg-[#E6A60D]/50 rounded;
+    @apply tw:h-14 tw:bg-[#E6A60D]/50 tw:rounded;
   }
 
   .patreon-text a {
-    @apply text-[#ff1493];
+    @apply tw:text-[#ff1493];
   }
 
   svg {

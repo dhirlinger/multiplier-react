@@ -66,21 +66,21 @@ export default function BaseMultiplierUI({
   };
 
   const outOfBoundsSliderStyle = `
-    [&::-webkit-slider-runnable-track]:bg-stone-500 
-    [&::-moz-range-track]:bg-stone-500 
-    [&::-webkit-slider-thumb]:bg-stone-400
-    [&::-moz-range-thumb]:bg-stone-400
+    [&::-webkit-slider-runnable-track]:tw:bg-stone-500 
+    [&::-moz-range-track]:tw:bg-stone-500 
+    [&::-webkit-slider-thumb]:tw:bg-stone-400
+    [&::-moz-range-thumb]:tw:bg-stone-400
     `;
 
   return (
     <>
       <div id={category}>
-        <div className="flex justify-between items-center">
-          <p className="block font-bold">{capitalizeFirstLetter(category)}</p>
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <p className="tw:block tw:font-bold">{capitalizeFirstLetter(category)}</p>
           {category === "base" && (
             <>
               <button
-                className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1"
+                className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1"
                 onClick={() => {
                   setMidiMappingCategory("synth/freq_params");
                   setDisplayMidiMapping(true);
@@ -92,9 +92,9 @@ export default function BaseMultiplierUI({
           )}
         </div>
         <div className="">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="tw:flex tw:items-center tw:gap-2 tw:mb-2">
             <button
-              className={`flex items-center w-14 aspect-square p-0 border border-cyan-500/90 text-cyan-500/90 rotate-90`}
+              className={`tw:flex tw:items-center tw:w-14 tw:aspect-square tw:p-0 tw:border tw:border-cyan-500/90 tw:text-cyan-500/90 tw:rotate-90`}
               onClick={handleUpArrow}
             >
               <Arrow />
@@ -105,13 +105,13 @@ export default function BaseMultiplierUI({
               value={value}
               maxLength={10}
               style={{ fontSize: "36px" }}
-              className="w-38.75"
+              className="tw:w-38.75"
               onChange={handleValueChange}
             />
           </div>
-          <div className="flex items-center gap-2 mb-2">
+          <div className="tw:flex tw:items-center tw:gap-2 tw:mb-2">
             <button
-              className={`flex items-center w-14 aspect-square p-0 border border-cyan-500/90 text-cyan-500/90 -rotate-90`}
+              className={`tw:flex tw:items-center tw:w-14 tw:aspect-square tw:p-0 tw:border tw:border-cyan-500/90 tw:text-cyan-500/90 -tw:rotate-90`}
               onClick={handleDownArrow}
             >
               <Arrow />
@@ -123,7 +123,7 @@ export default function BaseMultiplierUI({
               step={step}
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              className={`w-68 ${
+              className={`tw:w-68 ${
                 stepOutOfBounds ? outOfBoundsSliderStyle : ""
               }`}
             />
@@ -131,7 +131,7 @@ export default function BaseMultiplierUI({
         </div>
       </div>
 
-      <div className="mb-2">
+      <div className="tw:mb-2">
         <label htmlFor={`${category}-min`}>min: </label>
         <input
           id={`${category}-min`}

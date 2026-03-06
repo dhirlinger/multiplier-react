@@ -79,28 +79,28 @@ export default function PreviewDisplay({ findByPresetNumRef, category }) {
     <>
       {category === "Global" &&
         Object.keys(findByPresetNumRef.current.params_json).map((key) => (
-          <span key={key} className="me-1">
+          <span key={key} className="tw:me-1">
             | {key}: {String(findByPresetNumRef.current.params_json[key])} |
           </span>
         ))}
       {category === "Global" &&
         findByPresetNumRef.current.freq_json &&
         Object.keys(findByPresetNumRef.current.freq_json).map((key) => (
-          <span key={key} className="me-1">
+          <span key={key} className="tw:me-1">
             | {key}: {String(findByPresetNumRef.current.freq_json[key])} |
           </span>
         ))}
       {category === "Global" && findByPresetNumRef.current.index_array && (
-        <span className="me-1">
+        <span className="tw:me-1">
           index array: {findByPresetNumRef.current.index_array}
         </span>
       )}
       {category === "Frequency Array" && (
         <>
-          <span className="me-1">
+          <span className="tw:me-1">
             In Hertz: {createFreqArray().join(", ")} |
           </span>
-          <span className="me-1">
+          <span className="tw:me-1">
             Nearest Note:{" "}
             {createFreqArray()
               .map((item) => midiNumberToNoteName(frequencyToMidi(item)))
@@ -109,7 +109,7 @@ export default function PreviewDisplay({ findByPresetNumRef, category }) {
         </>
       )}
       {category === "Index Array" && (
-        <span className="me-1">
+        <span className="tw:me-1">
           | {String(findByPresetNumRef.current.index_array)} |
         </span>
       )}

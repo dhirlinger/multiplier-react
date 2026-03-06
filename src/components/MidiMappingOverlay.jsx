@@ -38,20 +38,20 @@ export default function MidiMappingOverlay({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-start justify-center overflow-y-auto w-full h-full bg-gray-950 transition-colors duration-500 ease-in-out ${
+      className={`tw:fixed tw:inset-0 tw:z-50 tw:flex tw:items-start tw:justify-center tw:overflow-y-auto tw:w-full tw:h-full tw:bg-gray-950 tw:transition-colors tw:duration-500 tw:ease-in-out ${
         displayMidiMapping
-          ? "bg-gray-950/90"
-          : "bg-gray-950/0 pointer-events-none"
+          ? "tw:bg-gray-950/90"
+          : "tw:bg-gray-950/0 tw:pointer-events-none"
       }`}
     >
       <div
-        className={`bg-gray-900 rounded-lg shadow-lg max-w-sm w-full my-4 transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D] ${
-          displayMidiMapping ? "opacity-100" : "opacity-0"
+        className={`tw:bg-gray-900 tw:rounded-lg tw:shadow-lg tw:max-w-sm tw:w-full tw:my-4 tw:transition-opacity tw:duration-500 tw:ease-in-out tw:border-[0.5px] tw:border-[#E6A60D] ${
+          displayMidiMapping ? "tw:opacity-100" : "tw:opacity-0"
         }`}
       >
-        <div className="p-6 pt-4 min-h-110.75">
-          <p className="text-xs text-center mt-0 pb-0.5">
-            ONLY CHROME PROPERLY SUPPORTS MIDI
+        <div className="tw:p-6 tw:pt-4 tw:min-h-110.75">
+          <p className="tw:text-xs tw:text-center tw:mt-0 tw:pb-0.5">
+            ONLY CHROME DESKTOP PROPERLY SUPPORTS MIDI
           </p>
           <MidiPresetUI
             loginStatusRef={loginStatusRef}
@@ -60,20 +60,20 @@ export default function MidiMappingOverlay({
             inputRecalled={inputRecalled}
             setInputRecalled={setInputRecalled}
           />
-          <h2 className="font-semibold mb-2 text-center text-gray-200 text-sm">
+          <h2 className="tw:font-semibold tw:mb-2 tw:text-center tw:text-gray-200 tw:text-sm">
             MIDI MAPPING - {displayName}
           </h2>
 
           {/* Tab Navigation */}
-          <div className="flex flex-wrap gap-1 border-b border-gray-700 bg-gray-800 mb-4">
+          <div className="tw:flex tw:flex-wrap tw:gap-1 tw:border-b tw:border-gray-700 tw:bg-gray-800 tw:mb-4">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveView(tab.id)}
-                className={`flex-1 px-2 py-2 text-xs font-medium border whitespace-nowrap ${
+                className={`tw:flex-1 tw:px-2 tw:py-2 tw:text-xs tw:font-medium tw:border tw:whitespace-nowrap ${
                   activeView === tab.id
-                    ? "border-cyan-500 text-cyan-500"
-                    : "border-[#E6A60D]"
+                    ? "tw:border-cyan-500 tw:text-cyan-500"
+                    : "tw:border-[#E6A60D]"
                 }`}
               >
                 {tab.buttonLabel}
@@ -82,7 +82,7 @@ export default function MidiMappingOverlay({
           </div>
 
           {/* Content Area - Scrollable */}
-          <div className="max-h-96 overflow-y-auto">
+          <div className="tw:max-h-96 tw:overflow-y-auto">
             {activeView === "sequencer_params" && (
               <SequencerView
                 inputRecalled={inputRecalled}
@@ -132,11 +132,11 @@ export default function MidiMappingOverlay({
         </div>
         {midiConfirm && (
           <div
-            className={`absolute inset-0 flex items-center justify-center 
-               bg-gray-950/90 transition-colors duration-500 ease-in-out z-10`}
+            className={`tw:absolute tw:inset-0 tw:flex tw:items-center tw:justify-center 
+               tw:bg-gray-950/90 tw:transition-colors tw:duration-500 tw:ease-in-out tw:z-10`}
           >
-            <div className="bg-gray-900 rounded-lg shadow-lg max-w-sm w-full transition-opacity duration-500 ease-in-out border-[0.5px] border-[#E6A60D]">
-              <div className="p-10 text-gray-200 text-lg text-center font-semibold">
+            <div className="tw:bg-gray-900 tw:rounded-lg tw:shadow-lg tw:max-w-sm tw:w-full tw:transition-opacity tw:duration-500 tw:ease-in-out tw:border-[0.5px] tw:border-[#E6A60D]">
+              <div className="tw:p-10 tw:text-gray-200 tw:text-lg tw:text-center tw:font-semibold">
                 {midiConfirm.action !== "Name" && (
                   <>
                     {midiConfirm.action} MIDI Preset {midiConfirm.presetNum}
@@ -148,12 +148,12 @@ export default function MidiMappingOverlay({
                 )}
               </div>
 
-              <div className="flex justify-end p-4 space-x-3 bg-gray-700 rounded-b-lg">
+              <div className="tw:flex tw:justify-end tw:p-4 tw:space-x-3 tw:bg-gray-700 tw:rounded-b-lg">
                 {midiConfirm.action !== "Name" && (
                   <>
                     <button
                       onClick={() => setMidiConfirm(null)}
-                      className="px-4 py-2 text-lg bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                      className="tw:px-4 tw:py-2 tw:text-lg tw:bg-gray-200 tw:text-gray-800 tw:rounded hover:tw:bg-gray-300"
                     >
                       Cancel
                     </button>
@@ -161,10 +161,10 @@ export default function MidiMappingOverlay({
                 )}
                 <button
                   onClick={midiConfirm.handler}
-                  className={`px-4 py-2 text-lg text-white rounded ${
+                  className={`tw:px-4 tw:py-2 tw:text-lg tw:text-white tw:rounded ${
                     midiConfirm.action !== "Name"
-                      ? "bg-red-500 hover:bg-red-400 border-red-600 border-[.5]"
-                      : "bg-[#E6A60D] hover:bg-gray-300"
+                      ? "tw:bg-red-500 hover:tw:bg-red-400 tw:border-red-600 tw:border-[.5]"
+                      : "tw:bg-[#E6A60D] hover:tw:bg-gray-300"
                   }`}
                 >
                   {midiConfirm.action !== "Name" && midiConfirm.action}
@@ -175,10 +175,10 @@ export default function MidiMappingOverlay({
           </div>
         )}
 
-        <div className="flex justify-end p-4 space-x-3 bg-gray-700 rounded-b-lg">
+        <div className="tw:flex tw:justify-end tw:p-4 tw:space-x-3 tw:bg-gray-700 tw:rounded-b-lg">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-lg bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            className="tw:px-4 tw:py-2 tw:text-lg tw:bg-gray-200 tw:text-gray-800 tw:rounded hover:tw:bg-gray-300"
           >
             Close
           </button>

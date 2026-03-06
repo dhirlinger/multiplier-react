@@ -9,12 +9,12 @@ export default function VolumePanning({
 }) {
   return (
     <>
-      <div id="volume-panning-container" className="pl-2 pb-2 mt-1">
+      <div id="volume-panning-container" className="tw:pl-2 tw:pb-2 tw:mt-1">
         <div>
-          <div className="flex justify-between items-center">
-            <p className="block font-bold">Volume</p>
+          <div className="tw:flex tw:justify-between tw:items-center">
+            <p className="tw:block tw:font-bold">Volume</p>
             <button
-              className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1 mr-2"
+              className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
               onClick={() => {
                 setMidiMappingCategory("synth/freq_params");
                 setDisplayMidiMapping(true);
@@ -23,7 +23,7 @@ export default function VolumePanning({
               MAP
             </button>
           </div>
-          <div className="flex items-center justify-start gap-2">
+          <div className="tw:flex tw:items-center tw:justify-start tw:gap-2">
             <input
               type="range"
               min="-60"
@@ -42,14 +42,14 @@ export default function VolumePanning({
                 setAudioParam("volume", gain);
                 setVolume(String(defaultDb));
               }}
-              className="w-68"
+              className="tw:w-68"
             />
-            <p className="text-2xl">{volume} dB</p>
+            <p className="tw:text-2xl">{volume} dB</p>
           </div>
         </div>
         <div>
-          <p className="block font-bold">Panning</p>
-          <div className="flex items-center justify-start gap-2">
+          <p className="tw:block tw:font-bold">Panning</p>
+          <div className="tw:flex tw:items-center tw:justify-start tw:gap-2">
             <input
               type="range"
               max="1.0"
@@ -66,9 +66,9 @@ export default function VolumePanning({
                 setAudioParam("panning", defaultPan);
                 setPanning(String(defaultPan));
               }}
-              className={`w-68`}
+              className={`tw:w-68`}
             />
-            <p className="text-2xl">{Number(panning).toFixed(2)}</p>
+            <p className="tw:text-2xl">{Number(panning).toFixed(2)}</p>
           </div>
         </div>
       </div>

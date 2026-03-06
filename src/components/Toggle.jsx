@@ -16,7 +16,7 @@ export default function Toggle({
 
   return (
     <>
-      <label className="relative inline-block w-15 h-8.5 border border-pink-500/90 rounded-[34px] ml-1 mr-1">
+      <label className="tw:relative tw:inline-block tw:w-15 tw:h-8.5 tw:border tw:border-pink-500/90 tw:rounded-[34px] tw:ml-1 tw:mr-1">
         <input
           type="checkbox"
           id={id}
@@ -26,13 +26,13 @@ export default function Toggle({
             handleChange(mode);
             setChecked(e.target.checked);
           }}
-          className="opacity-0 w-0 h-0 peer"
+          className="tw:opacity-0 tw:w-0 tw:h-0 tw:peer"
         />
-        <span className="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-black rounded-[34px] transition-all duration-100 peer-checked:bg-pink-500/90 peer-focus:shadow-[0_0_1px_rgb(236_72_153/0.9)] before:content-[''] before:absolute before:h-6.5 before:w-6.5 before:left-1 before:bottom-1 before:bg-white before:rounded-full before:transition-all before:duration-100 peer-checked:before:translate-x-6.5"></span>
+        <span className="tw:absolute tw:cursor-pointer tw:top-0 tw:left-0 tw:right-0 tw:bottom-0 tw:bg-black tw:rounded-[34px] tw:transition-all tw:duration-100 peer-checked:tw:bg-pink-500/90 peer-focus:tw:shadow-[0_0_1px_rgb(236_72_153/0.9)] before:tw:content-[''] before:tw:absolute before:tw:h-6.5 before:tw:w-6.5 before:tw:left-1 before:tw:bottom-1 before:tw:bg-white before:tw:rounded-full before:tw:transition-all before:tw:duration-100 peer-checked:before:tw:translate-x-6.5"></span>
       </label>
-      <p className="leading-[2.4] font-bold">
+      <p className="tw:leading-[2.4] tw:font-bold">
         {camelCaseToNormal(capitalizeAllWords(id))}:
-        <span className="font-normal">
+        <span className="tw:font-normal">
           {" "}
           {paramMode && capitalizeAllWords(modeTrim(paramMode))}
         </span>

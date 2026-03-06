@@ -1,9 +1,9 @@
 export default function RecallCheckbox({ stateRecall, handleChange, text }) {
   return (
     <>
-      <label className="flex mr-[4px] items-center">
+      <label className="tw:flex tw:mr-[4px] tw:items-center">
         <input
-          className="mr-[4px] form-checkbox"
+          className="tw:mr-[4px] tw:form-checkbox"
           type="checkbox"
           checked={stateRecall}
           onChange={handleChange}

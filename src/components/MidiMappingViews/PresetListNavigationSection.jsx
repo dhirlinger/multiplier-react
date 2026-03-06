@@ -6,27 +6,27 @@ export default function PresetListNavigationSection({
 }) {
   const { mappings, learningMode, setLearningMode } = useMidiContext();
   return (
-    <div className="mt-4">
-      <h3 className="text-sm font-semibold text-gray-300 mb-1">
+    <div className="tw:mt-4">
+      <h3 className="tw:text-sm tw:font-semibold tw:text-gray-300 tw:mb-1">
         List Navigation
       </h3>
       {/* List Up */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">List Up</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">List Up</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings[category].preset_list_up ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 Note {mappings[category].preset_list_up}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === `${category}.preset_list_up`
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === `${category}.preset_list_up`
@@ -46,22 +46,22 @@ export default function PresetListNavigationSection({
         </div>
       </div>
       {/* List Down */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">List Down</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">List Down</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings[category].preset_list_down ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 Note {mappings[category].preset_list_down}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === `${category}.preset_list_down`
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === `${category}.preset_list_down`
@@ -81,22 +81,22 @@ export default function PresetListNavigationSection({
         </div>
       </div>
       {/* List Random */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Random From List</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Random From List</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings[category].preset_list_random ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 Note {mappings[category].preset_list_random}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === `${category}.preset_list_random`
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === `${category}.preset_list_random`

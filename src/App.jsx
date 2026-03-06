@@ -639,7 +639,7 @@ export default function App() {
       loginStatusRef={loginStatusRef}
       loggedIn={loggedIn}
     >
-      <div className="flex flex-col max-w-sm min-w-xs items-center justify-center m-auto min-h-96 p-2">
+      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:items-center tw:justify-center tw:m-auto tw:min-h-96 tw:p-2">
         <PatreonBanner loginStatusRef={loginStatusRef} />
 
         <AppDescription />
@@ -667,12 +667,12 @@ export default function App() {
           setDisplayMidiMapping={setDisplayMidiMapping}
           setCursorInTextBox={setCursorInTextBox}
         />
-        <div className="bg-maxbg mt-1 mb-1">
+        <div className="tw:bg-maxbg tw:mt-1 tw:mb-1">
           {/*text-xs py-0.5 px-2 absolute top-0.5 right-1.25 border-pink-800 border bg-pink-600*/}
-          <div className="flex justify-between items-center">
-            <p className="text-sm ml-2 font-bold">Synth</p>
+          <div className="tw:flex tw:justify-between tw:items-center">
+            <p className="tw:text-sm tw:ml-2 tw:font-bold">Synth</p>
             <button
-              className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1 mr-2"
+              className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
               onClick={() => {
                 setMidiMappingCategory("synth/freq_params");
                 setDisplayMidiMapping(true);
@@ -764,10 +764,10 @@ export default function App() {
           loginStatusRef={loginStatusRef}
           setCursorInTextBox={setCursorInTextBox}
         />
-        <div className="w-full flex justify-between items-center">
-          <p className="text-sm ml-2 font-bold">Index Array</p>
+        <div className="tw:w-full tw:flex tw:justify-between tw:items-center">
+          <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
           <button
-            className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mt-1 mr-2"
+            className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
             onClick={() => {
               setMidiMappingCategory("index_params");
               setDisplayMidiMapping(true);
@@ -777,7 +777,7 @@ export default function App() {
           </button>
         </div>
         {/* Update Mode Toggle */}
-        <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">
+        <div className="tw:w-full tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
           <Toggle
             handleChange={handleUpdateModeChange}
             paramMode={updateMode}
@@ -797,7 +797,7 @@ export default function App() {
           restMidiUpdatersRef={restMidiUpdatersRef}
         />
         {/* Play Mode Toggle */}
-        <div className="w-full flex gap-0.5 text-sm mt-1 mb-1 pt-1 pb-1 border-[0.5px] border-pink-500/90 bg-maxbg">
+        <div className="tw:w-full tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
           <Toggle
             handleChange={handleUpdatePlayModeChange}
             paramMode={playMode}
@@ -807,7 +807,7 @@ export default function App() {
           />
         </div>
 
-        <div className="w-full  bg-maxbg">
+        <div className="tw:w-full  tw:bg-maxbg">
           <Tempo
             bpm={bpm}
             setBpm={setBpm}
@@ -816,7 +816,7 @@ export default function App() {
             setDisplayMidiMapping={setDisplayMidiMapping}
             setMidiMappingCategory={setMidiMappingCategory}
           />
-          <div className="w-11/12 h-[.5px] bg-[#E6A60D] ml-2 mt-1 mr-2"></div>
+          <div className="tw:w-11/12 tw:h-[.5px] tw:bg-[#E6A60D] tw:ml-2 tw:mt-1 tw:mr-2"></div>
           <VolumePanning
             volume={volume}
             panning={panning}

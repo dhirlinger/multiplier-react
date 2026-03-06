@@ -4,7 +4,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
   return (
     <div
       id="waveshape"
-      className="grid grid-cols-4 gap-2 justify-center border-[.5px] border-[#E6A60D] mt-1 mb-1 p-2 ml-1 mr-1"
+      className="tw:grid tw:grid-cols-4 tw:gap-2 tw:justify-center tw:border-[.5px] tw:border-[#E6A60D] tw:mt-1 tw:mb-1 tw:p-2 tw:ml-1 tw:mr-1"
     >
       <input
         type="radio"
@@ -16,7 +16,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
       ></input>
       <label
         htmlFor="sine"
-        className={`${waveshape === "sine" ? "border-cyan-500 text-cyan-500" : "border-[#E6A60D]"}`}
+        className={`${waveshape === "sine" ? "tw:border-cyan-500 tw:text-cyan-500" : "tw:border-[#E6A60D]"}`}
       >
         sine
       </label>
@@ -30,7 +30,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
       ></input>
       <label
         htmlFor="triangle"
-        className={`${waveshape === "triangle" ? "border-cyan-500  text-cyan-500" : "border-[#E6A60D]"}`}
+        className={`${waveshape === "triangle" ? "tw:border-cyan-500  tw:text-cyan-500" : "tw:border-[#E6A60D]"}`}
       >
         triangle
       </label>
@@ -44,7 +44,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
       ></input>
       <label
         htmlFor="square"
-        className={`${waveshape === "square" ? "border-cyan-500  text-cyan-500" : "border-[#E6A60D]"}`}
+        className={`${waveshape === "square" ? "tw:border-cyan-500  tw:text-cyan-500" : "tw:border-[#E6A60D]"}`}
       >
         square
       </label>
@@ -58,7 +58,7 @@ export default function WaveShapeSelect({ waveshape, handleChange }) {
       ></input>
       <label
         htmlFor="sawtooth"
-        className={`${waveshape === "sawtooth" ? "border-cyan-500  text-cyan-500" : "border-[#E6A60D]"}`}
+        className={`${waveshape === "sawtooth" ? "tw:border-cyan-500  tw:text-cyan-500" : "tw:border-[#E6A60D]"}`}
       >
         sawtooth
       </label>

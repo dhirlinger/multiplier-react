@@ -5,24 +5,24 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
 
   return (
     <>
-      <h3 className="text-sm font-semibold text-gray-300 mb-1">Synth Params</h3>
+      <h3 className="tw:text-sm tw:font-semibold tw:text-gray-300 tw:mb-1">Synth Params</h3>
       {/*wave shape*/}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Waveshape</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Waveshape</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.synth_params.wave_shape ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 Note {mappings.synth_params.wave_shape}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "synth_params.wave_shape"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "synth_params.wave_shape"
@@ -43,22 +43,22 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
       </div>
 
       {/* Duration CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Duration</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Duration</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.synth_params.duration ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.synth_params.duration}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "synth_params.duration"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "synth_params.duration"
@@ -79,22 +79,22 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
       </div>
 
       {/* LowPass Freq CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">LowPass Frequency</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">LowPass Frequency</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.synth_params.lowpass_freq ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.synth_params.lowpass_freq}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "synth_params.lowpass_freq"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "synth_params.lowpass_freq"
@@ -115,22 +115,22 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
       </div>
 
       {/* LowPass Q CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">LowPass Q</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">LowPass Q</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.synth_params.lowpass_q ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.synth_params.lowpass_q}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "synth_params.lowpass_q"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "synth_params.lowpass_q"
@@ -150,22 +150,22 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
         </div>
       </div>
       {/* Volume CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Volume</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Volume</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.synth_params.volume ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.synth_params.volume}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "synth_params.volume"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "synth_params.volume"
@@ -185,22 +185,22 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
         </div>
       </div>
       {/* Panning CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Panning</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Panning</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.synth_params.panning ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.synth_params.panning}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "synth_params.panning"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "synth_params.panning"
@@ -219,26 +219,26 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
           </div>
         </div>
       </div>
-      <h3 className="text-sm font-semibold text-gray-300 mb-1">
+      <h3 className="tw:text-sm tw:font-semibold tw:text-gray-300 tw:mb-1">
         Frequency Params
       </h3>
       {/* Base CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Base</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Base</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.freq_params.base ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.freq_params.base}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "freq_params.base"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "freq_params.base"
@@ -258,22 +258,22 @@ export default function SynthFreqParamsView({ setInputRecalled }) {
         </div>
       </div>
       {/* Multipler CC */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Multiplier</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Multiplier</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.freq_params.multiplier ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 CC {mappings.freq_params.multiplier}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "freq_params.multiplier"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "freq_params.multiplier"

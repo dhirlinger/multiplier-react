@@ -79,12 +79,12 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
   return (
     <>
       <div>
-        <h3 className="text-sm font-semibold text-gray-300 mb-1">
+        <h3 className="tw:text-sm tw:font-semibold tw:text-gray-300 tw:mb-1">
           Subdivision Recalls
         </h3>
         {/* List of recalls */}
         {recallsList.length === 0 && (
-          <p className="text-gray-400 text-sm mb-2">
+          <p className="tw:text-gray-400 tw:text-sm tw:mb-2">
             No subdivision recalls mapped
           </p>
         )}
@@ -92,7 +92,7 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
         {recallsList.map(({ subdivisionNum, note }) => (
           <div
             key={subdivisionNum}
-            className="mb-3 p-3 bg-gray-800 rounded flex items-center gap-2"
+            className="tw:mb-3 tw:p-3 tw:bg-gray-800 tw:rounded tw:flex tw:items-center tw:gap-2"
           >
             {/* Subdivision number dropdown */}
             <select
@@ -100,7 +100,7 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
               onChange={(e) =>
                 updateSubdivisionNum(subdivisionNum, e.target.value)
               }
-              className="bg-gray-700 text-white px-2 py-1 rounded text-sm"
+              className="tw:bg-gray-700 tw:text-white tw:px-2 tw:py-1 tw:rounded tw:text-sm"
             >
               {Array.from({ length: 16 }, (_, i) => i + 1).map((num) => (
                 <option key={num} value={num}>
@@ -110,21 +110,21 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
             </select>
 
             {/* Note display */}
-            <span className="text-sm ml-auto">
+            <span className="tw:text-sm tw:ml-auto">
               {note ? (
-                <span className="text-[#E6A60D]">Note {note}</span>
+                <span className="tw:text-[#E6A60D]">Note {note}</span>
               ) : (
-                <span className="text-gray-500">Not mapped</span>
+                <span className="tw:text-gray-500">Not mapped</span>
               )}
             </span>
 
             {/* Map button */}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target ===
                 `tempo_subdivision.subdivision_recalls.${subdivisionNum}`
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target ===
@@ -146,7 +146,7 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
             {/* Remove button */}
             <button
               onClick={() => removeRecall(subdivisionNum)}
-              className="text-red-500 hover:text-red-400 text-sm font-bold px-3 py-1"
+              className="tw:text-red-500 hover:tw:text-red-400 tw:text-sm tw:font-bold tw:px-3 tw:py-1"
             >
               X
             </button>
@@ -156,7 +156,7 @@ export default function SubdivisionRecallsSection({ setInputRecalled }) {
         {/* Add button */}
         <button
           onClick={addRecall}
-          className="w-full py-2 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 text-sm border-[#E6A60D]"
+          className="tw:w-full tw:py-2 tw:bg-gray-700 tw:text-gray-200 tw:rounded hover:tw:bg-gray-600 tw:text-sm tw:border-[#E6A60D]"
         >
           + Add Subdivision Recall
         </button>

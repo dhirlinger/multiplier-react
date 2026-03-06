@@ -77,7 +77,7 @@ export default function MidiSettingsView() {
     >
       <h3>MIDI Settings</h3>
       <p>Devices: {inputs.length}</p>
-      <div className="flex justify-start gap-2">
+      <div className="tw:flex tw:justify-start tw:gap-2">
         <select
           value={selectedInput === "all" ? "all" : selectedInput?.id || ""}
           onChange={(e) => {

@@ -50,7 +50,7 @@ export default function IndexArray({
       />
       <input
         style={{ display: "block" }}
-        className="w-20"
+        className="tw:w-20"
         name="preset-num"
         value={indexPresetNum}
         onChange={(e) => {
