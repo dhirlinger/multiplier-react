@@ -640,9 +640,9 @@ export default function App() {
       loggedIn={loggedIn}
     >
       <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:items-center tw:justify-center tw:m-auto tw:min-h-96 tw:p-2">
-        <h3 className="tw:m-1.5 tw:text-4xl">
-          <span className="tw:bg-maxbg tw:px-1.5 tw:mb-2">Multiplier</span>
-        </h3>
+        <h1 className="tw:m-1.5 tw:text-4xl tw:mb-2">
+          <span className="tw:bg-maxbg tw:px-1.5">Multiplier</span>
+        </h1>
 
         <PatreonBanner loginStatusRef={loginStatusRef} />
 
