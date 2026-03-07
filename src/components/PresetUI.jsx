@@ -44,8 +44,8 @@ export default function PresetUI({
   const getColorClasses = () => {
     if (category === "Index Array") {
       return {
-        border: "border-pink-500/90",
-        text: "text-pink-500/90",
+        border: "tw:border-pink-500/90",
+        text: "tw:text-pink-500/90",
         selectedBorder: "tw:border-[#6DD7FF]",
         selectedText: "tw:text-[#6DD7FF]",
       };
