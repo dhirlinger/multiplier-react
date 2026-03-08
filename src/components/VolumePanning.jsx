@@ -4,8 +4,7 @@ export default function VolumePanning({
   panning,
   setPanning,
   setAudioParam,
-  setMidiMappingCategory,
-  setDisplayMidiMapping,
+  handleMidiSelect,
 }) {
   return (
     <>
@@ -16,8 +15,7 @@ export default function VolumePanning({
             <button
               className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
               onClick={() => {
-                setMidiMappingCategory("synth/freq_params");
-                setDisplayMidiMapping(true);
+                handleMidiSelect("synth/freq_params");
               }}
             >
               MAP

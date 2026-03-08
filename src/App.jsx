@@ -556,6 +556,18 @@ export default function App() {
     setPlayMode(mode);
   };
 
+  const handleMidiSelect = (midiCategory) => {
+    const logged_in = loginStatusRef?.current?.logged_in;
+
+    if (!logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
+
+    setMidiMappingCategory(midiCategory);
+    setDisplayMidiMapping(true);
+  };
+
   // Function to update array via SeqVoice.updateArray() - pass to child components
   const updateSeqArray = (newArray) => {
     seqArrayRef.current = newArray;
@@ -669,8 +681,7 @@ export default function App() {
           globalIndexRecall={globalIndexRecall}
           setGlobalIndexRecall={setGlobalIndexRecall}
           obj={presetObj}
-          setMidiMappingCategory={setMidiMappingCategory}
-          setDisplayMidiMapping={setDisplayMidiMapping}
+          handleMidiSelect={handleMidiSelect}
           setCursorInTextBox={setCursorInTextBox}
         />
         <div className="tw:bg-maxbg tw:mt-1 tw:mb-1">
@@ -679,10 +690,7 @@ export default function App() {
             <p className="tw:text-sm tw:ml-2 tw:font-bold">Synth</p>
             <button
               className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
-              onClick={() => {
-                setMidiMappingCategory("synth/freq_params");
-                setDisplayMidiMapping(true);
-              }}
+              onClick={() => handleMidiSelect("synth/freq_params")}
             >
               MAP
             </button>
@@ -716,8 +724,7 @@ export default function App() {
           setInputRecalled={setFreqInputRecalled}
           category={"Frequency Array"}
           obj={freqObj}
-          setMidiMappingCategory={setMidiMappingCategory}
-          setDisplayMidiMapping={setDisplayMidiMapping}
+          handleMidiSelect={handleMidiSelect}
           setCursorInTextBox={setCursorInTextBox}
         />
 
@@ -734,6 +741,7 @@ export default function App() {
           globalFreqRecall={globalFreqRecall}
           setMidiMappingCategory={setMidiMappingCategory}
           setDisplayMidiMapping={setDisplayMidiMapping}
+          handleMidiSelect={handleMidiSelect}
         />
 
         <PresetUI
@@ -750,7 +758,6 @@ export default function App() {
           category={"Index Array"}
           obj={indexObj}
           setMidiMappingCategory={setMidiMappingCategory}
-          setDisplayMidiMapping={setDisplayMidiMapping}
           setCursorInTextBox={setCursorInTextBox}
         />
 
@@ -774,10 +781,7 @@ export default function App() {
           <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
           <button
             className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
-            onClick={() => {
-              setMidiMappingCategory("index_params");
-              setDisplayMidiMapping(true);
-            }}
+            onClick={() => handleMidiSelect("index_params")}
           >
             MAP
           </button>
@@ -819,18 +823,17 @@ export default function App() {
             setBpm={setBpm}
             subdivision={subdivision}
             setSubdivision={setSubdivision}
-            setDisplayMidiMapping={setDisplayMidiMapping}
-            setMidiMappingCategory={setMidiMappingCategory}
+            handleMidiSelect={handleMidiSelect}
           />
           <div className="tw:w-11/12 tw:h-[.5px] tw:bg-[#E6A60D] tw:ml-2 tw:mt-1 tw:mr-2"></div>
+
           <VolumePanning
             volume={volume}
             panning={panning}
             setVolume={setVolume}
             setPanning={setPanning}
             setAudioParam={setAudioParam}
-            setDisplayMidiMapping={setDisplayMidiMapping}
-            setMidiMappingCategory={setMidiMappingCategory}
+            handleMidiSelect={handleMidiSelect}
           />
         </div>
 
@@ -838,8 +841,7 @@ export default function App() {
           toggleSequencer={toggleSequencer}
           seqIsPlaying={seqIsPlaying}
           getStatus={getStatus}
-          setMidiMappingCategory={setMidiMappingCategory}
-          setDisplayMidiMapping={setDisplayMidiMapping}
+          handleMidiSelect={handleMidiSelect}
           playMode={playMode}
         />
       </div>

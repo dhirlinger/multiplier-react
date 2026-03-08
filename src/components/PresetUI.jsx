@@ -23,6 +23,7 @@ export default function PresetUI({
   obj,
   setDisplayMidiMapping,
   setMidiMappingCategory,
+  handleMidiSelect,
   setCursorInTextBox,
 }) {
   const findByPresetNumRef = useRef();
@@ -186,10 +187,7 @@ export default function PresetUI({
           </button>
           <button
             className={`${colors.border} round`}
-            onClick={() => {
-              setMidiMappingCategory(midiCategory);
-              setDisplayMidiMapping(true);
-            }}
+            onClick={() => handleMidiSelect(midiCategory)}
           >
             MIDI
           </button>

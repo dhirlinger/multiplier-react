@@ -5,8 +5,7 @@ export default function Tempo({
   setBpm,
   subdivision,
   setSubdivision,
-  setDisplayMidiMapping,
-  setMidiMappingCategory,
+  handleMidiSelect,
 }) {
   const handleRightArrowBpm = () => {
     setBpm((prev) => {
@@ -45,7 +44,10 @@ export default function Tempo({
   };
 
   return (
-    <div id="tempo" className="tw:mt-0 tw:text-sm tw:font-bold tw:w-full tw:p-2 tw:relative">
+    <div
+      id="tempo"
+      className="tw:mt-0 tw:text-sm tw:font-bold tw:w-full tw:p-2 tw:relative"
+    >
       <div className="tw:flex tw:items-center tw:w-full">
         <label htmlFor="bpm" className="tw:w-22">
           BPM{" "}
@@ -105,8 +107,7 @@ export default function Tempo({
       <button
         className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mb-2 tw:mr-2 tw:absolute tw:bottom-0 tw:right-0"
         onClick={() => {
-          setMidiMappingCategory("sequencer_params");
-          setDisplayMidiMapping(true);
+          handleMidiSelect("sequencer_params");
         }}
       >
         MAP

@@ -12,6 +12,7 @@ export default function FreqArray({
   multiplier,
   setAudioParam,
   globalFreqRecall,
+  handleMidiSelect,
   setDisplayMidiMapping,
   setMidiMappingCategory,
 }) {
@@ -88,6 +89,7 @@ export default function FreqArray({
         presetObj={presetObj}
         paramsRef={baseMultiplierParamsRef}
         globalFreqRecall={globalFreqRecall}
+        handleMidiSelect={handleMidiSelect}
         setMidiMappingCategory={setMidiMappingCategory}
         setDisplayMidiMapping={setDisplayMidiMapping}
       />
