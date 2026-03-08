@@ -1,4 +1,6 @@
 export default function PatreonBanner({ loginStatusRef }) {
+  const patreonPostId = window.MultiplierAPI?.patreonPostId || 8;
+
   return (
     <>
       <div className="patreon-text">
@@ -30,7 +32,7 @@ export default function PatreonBanner({ loginStatusRef }) {
             or more.{" "}
             <a
               className="tw:text-pink-600"
-              href="http://localhost:8888/patreon-flow/?patreon-unlock-post=8"
+              href={`${window.location.origin}/patreon-flow/?patreon-unlock-post=${patreonPostId}`}
               target="_blank"
             >
               Unlock with Patreon
@@ -38,7 +40,7 @@ export default function PatreonBanner({ loginStatusRef }) {
             Already a qualifying Patreon member?{" "}
             <a
               className="tw:text-pink-600"
-              href="http://localhost:8888/patreon-flow/?patreon-login=yes&amp;patreon-final-redirect=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post"
+              href={`${window.location.origin}/patreon-flow/?patreon-login=yes&patreon-final-redirect=${encodeURIComponent(window.location.origin + "/patreon-test-post")}`}
               rel="nofollow"
             >
               Refresh

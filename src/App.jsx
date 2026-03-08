@@ -757,8 +757,7 @@ export default function App() {
           setInputRecalled={setIndexInputRecalled}
           category={"Index Array"}
           obj={indexObj}
-          setMidiMappingCategory={setMidiMappingCategory}
-          setCursorInTextBox={setCursorInTextBox}
+          handleMidiSelect={handleMidiSelect}
         />
 
         <ConfirmOverlay
