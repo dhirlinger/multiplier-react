@@ -664,101 +664,174 @@ export default function App() {
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
 
-        <PresetUI
-          data={presetData}
-          presetNum={globalPresetNum}
-          presetName={globalPresetName}
-          setPresetNum={setGlobalPresetNum}
-          setPresetName={setGlobalPresetName}
-          recallPreset={globalPresetActions.handleSelect}
-          savePreset={globalPresetActions.confirmSave}
-          deletePreset={globalPresetActions.confirmDelete}
-          inputRecalled={globalInputRecalled}
-          setInputRecalled={setGlobalInputRecalled}
-          category={"Global"}
-          globalFreqRecall={globalFreqRecall}
-          setGlobalFreqRecall={setGlobalFreqRecall}
-          globalIndexRecall={globalIndexRecall}
-          setGlobalIndexRecall={setGlobalIndexRecall}
-          obj={presetObj}
-          handleMidiSelect={handleMidiSelect}
-          setCursorInTextBox={setCursorInTextBox}
-        />
-        <div className="tw:bg-maxbg tw:mt-1 tw:mb-1 tw:max-w-sm tw:min-w-xs">
-          {/*text-xs py-0.5 px-2 absolute top-0.5 right-1.25 border-pink-800 border bg-pink-600*/}
-          <div className="tw:flex tw:justify-between tw:items-center">
-            <p className="tw:text-sm tw:ml-2 tw:font-bold">Synth</p>
-            <button
-              className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
-              onClick={() => handleMidiSelect("synth/freq_params")}
-            >
-              MAP
-            </button>
+        {/* 2-column grid at md: — each child keeps its own max-w-sm width */}
+        <div className="tw:md:grid tw:md:grid-cols-2 tw:md:justify-items-center tw:md:items-start tw:md:gap-x-2 tw:md:w-fit tw:md:mx-auto">
+          {/* ROW 1 LEFT: Global preset + Synth block */}
+          <div className="tw:flex tw:flex-col tw:items-center">
+            <PresetUI
+              data={presetData}
+              presetNum={globalPresetNum}
+              presetName={globalPresetName}
+              setPresetNum={setGlobalPresetNum}
+              setPresetName={setGlobalPresetName}
+              recallPreset={globalPresetActions.handleSelect}
+              savePreset={globalPresetActions.confirmSave}
+              deletePreset={globalPresetActions.confirmDelete}
+              inputRecalled={globalInputRecalled}
+              setInputRecalled={setGlobalInputRecalled}
+              category={"Global"}
+              globalFreqRecall={globalFreqRecall}
+              setGlobalFreqRecall={setGlobalFreqRecall}
+              globalIndexRecall={globalIndexRecall}
+              setGlobalIndexRecall={setGlobalIndexRecall}
+              obj={presetObj}
+              handleMidiSelect={handleMidiSelect}
+              setCursorInTextBox={setCursorInTextBox}
+            />
+            <div className="tw:bg-maxbg tw:mt-1 tw:mb-1 tw:max-w-sm tw:min-w-xs">
+              <div className="tw:flex tw:justify-between tw:items-center tw:max-w-sm tw:min-w-xs">
+                <p className="tw:text-sm tw:ml-2 tw:font-bold">Synth</p>
+                <button
+                  className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
+                  onClick={() => handleMidiSelect("synth/freq_params")}
+                >
+                  MAP
+                </button>
+              </div>
+              <WaveShapeSelect
+                waveshape={waveshape}
+                handleChange={handleShapeChange}
+              />
+              <Duration duration={duration} setAudioParam={setAudioParam} />
+              <LowPassFilter
+                value={lowPassFreq}
+                qValue={lowPassQ}
+                setAudioParam={setAudioParam}
+              />
+            </div>
           </div>
-          <WaveShapeSelect
-            waveshape={waveshape}
-            handleChange={handleShapeChange}
-          />
 
-          {/* Duration now receives setAudioParam for instant updates */}
-          <Duration duration={duration} setAudioParam={setAudioParam} />
+          {/* ROW 1 RIGHT: Freq preset + FreqArray */}
+          <div className="tw:flex tw:flex-col tw:items-center">
+            <PresetUI
+              data={freqData}
+              presetNum={freqPresetNum}
+              presetName={freqPresetName}
+              setPresetNum={setFreqPresetNum}
+              setPresetName={setFreqPresetName}
+              recallPreset={freqActions.handleSelect}
+              savePreset={freqActions.confirmSave}
+              deletePreset={freqActions.confirmDelete}
+              inputRecalled={freqInputRecalled}
+              setInputRecalled={setFreqInputRecalled}
+              category={"Frequency Array"}
+              obj={freqObj}
+              handleMidiSelect={handleMidiSelect}
+              setCursorInTextBox={setCursorInTextBox}
+            />
+            <FreqArray
+              freqData={freqData}
+              freqObj={freqObj}
+              base={base}
+              multiplier={multiplier}
+              setAudioParam={setAudioParam}
+              refreshFreqObj={refreshFreqObj}
+              presetObj={presetObj}
+              baseMultiplierParamsRef={baseMultiplierParamsRef}
+              globalFreqRecall={globalFreqRecall}
+              setMidiMappingCategory={setMidiMappingCategory}
+              setDisplayMidiMapping={setDisplayMidiMapping}
+              handleMidiSelect={handleMidiSelect}
+            />
+          </div>
 
-          {/* LowPassFilter now receives setAudioParam for instant updates */}
-          <LowPassFilter
-            value={lowPassFreq}
-            qValue={lowPassQ}
-            setAudioParam={setAudioParam}
-          />
+          {/* ROW 2 LEFT: Index preset + Tempo + VolumePanning */}
+          <div className="tw:flex tw:flex-col tw:items-center">
+            <PresetUI
+              data={indexData}
+              presetNum={indexPresetNum}
+              presetName={indexPresetName}
+              setPresetNum={setIndexPresetNum}
+              setPresetName={setIndexPresetName}
+              recallPreset={indexActions.handleSelect}
+              savePreset={indexActions.confirmSave}
+              deletePreset={indexActions.confirmDelete}
+              inputRecalled={indexInputRecalled}
+              setInputRecalled={setIndexInputRecalled}
+              category={"Index Array"}
+              obj={indexObj}
+              handleMidiSelect={handleMidiSelect}
+            />
+          </div>
+          {/* ROW 2 RIGHT: Index Array label/MAP + Update Mode toggle + IndexArraySliders + Play Mode toggle */}
+          <div className="tw:flex tw:flex-col tw:items-stretch">
+            <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:justify-between tw:items-center">
+              <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
+              <button
+                className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
+                onClick={() => handleMidiSelect("index_params")}
+              >
+                MAP
+              </button>
+            </div>
+            {/* Update Mode Toggle */}
+            <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+              <Toggle
+                handleChange={handleUpdateModeChange}
+                paramMode={updateMode}
+                id="updateMode"
+                param1={"immediate"}
+                param2={"next_loop"}
+              />
+            </div>
+
+            <IndexArraySliders
+              seqArrayRef={seqArrayRef}
+              indexObj={indexObj}
+              presetObj={presetObj}
+              globalIndexRecall={globalIndexRecall}
+              updateSeqArray={updateSeqArray}
+              updateIndexMidiRef={updateIndexMidiRef}
+              restMidiUpdatersRef={restMidiUpdatersRef}
+            />
+            {/* Play Mode Toggle */}
+            <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+              <Toggle
+                handleChange={handleUpdatePlayModeChange}
+                paramMode={playMode}
+                id="playMode"
+                param1={"loop"}
+                param2={"one-shot"}
+              />
+            </div>
+          </div>
+
+          {/* ROW 3 LEFT: Index preset + Tempo + VolumePanning */}
+          <div className="tw:flex tw:flex-col tw:items-center">
+            <div className="tw:w-sm tw:bg-maxbg">
+              <Tempo
+                bpm={bpm}
+                setBpm={setBpm}
+                subdivision={subdivision}
+                setSubdivision={setSubdivision}
+                handleMidiSelect={handleMidiSelect}
+              />
+              <div className="tw:w-11/12 tw:h-[.5px] tw:bg-[#E6A60D] tw:ml-2 tw:mt-1 tw:mr-2"></div>
+
+              <VolumePanning
+                volume={volume}
+                panning={panning}
+                setVolume={setVolume}
+                setPanning={setPanning}
+                setAudioParam={setAudioParam}
+                handleMidiSelect={handleMidiSelect}
+              />
+            </div>
+          </div>
+          {/* ROW 3 RIGHT: Index Array label/MAP + Update Mode toggle + IndexArraySliders + Play Mode toggle */}
+          <div className="tw:flex tw:flex-col tw:items-stretch"></div>
         </div>
-
-        <PresetUI
-          data={freqData}
-          presetNum={freqPresetNum}
-          presetName={freqPresetName}
-          setPresetNum={setFreqPresetNum}
-          setPresetName={setFreqPresetName}
-          recallPreset={freqActions.handleSelect}
-          savePreset={freqActions.confirmSave}
-          deletePreset={freqActions.confirmDelete}
-          inputRecalled={freqInputRecalled}
-          setInputRecalled={setFreqInputRecalled}
-          category={"Frequency Array"}
-          obj={freqObj}
-          handleMidiSelect={handleMidiSelect}
-          setCursorInTextBox={setCursorInTextBox}
-        />
-
-        {/* FreqArray now receives setAudioParam for instant updates */}
-        <FreqArray
-          freqData={freqData}
-          freqObj={freqObj}
-          base={base}
-          multiplier={multiplier}
-          setAudioParam={setAudioParam}
-          refreshFreqObj={refreshFreqObj}
-          presetObj={presetObj}
-          baseMultiplierParamsRef={baseMultiplierParamsRef}
-          globalFreqRecall={globalFreqRecall}
-          setMidiMappingCategory={setMidiMappingCategory}
-          setDisplayMidiMapping={setDisplayMidiMapping}
-          handleMidiSelect={handleMidiSelect}
-        />
-
-        <PresetUI
-          data={indexData}
-          presetNum={indexPresetNum}
-          presetName={indexPresetName}
-          setPresetNum={setIndexPresetNum}
-          setPresetName={setIndexPresetName}
-          recallPreset={indexActions.handleSelect}
-          savePreset={indexActions.confirmSave}
-          deletePreset={indexActions.confirmDelete}
-          inputRecalled={indexInputRecalled}
-          setInputRecalled={setIndexInputRecalled}
-          category={"Index Array"}
-          obj={indexObj}
-          handleMidiSelect={handleMidiSelect}
-        />
+        {/* end 2-col grid */}
 
         <ConfirmOverlay
           confirmProps={confirmPropsRef}
@@ -776,65 +849,6 @@ export default function App() {
           loginStatusRef={loginStatusRef}
           setCursorInTextBox={setCursorInTextBox}
         />
-        <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:justify-between tw:items-center">
-          <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
-          <button
-            className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
-            onClick={() => handleMidiSelect("index_params")}
-          >
-            MAP
-          </button>
-        </div>
-        {/* Update Mode Toggle */}
-        <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
-          <Toggle
-            handleChange={handleUpdateModeChange}
-            paramMode={updateMode}
-            id="updateMode"
-            param1={"immediate"}
-            param2={"next_loop"}
-          />
-        </div>
-
-        <IndexArraySliders
-          seqArrayRef={seqArrayRef}
-          indexObj={indexObj}
-          presetObj={presetObj}
-          globalIndexRecall={globalIndexRecall}
-          updateSeqArray={updateSeqArray}
-          updateIndexMidiRef={updateIndexMidiRef}
-          restMidiUpdatersRef={restMidiUpdatersRef}
-        />
-        {/* Play Mode Toggle */}
-        <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
-          <Toggle
-            handleChange={handleUpdatePlayModeChange}
-            paramMode={playMode}
-            id="playMode"
-            param1={"loop"}
-            param2={"one-shot"}
-          />
-        </div>
-
-        <div className="tw:max-w-sm tw:min-w-xs  tw:bg-maxbg">
-          <Tempo
-            bpm={bpm}
-            setBpm={setBpm}
-            subdivision={subdivision}
-            setSubdivision={setSubdivision}
-            handleMidiSelect={handleMidiSelect}
-          />
-          <div className="tw:w-11/12 tw:h-[.5px] tw:bg-[#E6A60D] tw:ml-2 tw:mt-1 tw:mr-2"></div>
-
-          <VolumePanning
-            volume={volume}
-            panning={panning}
-            setVolume={setVolume}
-            setPanning={setPanning}
-            setAudioParam={setAudioParam}
-            handleMidiSelect={handleMidiSelect}
-          />
-        </div>
 
         <StickyBottomControls
           toggleSequencer={toggleSequencer}
