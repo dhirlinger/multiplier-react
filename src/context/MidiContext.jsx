@@ -24,7 +24,7 @@ export function MidiProvider({
 }) {
   const midi = useMidi();
   const { get, post, del } = useFetch(
-    window.MultiplierAPI?.restUrl || "http://192.168.1.195:8888/wp-json/",
+    window.MultiplierAPI?.restUrl || "/wp-json/",
     window.MultiplierAPI?.nonce || "",
   );
   const [learningMode, setLearningMode] = useState(null);
@@ -138,8 +138,6 @@ export function MidiProvider({
       if (data.subdivision_list) {
         setSubdivisionList(data.subdivision_list);
       }
-
-      console.log("MIDI preset recalled:", presetNum);
     },
     [midiPresetData, setPresetLists, setSubdivisionList],
   );
@@ -164,8 +162,6 @@ export function MidiProvider({
       if (result.updated_data) {
         setMidiPresetData(result.updated_data);
       }
-
-      console.log("MIDI preset saved:", midiPresetNum);
     } catch (err) {
       console.error("Failed to save MIDI preset:", err);
     }
@@ -263,8 +259,6 @@ export function MidiProvider({
         setSubdivisionList([]);
 
         setMidiPresetName("--EMPTY--");
-
-        console.log("MIDI preset deleted:", presetNum);
       } catch (err) {
         console.error("Failed to delete MIDI preset:", err);
       }
@@ -303,7 +297,6 @@ export function MidiProvider({
 
     const handleNoteOn = (e) => {
       const noteNumber = e.note.number;
-      console.log("MIDI Note received:", noteNumber);
 
       // IMPORTANT: If learning mode is active, ignore this handler
       // Let the learning mode handler capture it instead
@@ -321,7 +314,6 @@ export function MidiProvider({
         // Find if this note is mapped to a preset
         for (const [presetNum, mappedNote] of Object.entries(recalls)) {
           if (mappedNote === noteNumber) {
-            console.log("Match found: preset_recall", category, presetNum);
             onMidiActionRef.current?.({
               type: "preset_recall",
               category,
@@ -348,21 +340,18 @@ export function MidiProvider({
 
       // Check start stop
       if (currentMappings.sequencer.start_stop === noteNumber) {
-        console.log("Match found: start_stop");
         onMidiActionRef.current?.({ type: "start_stop" });
         return;
       }
 
       //Check playmode
       if (currentMappings.sequencer.play_mode === noteNumber) {
-        console.log("Match found: play_mode");
         onMidiActionRef.current?.({ type: "play_mode" });
         return;
       }
 
       //Check waveshape
       if (currentMappings.synth_params.wave_shape === noteNumber) {
-        console.log("Match found: wave_shape");
         onMidiActionRef.current?.({ type: "wave_shape" });
         return;
       }
@@ -398,12 +387,6 @@ export function MidiProvider({
           currentMappings.index_array_inputs.rest_buttons[`rest_${i}`] ===
           noteNumber
         ) {
-          console.log(
-            "MidiContext: matched rest button",
-            i,
-            "noteNumber:",
-            noteNumber,
-          );
           onMidiActionRef.current?.({
             type: "rest_buttons",
             index: i,
@@ -455,7 +438,6 @@ export function MidiProvider({
     const handleCC = (e) => {
       const ccNumber = e.controller.number;
       const ccValue = e.rawValue; // 0-127
-      console.log("CC received:", ccNumber, "Value:", ccValue);
 
       const currentMappings = mappingsRef.current;
 
@@ -485,13 +467,11 @@ export function MidiProvider({
 
       //Check volume and panning
       if (currentMappings.synth_params.volume === ccNumber) {
-        console.log("Match found: volume");
         onMidiActionRef.current?.({ type: "volume", value: ccValue });
         return;
       }
 
       if (currentMappings.synth_params.panning === ccNumber) {
-        console.log("Match found: panning");
         onMidiActionRef.current?.({ type: "panning", value: ccValue });
         return;
       }
@@ -542,12 +522,6 @@ export function MidiProvider({
 
     const handleLearnNote = (e) => {
       const noteNumber = e.note.number;
-      console.log(
-        "Learning - captured note:",
-        noteNumber,
-        "for target:",
-        learningMode.target,
-      );
 
       const parts = learningMode.target.split(".");
 

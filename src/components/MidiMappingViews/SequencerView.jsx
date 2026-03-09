@@ -9,22 +9,22 @@ export default function SequencerView({ setInputRecalled }) {
   return (
     <>
       {/* Sequencer Start/Stop */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Sequencer Start/Stop</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Sequencer Start/Stop</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.sequencer.start_stop ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 Note {mappings.sequencer.start_stop}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "sequencer.start_stop"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "sequencer.start_stop"
@@ -45,22 +45,22 @@ export default function SequencerView({ setInputRecalled }) {
       </div>
 
       {/* Sequencer PlayMode (loop/one-shot) */}
-      <div className="mb-4 p-3 bg-gray-800 rounded">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-200">Play Mode Loop/One-Shot</span>
-          <div className="flex items-center gap-2">
+      <div className="tw:mb-4 tw:p-3 tw:bg-gray-800 tw:rounded">
+        <div className="tw:flex tw:justify-between tw:items-center">
+          <span className="tw:text-gray-200">Play Mode Loop/One-Shot</span>
+          <div className="tw:flex tw:items-center tw:gap-2">
             {mappings.sequencer.play_mode ? (
-              <span className="text-sm text-[#E6A60D]">
+              <span className="tw:text-sm tw:text-[#E6A60D]">
                 Note {mappings.sequencer.play_mode}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Not mapped</span>
+              <span className="tw:text-sm tw:text-gray-500">Not mapped</span>
             )}
             <button
-              className={`px-3 py-1 text-sm rounded ${
+              className={`tw:px-3 tw:py-1 tw:text-sm tw:rounded ${
                 learningMode?.target === "sequencer.play_mode"
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#E6A60D] text-gray-900 hover:bg-yellow-500"
+                  ? "tw:bg-red-500 tw:text-white tw:animate-pulse"
+                  : "tw:bg-[#E6A60D] tw:text-gray-900 hover:tw:bg-yellow-500"
               }`}
               onClick={() => {
                 learningMode?.target === "sequencer.play_mode"

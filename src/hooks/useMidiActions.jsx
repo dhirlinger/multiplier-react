@@ -112,20 +112,13 @@ export default function useMidiActions({
 
     subdivision_recall: ({ value }) => setSubdivision(value),
     subdivision_list_up: () => {
-      console.log("=== SUBDIVISION_LIST_UP DEBUG ===");
-      console.log("subdivisionList:", subdivisionList);
-      console.log("subdivision:", subdivision, typeof subdivision);
       if (!subdivisionList || subdivisionList.length === 0) return;
       const currentIndex = subdivisionList.indexOf(Number(subdivision));
-
-      console.log("currentIndex:", currentIndex);
 
       const nextIndex =
         currentIndex === -1 ? 0 : (currentIndex + 1) % subdivisionList.length;
 
       setSubdivision(subdivisionList[nextIndex]);
-
-      console.log("Subdivision list up");
     },
     subdivision_list_down: () => {
       if (!subdivisionList || subdivisionList.length === 0) return;
@@ -138,8 +131,6 @@ export default function useMidiActions({
             subdivisionList.length;
 
       setSubdivision(subdivisionList[nextIndex]);
-
-      console.log("Subdivision list down");
     },
 
     preset_recall: ({ category, presetNum }) => {
@@ -158,7 +149,6 @@ export default function useMidiActions({
       const nextIndex =
         currentIndex === -1 ? 0 : (currentIndex + 1) % list.length;
 
-      console.log("Preset list up:", category, "next preset:", list[nextIndex]);
       recallPresetByCategory(category, list[nextIndex]);
     },
     preset_list_down: ({ category }) => {
@@ -175,7 +165,6 @@ export default function useMidiActions({
           ? list.length - 1
           : (currentIndex - 1 + list.length) % list.length;
 
-      console.log("Preset list down:", category);
       recallPresetByCategory(category, list[nextIndex]);
     },
     preset_list_random: ({ category }) => {
@@ -183,7 +172,6 @@ export default function useMidiActions({
       if (!list || list.length === 0) return;
       const randomIndex = Math.floor(Math.random() * list.length);
 
-      console.log("Preset list random:", category);
       recallPresetByCategory(category, list[randomIndex]);
     },
 
@@ -204,7 +192,6 @@ export default function useMidiActions({
         baseMultiplierParamsRef.current.multiplier_max,
       ); // Example range
       setAudioParam("multiplier", scaled);
-      console.log("Multiplier CC:", value, "→", scaled);
     },
     base_cc: ({ value }) => {
       const scaled = scaleMidiExp(
@@ -213,22 +200,18 @@ export default function useMidiActions({
         baseMultiplierParamsRef.current.base_max,
       ); // Example range
       setAudioParam("base", scaled);
-      console.log("Base CC:", value, "→", scaled);
     },
     duration_cc: ({ value }) => {
       const scaled = scaleMidiToSteppedFloat(value, 0.01, 1);
       setAudioParam("duration", scaled);
-      console.log("Duration CC:", value, "→", scaled);
     },
     lowpass_freq_cc: ({ value }) => {
       const scaled = scaleMidiExp(value, 500, 15000);
       setAudioParam("lowPassFreq", scaled);
-      console.log("LowPass Freq CC:", value, "→", scaled);
     },
     lowpass_q_cc: ({ value }) => {
       const scaled = scaleMidiToStep(value, 0, 22);
       setAudioParam("lowPassQ", scaled);
-      console.log("LowPass Q CC:", value, "→", scaled);
     },
 
     volume: ({ value }) => {
@@ -248,12 +231,8 @@ export default function useMidiActions({
       let scaled = scaleMidiToStep(value, 0, 8);
       if (scaled === 0) scaled = "";
       updateIndexMidiRef.current[index]?.(scaled);
-      console.log(`Index input ${index} CC:`, value);
     },
     rest_buttons: ({ index }) => {
-      console.log("rest_buttons action fired, index:", index);
-      console.log("restMidiUpdatersRef:", restMidiUpdatersRef);
-      console.log("ref value:", restMidiUpdatersRef?.current?.[index]);
       restMidiUpdatersRef.current[index]?.();
     },
   };

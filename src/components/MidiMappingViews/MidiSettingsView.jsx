@@ -5,7 +5,6 @@ export default function MidiSettingsView() {
   const {
     selectedChannel,
     setSelectedChannel,
-    getChannelTargets,
     midiEnabled,
     inputs,
     selectedInput,
@@ -23,7 +22,6 @@ export default function MidiSettingsView() {
     if (activeInputs.length === 0) return;
 
     const handleNoteOn = (e) => {
-      console.log("Note pressed:", e.note.identifier);
       setLastNote({
         name: e.note.identifier,
         number: e.note.number,
@@ -50,7 +48,6 @@ export default function MidiSettingsView() {
     if (activeInputs.length === 0) return;
 
     const handleCC = (e) => {
-      console.log("CC#", e.controller.number, "Value:", e.rawValue);
       setLastCC({
         number: e.controller.number,
         name: e.controller.name,
@@ -80,7 +77,7 @@ export default function MidiSettingsView() {
     >
       <h3>MIDI Settings</h3>
       <p>Devices: {inputs.length}</p>
-      <div className="flex justify-start gap-2">
+      <div className="tw:flex tw:justify-start tw:gap-2">
         <select
           value={selectedInput === "all" ? "all" : selectedInput?.id || ""}
           onChange={(e) => {

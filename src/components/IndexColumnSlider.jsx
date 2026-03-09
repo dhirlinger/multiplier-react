@@ -30,17 +30,17 @@ export default function IndexColumnSlider({
   const currentStateRef = useRef({ isEmpty, value, isRest, prevValueRef });
 
   const colors = [
-    "bg-blue-300", // 0
-    "bg-blue-500", // 1
-    "bg-lime-500", // 2
-    "bg-lime-300", // 3
-    "bg-fuchsia-500", // 4
-    "bg-orange-500", // 5
-    "bg-teal-500", // 6
-    "bg-blue-200", // 7
+    "tw:bg-blue-300", // 0
+    "tw:bg-blue-500", // 1
+    "tw:bg-lime-500", // 2
+    "tw:bg-lime-300", // 3
+    "tw:bg-fuchsia-500", // 4
+    "tw:bg-orange-500", // 5
+    "tw:bg-teal-500", // 6
+    "tw:bg-blue-200", // 7
   ];
 
-  const columnColor = colors[arrIndex] || "bg-gray-500";
+  const columnColor = colors[arrIndex] || "tw:bg-gray-500";
 
   const cells = [8, 7, 6, 5, 4, 3, 2, 1, ""];
 
@@ -314,7 +314,7 @@ export default function IndexColumnSlider({
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="tw:flex tw:flex-col tw:items-center tw:w-full">
       <button
         onClick={(e) => {
           // Only fire on actual mouse clicks, not touch-synthesized clicks
@@ -325,9 +325,9 @@ export default function IndexColumnSlider({
           e.preventDefault(); // Prevents synthetic click
           toggleRest();
         }}
-        className={`w-full aspect-square mb-1 border border-pink-500/90 text-xs font-normal p-0
-          ${isRest ? "bg-pink-500/60" : "bg-maxbg"}
-          hover:bg-pink-500/20 hover:text-stone-300 transition-colors`}
+        className={`tw:w-full tw:aspect-square tw:mb-1 tw:border tw:border-pink-500/90 tw:text-xs tw:font-normal tw:p-0
+          ${isRest ? "tw:bg-pink-500/60" : "tw:bg-maxbg"}
+          hover:tw:bg-pink-500/20 hover:tw:text-stone-300 tw:transition-colors`}
       >
         REST
       </button>
@@ -335,7 +335,7 @@ export default function IndexColumnSlider({
       {/* Column with cells */}
       <div
         ref={localColumnRef}
-        className="w-full flex flex-col cursor-pointer select-none relative h-90"
+        className="tw:w-full tw:flex tw:flex-col tw:cursor-pointer tw:select-none tw:relative tw:h-90"
         style={{ touchAction: "none" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -357,11 +357,11 @@ export default function IndexColumnSlider({
             <div
               key={index}
               className={`
-                relative flex-1 border-t-[.5px] border-pink-500/90
-                ${isFilled ? columnColor : "bg-maxbg"}
-                ${isHovered && !isFilled && "bg-maxbg/70"}
-                transition-colors duration-100 ${
-                  cellValue === "" && "flex-[1.75] active:bg-pink-500/20"
+                tw:relative tw:flex-1 tw:border-t-[.5px] tw:border-pink-500/90
+                ${isFilled ? columnColor : "tw:bg-maxbg"}
+                ${isHovered && !isFilled && "tw:bg-maxbg/70"}
+                tw:transition-colors tw:duration-100 ${
+                  cellValue === "" && "tw:flex-[1.75] active:tw:bg-pink-500/20"
                 }
               `}
             ></div>
@@ -374,9 +374,9 @@ export default function IndexColumnSlider({
         value={isRest ? "R" : value}
         onChange={handleInputChange}
         maxLength={1}
-        className={`w-full aspect-square mt-1 text-center text-2xl font-bold 
-    border border-pink-500/90 text-white
-    ${isEmpty ? "bg-black" : "bg-maxbg"}`}
+        className={`tw:w-full tw:aspect-square tw:mt-1 tw:text-center tw:text-2xl tw:font-bold 
+    tw:border tw:border-pink-500/90 tw:text-white
+    ${isEmpty ? "tw:bg-black" : "tw:bg-maxbg"}`}
       />
     </div>
   );

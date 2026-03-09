@@ -1,12 +1,14 @@
 export default function PatreonBanner({ loginStatusRef }) {
+  const patreonPostId = window.MultiplierAPI?.patreonPostId || 8;
+
   return (
     <>
       <div className="patreon-text">
-        <h1 className="text-center my-0">Multiplier:</h1>
+        {/* <h1 className="tw:text-center tw:my-0">Multiplier:</h1> */}
 
         {!loginStatusRef.current.logged_in && (
           <p
-            className="my-1.5 px-2.5"
+            className="tw:my-1.5 tw:px-2.5"
             style={{
               // marginBottom: "5px",
               // marginTop: "5px",
@@ -19,7 +21,7 @@ export default function PatreonBanner({ loginStatusRef }) {
             <b>
               {" "}
               <a
-                className="text-pink-600"
+                className="tw:text-pink-600"
                 href="https://www.patreon.com/user?u=90105560&amp;utm_source=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post%2F&amp;utm_medium=patreon_wordpress_plugin&amp;utm_campaign=14548621&amp;utm_term=&amp;utm_content=creator_profile_link_in_text_over_interface"
                 target="_blank"
               >
@@ -29,16 +31,16 @@ export default function PatreonBanner({ loginStatusRef }) {
             </b>{" "}
             or more.{" "}
             <a
-              className="text-pink-600"
-              href="http://localhost:8888/patreon-flow/?patreon-unlock-post=8"
+              className="tw:text-pink-600"
+              href={`${window.location.origin}/patreon-flow/?patreon-unlock-post=${patreonPostId}`}
               target="_blank"
             >
               Unlock with Patreon
             </a>{" "}
             Already a qualifying Patreon member?{" "}
             <a
-              className="text-pink-600"
-              href="http://localhost:8888/patreon-flow/?patreon-login=yes&amp;patreon-final-redirect=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post"
+              className="tw:text-pink-600"
+              href={`${window.location.origin}/patreon-flow/?patreon-login=yes&patreon-final-redirect=${encodeURIComponent(window.location.origin + "/patreon-test-post")}`}
               rel="nofollow"
             >
               Refresh

@@ -18,8 +18,8 @@ export default function AppDescription() {
       className={` ${
         seeDescription
           ? ""
-          : "border-solid border-[#E6A60D] border-[0.5px] text-sm"
-      } mt-0 p-2.5 mb-2 bg-maxbg hover:bg-stone-700 w-full text-center cursor-pointer`}
+          : "tw:border-solid tw:border-[#E6A60D] tw:border-[0.5px] tw:text-sm"
+      } tw:mt-0 tw:p-2.5 tw:mb-2 tw:bg-maxbg hover:tw:bg-stone-700 tw:w-full tw:text-center tw:cursor-pointer`}
       onClick={() => setSeeDescription(!seeDescription)}
     >
       {seeDescription ? description : "SEE DESCRIPTION"}

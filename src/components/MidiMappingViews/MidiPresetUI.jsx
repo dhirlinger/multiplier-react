@@ -21,9 +21,9 @@ export default function MidiPresetUI({
     deleteMidiPreset,
   } = useMidiContext();
 
-  const logged_in = loginStatusRef?.current?.logged_in;
+  // const logged_in = loginStatusRef?.current?.logged_in;
 
-  console.log(`logged_in: ${logged_in}`);
+  // console.log(`logged_in: ${logged_in}`);
 
   // Update name when preset number changes
   useEffect(() => {
@@ -54,12 +54,12 @@ export default function MidiPresetUI({
   };
 
   const handleSave = () => {
-    // const logged_in = loginStatusRef?.current?.logged_in;
+    const logged_in = loginStatusRef?.current?.logged_in;
 
-    // if (!logged_in) {
-    //   alert("You must login via patreon to access this feature");
-    //   return;
-    // }
+    if (!logged_in) {
+      alert("You must login via patreon to access this feature");
+      return;
+    }
     if (midiPresetName === "-EMPTY-") {
       setMidiConfirm({
         action: "Name",
@@ -117,45 +117,45 @@ export default function MidiPresetUI({
   };
 
   return (
-    <div className="mb-2">
+    <div className="tw:mb-2">
       {/* Buttons row */}
-      <div className="flex gap-1 mb-1">
+      <div className="tw:flex tw:gap-1 tw:mb-1">
         <button
           onClick={handleRecall}
-          className="flex-1 px-2 py-2 text-xs text-gray-200 rounded border-[#E6A60D]"
+          className="tw:flex-1 tw:px-2 tw:py-2 tw:text-xs tw:text-gray-200 tw:rounded tw:border-[#E6A60D]"
         >
           RECALL
         </button>
         <button
           onClick={handleSave}
-          className="flex-1 px-2 py-2 text-xs bg-[#E6A60D] text-gray-900 rounded hover:bg-yellow-500"
+          className="tw:flex-1 tw:px-2 tw:py-2 tw:text-xs tw:bg-[#E6A60D] tw:text-gray-900 tw:rounded hover:tw:bg-yellow-500"
         >
           SAVE
         </button>
         <button
           onClick={handleDelete}
-          className="flex-1 px-2 py-2 text-xs bg-red-600 text-white rounded hover:bg-red-500"
+          className="tw:flex-1 tw:px-2 tw:py-2 tw:text-xs tw:bg-red-600 tw:text-white tw:rounded hover:tw:bg-red-500"
         >
           DELETE
         </button>
       </div>
 
       {/* Number, arrows, name row */}
-      <div className="flex gap-0.5">
+      <div className="tw:flex tw:gap-0.5">
         <button
           onClick={handleLeftArrow}
-          className="flex items-center w-1/9 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] rounded hover:bg-gray-600"
+          className="tw:flex tw:items-center tw:w-1/9 tw:aspect-square tw:p-0 tw:border tw:border-[#E6A60D] tw:text-[#E6A60D] tw:rounded hover:tw:bg-gray-600"
         >
           <Arrow />
         </button>
 
-        <div className="flex items-center justify-center w-8 aspect-square text-[#E6A60D] border border-[#E6A60D] text-sm font-bold rounded">
+        <div className="tw:flex tw:items-center tw:justify-center tw:w-8 tw:aspect-square tw:text-[#E6A60D] tw:border tw:border-[#E6A60D] tw:text-sm tw:font-bold tw:rounded">
           {midiPresetNum}
         </div>
 
         <button
           onClick={handleRightArrow}
-          className="flex items-center w-1/9 aspect-square p-0 border border-[#E6A60D] text-[#E6A60D] rounded hover:bg-gray-600 scale-x-[-1]"
+          className="tw:flex tw:items-center tw:w-1/9 tw:aspect-square tw:p-0 tw:border tw:border-[#E6A60D] tw:text-[#E6A60D] tw:rounded hover:tw:bg-gray-600 tw:scale-x-[-1]"
         >
           <Arrow />
         </button>
@@ -169,9 +169,9 @@ export default function MidiPresetUI({
           placeholder="MIDI PRESET NAME"
           maxLength={15}
           //flex-1 px-2 bg-gray-700
-          className={`flex-1 px-2 border border-[#E6A60D] text-center ${
-            inputRecalled ? "text-inherit" : "text-mix"
-          } text-sm rounded`}
+          className={`tw:flex-1 tw:px-2 tw:border tw:border-[#E6A60D] tw:text-center ${
+            inputRecalled ? "tw:text-inherit" : "tw:text-mix"
+          } tw:text-sm tw:rounded`}
         />
       </div>
     </div>

@@ -12,6 +12,7 @@ export default function FreqArray({
   multiplier,
   setAudioParam,
   globalFreqRecall,
+  handleMidiSelect,
   setDisplayMidiMapping,
   setMidiMappingCategory,
 }) {
@@ -46,8 +47,8 @@ export default function FreqArray({
   }
 
   return (
-    <div className="border-[.5px] border-cyan-400 bg-maxbg p-2 mt-2 w-full">
-      {/* <div className="grid grid-cols-2">
+    <div className="tw:border-[.5px] tw:border-cyan-400 tw:bg-maxbg tw:p-2 tw:mt-2 tw:w-full">
+      {/* <div className="tw:grid tw:grid-cols-2">
         <div>
           <span style={{ fontWeight: "bold" }}>Base Freq: </span>
           {base}
@@ -58,15 +59,15 @@ export default function FreqArray({
         </div>
       </div> */}
       <div>
-        <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
-        <div className="h-[72.5px]">
+        <div className="tw:w-1/2 tw:h-[.5px] tw:bg-cyan-400"></div>
+        <div className="tw:h-[72.5px]">
           <span style={{ fontWeight: "bold" }}>In Hertz: </span>
           {base && multiplier
             ? createFreqArray().join(", ")
             : "set base and multiplier"}
         </div>
-        <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
-        <div className="h-[48.5px]">
+        <div className="tw:w-1/2 tw:h-[.5px] tw:bg-cyan-400"></div>
+        <div className="tw:h-[48.5px]">
           {base && multiplier ? (
             <>
               <span style={{ fontWeight: "bold" }}>Nearest Note: </span>
@@ -79,7 +80,7 @@ export default function FreqArray({
           )}
         </div>
       </div>
-      <div className="w-1/2 h-[.5px] bg-cyan-400"></div>
+      <div className="tw:w-1/2 tw:h-[.5px] tw:bg-cyan-400"></div>
       <BaseMultiplier
         base={base}
         multiplier={multiplier}
@@ -88,6 +89,7 @@ export default function FreqArray({
         presetObj={presetObj}
         paramsRef={baseMultiplierParamsRef}
         globalFreqRecall={globalFreqRecall}
+        handleMidiSelect={handleMidiSelect}
         setMidiMappingCategory={setMidiMappingCategory}
         setDisplayMidiMapping={setDisplayMidiMapping}
       />

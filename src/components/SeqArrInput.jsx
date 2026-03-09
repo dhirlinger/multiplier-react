@@ -38,7 +38,6 @@ export default function NumberInput({
       setValue(inputValue);
       seqArrayRef = seqArrayRef.current;
       seqArrayRef[arrIndex] = inputValue;
-      console.log(seqArrayRef);
     }
     // If input is invalid, do nothing (no update)
   };
@@ -50,7 +49,7 @@ export default function NumberInput({
       value={value}
       maxLength={1}
       style={{ width: "22px", fontSize: "36px" }}
-      className="mr-2"
+      className="tw:mr-2"
       onChange={handleChange}
     ></input>
   );

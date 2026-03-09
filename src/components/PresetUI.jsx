@@ -23,6 +23,7 @@ export default function PresetUI({
   obj,
   setDisplayMidiMapping,
   setMidiMappingCategory,
+  handleMidiSelect,
   setCursorInTextBox,
 }) {
   const findByPresetNumRef = useRef();
@@ -44,25 +45,25 @@ export default function PresetUI({
   const getColorClasses = () => {
     if (category === "Index Array") {
       return {
-        border: "border-pink-500/90",
-        text: "text-pink-500/90",
-        selectedBorder: "border-[#6DD7FF]",
-        selectedText: "text-[#6DD7FF]",
+        border: "tw:border-pink-500/90",
+        text: "tw:text-pink-500/90",
+        selectedBorder: "tw:border-[#6DD7FF]",
+        selectedText: "tw:text-[#6DD7FF]",
       };
     }
     if (category === "Frequency Array") {
       return {
-        border: "border-cyan-500",
-        text: "text-cyan-500",
-        selectedBorder: "border-pink-500",
-        selectedText: "text-pink-500",
+        border: "tw:border-cyan-500",
+        text: "tw:text-cyan-500",
+        selectedBorder: "tw:border-pink-500",
+        selectedText: "tw:text-pink-500",
       };
     }
     return {
-      border: "border-[#E6A60D]",
-      text: "text-[#E6A60D]",
-      selectedBorder: "border-[#6DD7FF]",
-      selectedText: "text-[#6DD7FF]",
+      border: "tw:border-[#E6A60D]",
+      text: "tw:text-[#E6A60D]",
+      selectedBorder: "tw:border-[#6DD7FF]",
+      selectedText: "tw:text-[#6DD7FF]",
     };
   };
 
@@ -72,7 +73,6 @@ export default function PresetUI({
     findByPresetNumRef.current = data.find(
       (item) => item && Number(item.preset_number) === presetNum,
     );
-    console.log(`findBy: ${JSON.stringify(findByPresetNumRef.current)}`);
   }, [presetNum, data]);
 
   //update preset name when preset number is updated
@@ -158,11 +158,11 @@ export default function PresetUI({
 
   return (
     <>
-      <div className="text-4xl text-center" id={divId().container}>
-        <h3 className="m-1.5">
-          <span className="bg-maxbg px-1.5">{category} Preset</span>
+      <div className="tw:text-4xl tw:text-center" id={divId().container}>
+        <h3 className="tw:m-1.5">
+          <span className="tw:bg-maxbg tw:px-1.5">{category} Preset</span>
         </h3>
-        <div className="flex max-w-sm min-w-xs flex-wrap justify-between mb-1.5">
+        <div className="tw:flex tw:max-w-sm tw:min-w-xs tw:flex-wrap tw:justify-between tw:mb-1.5">
           <button
             className={`${colors.border} round`}
             onClick={() => {
@@ -180,24 +180,21 @@ export default function PresetUI({
             SAVE
           </button>
           <button
-            className="round border-red-600 text-red-600"
+            className="round tw:border-red-600 tw:text-red-600"
             onClick={() => deletePreset(presetNum, presetName)}
           >
             DELETE
           </button>
           <button
             className={`${colors.border} round`}
-            onClick={() => {
-              setMidiMappingCategory(midiCategory);
-              setDisplayMidiMapping(true);
-            }}
+            onClick={() => handleMidiSelect(midiCategory)}
           >
             MIDI
           </button>
 
           {/* GLOBAL CHECKBOXES */}
           {category === "Global" && (
-            <div className="flex text-xs text-transform: uppercase">
+            <div className="tw:flex tw:text-xs tw:text-transform: tw:uppercase">
               <RecallCheckbox
                 stateRecall={globalFreqRecall}
                 handleChange={handleFreqRecall}
@@ -211,15 +208,15 @@ export default function PresetUI({
             </div>
           )}
 
-          <div className="flex mt-1">
+          <div className="tw:flex tw:mt-1">
             <input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
-              className={`preset-num w-1/6 aspect-square border ${
+              className={`preset-num tw:w-1/6 tw:aspect-square tw:border ${
                 colors.border
-              } text-xl placeholder:text-xl text-center ${
-                inputRecalled ? "text-inherit" : "text-mix"
+              } tw:text-xl placeholder:tw:text-xl tw:text-center ${
+                inputRecalled ? "tw:text-inherit" : "tw:text-mix"
               }`}
               placeholder="50"
               //min={1}
@@ -230,17 +227,17 @@ export default function PresetUI({
               //onInput={handleInput}
             ></input>
             <button
-              className={`flex items-center w-1/6 aspect-square p-0 border ${colors.border} ${colors.text}`}
+              className={`tw:flex tw:items-center tw:w-1/6 tw:aspect-square tw:p-0 tw:border ${colors.border} ${colors.text}`}
               onClick={handleLeftArrow}
             >
               <Arrow />
             </button>
             <input
               type="text"
-              className={`preset-name w-1/2 border ${
+              className={`preset-name tw:w-1/2 tw:border ${
                 colors.border
-              } text-xl placeholder:text-xl text-center ${
-                inputRecalled ? "text-inherit" : "text-mix"
+              } tw:text-xl placeholder:tw:text-xl tw:text-center ${
+                inputRecalled ? "tw:text-inherit" : "tw:text-mix"
               }`}
               placeholder="PRESET NAME"
               value={presetName}
@@ -250,7 +247,7 @@ export default function PresetUI({
               maxLength={15}
             ></input>
             <button
-              className={`flex items-center w-1/6 aspect-square p-0 border ${colors.border} ${colors.text} scale-x-[-1]`}
+              className={`tw:flex tw:items-center tw:w-1/6 tw:aspect-square tw:p-0 tw:border ${colors.border} ${colors.text} tw:scale-x-[-1]`}
               onClick={handleRightArrow}
             >
               <Arrow />
@@ -264,7 +261,7 @@ export default function PresetUI({
         />
         {/*preset grid*/}
         <div
-          className="grid grid-cols-10 gap-0.5 mt-2 w-full"
+          className="tw:grid tw:grid-cols-10 tw:gap-0.5 tw:mt-2 tw:w-full"
           id={divId().grid}
         >
           {Array.from({ length: 50 }, (_, i) => i + 1).map((num) => {
@@ -277,7 +274,7 @@ export default function PresetUI({
                   ? `${colors.selectedBorder} text-mix`
                   : preset
                     ? colors.border
-                    : `${colors.border} text-mix`;
+                    : `${colors.border} tw:text-mix`;
 
             return (
               <button
@@ -292,9 +289,9 @@ export default function PresetUI({
                   }
                 }}
                 className={`
-        aspect-square p-0 text-xs font-medium
+        tw:aspect-square tw:p-0 tw:text-xs tw:font-medium
         ${gridClass}
-        border hover:bg-stone-700
+        tw:border hover:tw:bg-stone-700
       `}
                 style={{ fontSize: "10px" }}
               >

@@ -1,41 +1,39 @@
 export default function StickyBottomControls({
   toggleSequencer,
   seqIsPlaying,
-  setMidiMappingCategory,
-  setDisplayMidiMapping,
+  handleMidiSelect,
   playMode,
 }) {
   return (
     <>
-      <div className="sticky bottom-0 w-full flex p-2 border-t-8 border-x-0 border-b-0 border-t-[#242424] z-20 bg-[#E6A60D] m-0 relative">
+      <div className="tw:fixed tw:bottom-0 tw:left-1/2 tw:-translate-x-1/2 tw:max-w-sm tw:w-full tw:flex tw:p-2 tw:border-t-8 tw:border-x-0 tw:border-b-0 tw:border-t-[#242424] tw:z-20 tw:bg-[#E6A60D] tw:m-0">
         <button
-          className={`w-[118px] min-w-[118px] border-stone-400 border ${playMode === "one-shot" ? "text-pink-500" : ""}`}
+          className={`tw:w-[118px] tw:min-w-[118px] tw:border-stone-400 tw:border ${playMode === "one-shot" ? "tw:text-pink-500" : ""}`}
           onClick={toggleSequencer}
         >
           {seqIsPlaying && playMode === "loop" ? "Stop" : "Play"}
         </button>
-        <div className="flex items-center gap-1 ml-1.5 w-full justify-center">
+        <div className="tw:flex tw:items-center tw:gap-1 tw:ml-1.5 tw:w-full tw:justify-center">
           <a href="#global-grid">
-            <button className="text-sm text-[#E6A60D] w-[70px] min-w-[70px] flex justify-center">
+            <button className="tw:text-sm tw:text-[#E6A60D] tw:w-[70px] tw:min-w-[70px] tw:flex tw:justify-center">
               Global
             </button>
           </a>
           <a href="#frequency-grid">
-            <button className="text-sm text-cyan-500 w-[70px] min-w-[70px] flex justify-center-center">
+            <button className="tw:text-sm tw:text-cyan-500 tw:w-[70px] tw:min-w-[70px] tw:flex tw:justify-center-center">
               Freq
             </button>
           </a>
           <a href="#index-grid">
-            <button className="text-sm text-pink-500/90 w-[70px] min-w-[70px] flex justify-center">
+            <button className="tw:text-sm tw:text-pink-500/90 tw:w-[70px] tw:min-w-[70px] tw:flex tw:justify-center">
               Index
             </button>
           </a>
         </div>
         <button
-          className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mb-2 mr-2 absolute bottom-0 left-2"
+          className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mb-2 tw:mr-2 tw:absolute tw:bottom-0 tw:left-2"
           onClick={() => {
-            setMidiMappingCategory("sequencer_params");
-            setDisplayMidiMapping(true);
+            handleMidiSelect("sequencer_params");
           }}
         >
           MAP

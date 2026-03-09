@@ -5,8 +5,7 @@ export default function Tempo({
   setBpm,
   subdivision,
   setSubdivision,
-  setDisplayMidiMapping,
-  setMidiMappingCategory,
+  handleMidiSelect,
 }) {
   const handleRightArrowBpm = () => {
     setBpm((prev) => {
@@ -45,38 +44,41 @@ export default function Tempo({
   };
 
   return (
-    <div id="tempo" className="mt-0 text-sm font-bold w-full p-2 relative">
-      <div className="flex items-center w-full">
-        <label htmlFor="bpm" className="w-22">
+    <div
+      id="tempo"
+      className="tw:mt-0 tw:text-sm tw:font-bold tw:w-full tw:p-2 tw:relative"
+    >
+      <div className="tw:flex tw:items-center tw:w-full">
+        <label htmlFor="bpm" className="tw:w-22">
           BPM{" "}
         </label>
         <button
-          className={`flex items-center h-16 w-16 p-0 border border-[#E6A60D] text-[#E6A60D]`}
+          className={`tw:flex tw:items-center tw:h-16 tw:w-16 tw:p-0 tw:border tw:border-[#E6A60D] tw:text-[#E6A60D]`}
           onClick={handleLeftArrowBpm}
         >
           <Arrow />
         </button>
         <input
           id="bpm"
-          className="text-[36px] w-20.5 border border-[#E6A60D] h-16"
+          className="tw:text-[36px] tw:w-20.5 tw:border tw:border-[#E6A60D] tw:h-16"
           type="number"
           value={bpm}
           onChange={(e) => setBpm(e.target.value)}
         />
         <button
-          className={`flex items-center h-16 w-16 p-0 border border-[#E6A60D] text-[#E6A60D] scale-x-[-1]`}
+          className={`tw:flex tw:items-center tw:h-16 tw:w-16 tw:p-0 tw:border tw:border-[#E6A60D] tw:text-[#E6A60D] tw:scale-x-[-1]`}
           onClick={handleRightArrowBpm}
         >
           <Arrow />
         </button>
       </div>
-      <div className="flex items-center w-full mt-1">
-        <label htmlFor="subdivision" className="w-22">
+      <div className="tw:flex tw:items-center tw:w-full tw:mt-1">
+        <label htmlFor="subdivision" className="tw:w-22">
           {" "}
           Subdivision{" "}
         </label>
         <button
-          className={`flex items-center h-16 w-16 p-0 border border-[#E6A60D] text-[#E6A60D]`}
+          className={`tw:flex tw:items-center tw:h-16 tw:w-16 tw:p-0 tw:border tw:border-[#E6A60D] tw:text-[#E6A60D]`}
           onClick={handleLeftArrowSub}
         >
           <Arrow />
@@ -91,22 +93,21 @@ export default function Tempo({
           className={`
               ${
                 bpm * subdivision >= 20 && bpm * subdivision <= 1800
-                  ? "text-inherit"
-                  : "text-mix"
-              } text-[36px] border-[#E6A60D] border w-20.5 h-16`}
+                  ? "tw:text-inherit"
+                  : "tw:text-mix"
+              } tw:text-[36px] tw:border-[#E6A60D] tw:border tw:w-20.5 tw:h-16`}
         />
         <button
-          className={`flex items-center h-16 w-16 p-0 border border-[#E6A60D] text-[#E6A60D] scale-x-[-1]`}
+          className={`tw:flex tw:items-center tw:h-16 tw:w-16 tw:p-0 tw:border tw:border-[#E6A60D] tw:text-[#E6A60D] tw:scale-x-[-1]`}
           onClick={handleRightArrowSub}
         >
           <Arrow />
         </button>
       </div>
       <button
-        className="text-xs py-0.5 px-2 border-pink-800 border bg-pink-600 mb-2 mr-2 absolute bottom-0 right-0"
+        className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mb-2 tw:mr-2 tw:absolute tw:bottom-0 tw:right-0"
         onClick={() => {
-          setMidiMappingCategory("sequencer_params");
-          setDisplayMidiMapping(true);
+          handleMidiSelect("sequencer_params");
         }}
       >
         MAP
