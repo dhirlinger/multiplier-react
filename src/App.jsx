@@ -665,9 +665,9 @@ export default function App() {
         {error && <p>Error: {error.message}</p>}
 
         {/* 2-column grid at md: — each child keeps its own max-w-sm width */}
-        <div className="tw:md:grid tw:md:grid-cols-2 tw:md:justify-items-center tw:md:items-start tw:md:gap-x-2 tw:md:w-fit tw:md:mx-auto">
+        <div className="tw:md:grid tw:md:grid-cols-2 tw:md:justify-items-center tw:md:items-stretch tw:md:gap-x-2 tw:md:w-fit tw:md:mx-auto">
           {/* ROW 1 LEFT: Global preset + Synth block */}
-          <div className="tw:flex tw:flex-col tw:items-center">
+          <div className="tw:flex tw:flex-col tw:items-center tw:md:h-full">
             <PresetUI
               data={presetData}
               presetNum={globalPresetNum}
@@ -709,6 +709,7 @@ export default function App() {
                 setAudioParam={setAudioParam}
               />
             </div>
+            <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:w-full tw:md:bg-cyan-500/20"></div>
           </div>
 
           {/* ROW 1 RIGHT: Freq preset + FreqArray */}
@@ -762,6 +763,7 @@ export default function App() {
               obj={indexObj}
               handleMidiSelect={handleMidiSelect}
             />
+            <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:w-full tw:md:bg-pink-500/20 tw:md:m-1"></div>
           </div>
           {/* ROW 2 RIGHT: Index Array label/MAP + Update Mode toggle + IndexArraySliders + Play Mode toggle */}
           <div className="tw:flex tw:flex-col tw:items-stretch">
@@ -829,7 +831,9 @@ export default function App() {
             </div>
           </div>
           {/* ROW 3 RIGHT: Index Array label/MAP + Update Mode toggle + IndexArraySliders + Play Mode toggle */}
-          <div className="tw:flex tw:flex-col tw:items-stretch"></div>
+          <div className="tw:flex tw:flex-col tw:items-stretch tw:md:h-full tw:md:w-full">
+            <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:bg-[#E6A60D]/30"></div>
+          </div>
         </div>
         {/* end 2-col grid */}
 
