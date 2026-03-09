@@ -109,7 +109,7 @@ export default function BaseMultiplierUI({
           </div>
           <div className="tw:flex tw:items-center tw:gap-2 tw:mb-2">
             <button
-              className={`tw:flex tw:items-center tw:w-14 tw:aspect-square tw:p-0 tw:border tw:border-cyan-500/90 tw:text-cyan-500/90 -tw:rotate-90`}
+              className={`tw:flex tw:items-center tw:w-14 tw:aspect-square tw:p-0 tw:border tw:border-cyan-500/90 tw:text-cyan-500/90 tw:-rotate-90`}
               onClick={handleDownArrow}
             >
               <Arrow />
