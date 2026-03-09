@@ -651,7 +651,7 @@ export default function App() {
       loginStatusRef={loginStatusRef}
       loggedIn={loggedIn}
     >
-      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:items-center tw:justify-center tw:m-auto tw:min-h-96 tw:p-2 tw:pb-16">
+      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:md:max-w-none tw:items-center tw:md:items-stretch tw:justify-center tw:md:justify-normal tw:m-auto tw:min-h-96 tw:p-2 tw:pb-16">
         <h1 className="tw:m-1.5 tw:text-4xl tw:mb-4 tw:w-full tw:text-center">
           <span className="tw:bg-maxbg tw:px-24 tw:w-full tw:pb-1">
             Multiplier
@@ -684,7 +684,7 @@ export default function App() {
           handleMidiSelect={handleMidiSelect}
           setCursorInTextBox={setCursorInTextBox}
         />
-        <div className="tw:bg-maxbg tw:mt-1 tw:mb-1">
+        <div className="tw:bg-maxbg tw:mt-1 tw:mb-1 tw:max-w-sm tw:min-w-xs">
           {/*text-xs py-0.5 px-2 absolute top-0.5 right-1.25 border-pink-800 border bg-pink-600*/}
           <div className="tw:flex tw:justify-between tw:items-center">
             <p className="tw:text-sm tw:ml-2 tw:font-bold">Synth</p>
@@ -776,7 +776,7 @@ export default function App() {
           loginStatusRef={loginStatusRef}
           setCursorInTextBox={setCursorInTextBox}
         />
-        <div className="tw:w-full tw:flex tw:justify-between tw:items-center">
+        <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:justify-between tw:items-center">
           <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
           <button
             className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
@@ -786,7 +786,7 @@ export default function App() {
           </button>
         </div>
         {/* Update Mode Toggle */}
-        <div className="tw:w-full tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+        <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
           <Toggle
             handleChange={handleUpdateModeChange}
             paramMode={updateMode}
@@ -806,7 +806,7 @@ export default function App() {
           restMidiUpdatersRef={restMidiUpdatersRef}
         />
         {/* Play Mode Toggle */}
-        <div className="tw:w-full tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+        <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
           <Toggle
             handleChange={handleUpdatePlayModeChange}
             paramMode={playMode}
@@ -816,7 +816,7 @@ export default function App() {
           />
         </div>
 
-        <div className="tw:w-full  tw:bg-maxbg">
+        <div className="tw:max-w-sm tw:min-w-xs  tw:bg-maxbg">
           <Tempo
             bpm={bpm}
             setBpm={setBpm}

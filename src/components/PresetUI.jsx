@@ -21,8 +21,6 @@ export default function PresetUI({
   globalIndexRecall,
   setGlobalIndexRecall,
   obj,
-  setDisplayMidiMapping,
-  setMidiMappingCategory,
   handleMidiSelect,
   setCursorInTextBox,
 }) {
@@ -158,11 +156,19 @@ export default function PresetUI({
 
   return (
     <>
-      <div className="tw:text-4xl tw:text-center" id={divId().container}>
+      <div
+        className="tw:text-4xl tw:text-center tw:max-w-sm tw:min-w-xs"
+        id={divId().container}
+      >
         <h3 className="tw:m-1.5">
-          <span className="tw:bg-maxbg tw:px-1.5">{category} Preset</span>
+          {/* ${category === "freq_preset" && "tw:text-sm"} */}
+          <span className={`tw:bg-maxbg tw:px-1.5 tw:md:text-2xl`}>
+            {category} Preset
+          </span>
         </h3>
-        <div className="tw:flex tw:max-w-sm tw:min-w-xs tw:flex-wrap tw:justify-between tw:mb-1.5">
+        <div
+          className={`tw:flex tw:max-w-sm tw:min-w-xs tw:flex-wrap tw:justify-between tw:mb-1.5`}
+        >
           <button
             className={`${colors.border} round`}
             onClick={() => {
@@ -208,7 +214,9 @@ export default function PresetUI({
             </div>
           )}
 
-          <div className="tw:flex tw:mt-1">
+          <div
+            className={`tw:flex tw:mt-1 ${midiCategory === "freq_preset" ? "tw:md:mt-5" : ""}`}
+          >
             <input
               type="text"
               inputMode="numeric"
