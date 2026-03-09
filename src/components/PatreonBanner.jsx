@@ -22,7 +22,7 @@ export default function PatreonBanner({ loginStatusRef }) {
               {" "}
               <a
                 className="tw:text-pink-600"
-                href="https://www.patreon.com/user?u=90105560&amp;utm_source=http%3A%2F%2Flocalhost%3A8888%2Fpatreon-test-post%2F&amp;utm_medium=patreon_wordpress_plugin&amp;utm_campaign=14548621&amp;utm_term=&amp;utm_content=creator_profile_link_in_text_over_interface"
+                href={`https://www.patreon.com/user?u=90105560&utm_source=${encodeURIComponent(window.location.origin + "/multipler/")}&utm_medium=patreon_wordpress_plugin&utm_campaign=14548621&utm_term=&utm_content=creator_profile_link_in_text_over_interface`}
                 target="_blank"
               >
                 Doug’s Patreon
