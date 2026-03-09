@@ -809,8 +809,8 @@ export default function App() {
           </div>
 
           {/* ROW 3 LEFT: Index preset + Tempo + VolumePanning */}
-          <div className="tw:flex tw:flex-col tw:items-center">
-            <div className="tw:w-sm tw:bg-maxbg">
+          <div className="tw:flex tw:flex-col tw:items-center tw:md:h-full tw:md:w-full tw:bg-maxbg">
+            <div className="tw:w-sm">
               <Tempo
                 bpm={bpm}
                 setBpm={setBpm}
@@ -819,7 +819,6 @@ export default function App() {
                 handleMidiSelect={handleMidiSelect}
               />
               <div className="tw:w-11/12 tw:h-[.5px] tw:bg-[#E6A60D] tw:ml-2 tw:mt-1 tw:mr-2"></div>
-
               <VolumePanning
                 volume={volume}
                 panning={panning}
