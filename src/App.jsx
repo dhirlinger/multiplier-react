@@ -771,6 +771,7 @@ export default function App() {
               category={"Index Array"}
               obj={indexObj}
               handleMidiSelect={handleMidiSelect}
+              setCursorInTextBox={setCursorInTextBox}
             />
             {isXl && (
               <div className="tw:flex tw:flex-col tw:items-stretch">

@@ -45,7 +45,7 @@ export default function MidiMappingOverlay({
       }`}
     >
       <div
-        className={`tw:bg-gray-900 tw:rounded-lg tw:shadow-lg tw:max-w-sm tw:w-full tw:my-4 tw:transition-opacity tw:duration-500 tw:ease-in-out tw:border-[0.5px] tw:border-[#E6A60D] ${
+        className={`tw:bg-gray-900 tw:rounded-lg tw:shadow-lg tw:max-w-sm tw:w-full tw:mb-4 tw:mt-12 tw:transition-opacity tw:duration-500 tw:ease-in-out tw:border-[0.5px] tw:border-[#E6A60D] ${
           displayMidiMapping ? "tw:opacity-100" : "tw:opacity-0"
         }`}
       >
