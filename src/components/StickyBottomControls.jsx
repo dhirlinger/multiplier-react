@@ -6,9 +6,9 @@ export default function StickyBottomControls({
 }) {
   return (
     <>
-      <div className="tw:fixed tw:bottom-0 tw:left-1/2 tw:-translate-x-1/2 tw:max-w-sm tw:w-full tw:md:w-194 tw:md:max-w-none tw:flex tw:p-2 tw:border-t-8 tw:border-x-0 tw:border-b-0 tw:border-t-[#242424] tw:z-20 tw:bg-[#E6A60D] tw:m-0">
+      <div className="tw:fixed tw:bottom-0 tw:left-1/2 tw:-translate-x-1/2 tw:max-w-sm tw:w-full tw:md:w-194 tw:md:max-w-none tw:xl:w-[1160px] tw:flex tw:p-2 tw:border-t-8 tw:border-x-0 tw:border-b-0 tw:border-t-[#242424] tw:z-20 tw:bg-[#E6A60D] tw:m-0">
         <button
-          className={`tw:w-[118px] tw:min-w-[118px] tw:border-stone-400 tw:border ${playMode === "one-shot" ? "tw:text-pink-500" : ""}`}
+          className={`tw:w-29.5 tw:min-w-29.5 tw:border-stone-400 tw:border ${playMode === "one-shot" ? "tw:text-pink-500" : ""}`}
           onClick={toggleSequencer}
         >
           {seqIsPlaying && playMode === "loop" ? "Stop" : "Play"}

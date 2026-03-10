@@ -120,6 +120,14 @@ export default function App() {
   //for midi CRUD w MidiContext & MidiOverlay -> MidiPresetUI
   const [loggedIn, setLoggedIn] = useState(false);
 
+  // responsive layout breakpoint
+  const [isXl, setIsXl] = useState(window.innerWidth >= 1280);
+  useEffect(() => {
+    const handler = () => setIsXl(window.innerWidth >= 1280);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
   //for batching
   const pendingDisplayUpdates = useRef({});
   const frameRequested = useRef(false);
@@ -651,10 +659,10 @@ export default function App() {
       loginStatusRef={loginStatusRef}
       loggedIn={loggedIn}
     >
-      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:md:max-w-none tw:md:w-194 tw:items-center tw:md:items-stretch tw:justify-center tw:md:justify-normal tw:m-auto tw:min-h-96 tw:p-2 tw:pb-16">
+      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:md:max-w-none tw:md:w-194 tw:xl:w-[1160px] tw:items-center tw:md:items-stretch tw:justify-center tw:md:justify-normal tw:m-auto tw:min-h-96 tw:p-2 tw:pb-16">
         <h1 className="tw:m-1.5 tw:text-4xl tw:mb-4 tw:w-full tw:text-center">
           <span className="tw:bg-maxbg tw:px-24 tw:w-full tw:pb-1">
-            Multiplier
+            Multiplier<span className="tw:text-sm">v1</span>
           </span>
         </h1>
 
@@ -664,8 +672,8 @@ export default function App() {
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
 
-        {/* 2-column grid at md: — each child keeps its own max-w-sm width */}
-        <div className="tw:md:grid tw:md:grid-cols-2 tw:md:justify-items-center tw:md:items-stretch tw:md:gap-x-2 tw:md:w-fit tw:md:mx-auto">
+        {/* 2-column grid at md:, 3-column at xl: */}
+        <div className="tw:md:grid tw:md:grid-cols-2 tw:xl:grid-cols-3 tw:md:justify-items-center tw:md:items-stretch tw:md:gap-x-2 tw:md:w-fit tw:md:mx-auto">
           {/* ROW 1 LEFT: Global preset + Synth block */}
           <div className="tw:flex tw:flex-col tw:items-center tw:md:h-full">
             <PresetUI
@@ -709,7 +717,7 @@ export default function App() {
                 setAudioParam={setAudioParam}
               />
             </div>
-            <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:w-full tw:md:bg-cyan-500/20"></div>
+            <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:w-full tw:md:bg-cyan-500/20 tw:xl:mb-1"></div>
           </div>
 
           {/* ROW 1 RIGHT: Freq preset + FreqArray */}
@@ -744,9 +752,10 @@ export default function App() {
               setDisplayMidiMapping={setDisplayMidiMapping}
               handleMidiSelect={handleMidiSelect}
             />
+            <div className="tw:hidden tw:xl:block tw:xl:flex-1 tw:xl:w-full tw:xl:bg-cyan-500/20 tw:xl:my-1"></div>
           </div>
 
-          {/* ROW 2 LEFT: Index preset + Tempo + VolumePanning */}
+          {/* CELL 3: Index preset + (xl: index label + toggles + sliders) */}
           <div className="tw:flex tw:flex-col tw:items-center">
             <PresetUI
               data={indexData}
@@ -763,53 +772,100 @@ export default function App() {
               obj={indexObj}
               handleMidiSelect={handleMidiSelect}
             />
-            <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:w-full tw:md:bg-pink-500/20 tw:md:m-1"></div>
+            {isXl && (
+              <div className="tw:flex tw:flex-col tw:items-stretch">
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:justify-between tw:items-center">
+                  <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
+                  <button
+                    className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
+                    onClick={() => handleMidiSelect("index_params")}
+                  >
+                    MAP
+                  </button>
+                </div>
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+                  <Toggle
+                    handleChange={handleUpdateModeChange}
+                    paramMode={updateMode}
+                    id="updateMode"
+                    param1={"immediate"}
+                    param2={"next_loop"}
+                  />
+                </div>
+                <IndexArraySliders
+                  seqArrayRef={seqArrayRef}
+                  indexObj={indexObj}
+                  presetObj={presetObj}
+                  globalIndexRecall={globalIndexRecall}
+                  updateSeqArray={updateSeqArray}
+                  updateIndexMidiRef={updateIndexMidiRef}
+                  restMidiUpdatersRef={restMidiUpdatersRef}
+                />
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+                  <Toggle
+                    handleChange={handleUpdatePlayModeChange}
+                    paramMode={playMode}
+                    id="playMode"
+                    param1={"loop"}
+                    param2={"one-shot"}
+                  />
+                </div>
+              </div>
+            )}
+            {!isXl && (
+              <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:w-full tw:md:bg-pink-500/20 tw:md:m-1"></div>
+            )}
           </div>
-          {/* ROW 2 RIGHT: Index Array label/MAP + Update Mode toggle + IndexArraySliders + Play Mode toggle */}
-          <div className="tw:flex tw:flex-col tw:items-stretch">
-            <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:justify-between tw:items-center">
-              <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
-              <button
-                className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
-                onClick={() => handleMidiSelect("index_params")}
-              >
-                MAP
-              </button>
-            </div>
-            {/* Update Mode Toggle */}
-            <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
-              <Toggle
-                handleChange={handleUpdateModeChange}
-                paramMode={updateMode}
-                id="updateMode"
-                param1={"immediate"}
-                param2={"next_loop"}
-              />
-            </div>
 
-            <IndexArraySliders
-              seqArrayRef={seqArrayRef}
-              indexObj={indexObj}
-              presetObj={presetObj}
-              globalIndexRecall={globalIndexRecall}
-              updateSeqArray={updateSeqArray}
-              updateIndexMidiRef={updateIndexMidiRef}
-              restMidiUpdatersRef={restMidiUpdatersRef}
-            />
-            {/* Play Mode Toggle */}
-            <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
-              <Toggle
-                handleChange={handleUpdatePlayModeChange}
-                paramMode={playMode}
-                id="playMode"
-                param1={"loop"}
-                param2={"one-shot"}
-              />
-            </div>
+          {/* CELL 4: (md: index label + toggles + sliders) / (xl: empty) */}
+          <div className="tw:flex tw:flex-col tw:items-stretch tw:md:h-full tw:md:w-full">
+            {!isXl && (
+              <>
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:justify-between tw:items-center">
+                  <p className="tw:text-sm tw:ml-2 tw:font-bold">Index Array</p>
+                  <button
+                    className="tw:text-xs tw:py-0.5 tw:px-2 tw:border-pink-800 tw:border tw:bg-pink-600 tw:mt-1 tw:mr-2"
+                    onClick={() => handleMidiSelect("index_params")}
+                  >
+                    MAP
+                  </button>
+                </div>
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+                  <Toggle
+                    handleChange={handleUpdateModeChange}
+                    paramMode={updateMode}
+                    id="updateMode"
+                    param1={"immediate"}
+                    param2={"next_loop"}
+                  />
+                </div>
+                <IndexArraySliders
+                  seqArrayRef={seqArrayRef}
+                  indexObj={indexObj}
+                  presetObj={presetObj}
+                  globalIndexRecall={globalIndexRecall}
+                  updateSeqArray={updateSeqArray}
+                  updateIndexMidiRef={updateIndexMidiRef}
+                  restMidiUpdatersRef={restMidiUpdatersRef}
+                />
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+                  <Toggle
+                    handleChange={handleUpdatePlayModeChange}
+                    paramMode={playMode}
+                    id="playMode"
+                    param1={"loop"}
+                    param2={"one-shot"}
+                  />
+                </div>
+              </>
+            )}
+            {isXl && (
+              <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:bg-[#E6A60D]/30"></div>
+            )}
           </div>
 
-          {/* ROW 3 LEFT: Index preset + Tempo + VolumePanning */}
-          <div className="tw:flex tw:flex-col tw:items-center tw:md:h-full tw:md:w-full tw:bg-maxbg">
+          {/* CELL 5: Tempo + VolumePanning */}
+          <div className="tw:md:flex tw:md:flex-col tw:md:items-center tw:md:h-full tw:md:w-full tw:bg-maxbg">
             <div className="tw:w-sm">
               <Tempo
                 bpm={bpm}
@@ -829,12 +885,13 @@ export default function App() {
               />
             </div>
           </div>
-          {/* ROW 3 RIGHT: Index Array label/MAP + Update Mode toggle + IndexArraySliders + Play Mode toggle */}
+
+          {/* CELL 6: empty */}
           <div className="tw:flex tw:flex-col tw:items-stretch tw:md:h-full tw:md:w-full">
             <div className="tw:hidden tw:md:block tw:md:flex-1 tw:md:bg-[#E6A60D]/30"></div>
           </div>
         </div>
-        {/* end 2-col grid */}
+        {/* end 2-col/3-col grid */}
 
         <ConfirmOverlay
           confirmProps={confirmPropsRef}

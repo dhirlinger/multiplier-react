@@ -161,7 +161,6 @@ export default function PresetUI({
         id={divId().container}
       >
         <h3 className="tw:m-1.5">
-          {/* ${category === "freq_preset" && "tw:text-sm"} */}
           <span className={`tw:bg-maxbg tw:px-1.5 tw:md:text-2xl`}>
             {category} Preset
           </span>
@@ -215,7 +214,7 @@ export default function PresetUI({
           )}
 
           <div
-            className={`tw:flex tw:mt-1 ${midiCategory === "freq_preset" ? "tw:md:mt-5" : ""}`}
+            className={`tw:flex tw:mt-1 ${midiCategory !== "global_preset" ? "tw:md:mt-5" : ""}`}
           >
             <input
               type="text"
