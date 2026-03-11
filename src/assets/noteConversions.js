@@ -86,3 +86,13 @@ export function noteNameToMidi(noteName, setFunction) {
     return (octave + 1) * 12 + noteMap[note];
   }
 }
+
+export function checkFrequencyWithin10Cents(frequency) {
+  const midiNote = Math.round(12 * Math.log2(frequency / 440) + 69);
+  const nearestPitch = 440 * Math.pow(2, (midiNote - 69) / 12);
+  const differenceInCents = 1200 * Math.log2(frequency / nearestPitch);
+  if (Math.abs(differenceInCents) <= 10) {
+    return frequency;
+  }
+  return null;
+}

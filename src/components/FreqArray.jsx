@@ -47,7 +47,7 @@ export default function FreqArray({
   }
 
   return (
-    <div className="tw:border-[.5px] tw:border-cyan-400 tw:bg-maxbg tw:p-2 tw:mt-2 tw:max-w-sm tw:min-w-xs">
+    <div className="tw:border-[.5px] tw:border-cyan-400 tw:bg-maxbg tw:p-2 tw:mt-2 tw:w-sm">
       {/* <div className="tw:grid tw:grid-cols-2">
         <div>
           <span style={{ fontWeight: "bold" }}>Base Freq: </span>

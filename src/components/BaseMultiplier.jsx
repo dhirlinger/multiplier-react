@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { midiNoteToFrequency, noteNameToMidi } from "../assets/noteConversions";
 import { Arrow } from "./Icon";
 import BaseMultiplierUI from "./BaseMultiplerUI";
 
