@@ -214,7 +214,7 @@ export default function PresetUI({
           )}
 
           <div
-            className={`tw:flex tw:mt-1 ${midiCategory !== "global_preset" ? "tw:md:mt-5" : ""}`}
+            className={`tw:flex tw:mt-1 ${midiCategory !== "global_preset" ? "tw:md:mt-[19.1px]" : ""}`}
           >
             <input
               type="text"
