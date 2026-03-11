@@ -30,6 +30,7 @@ export default function usePresetActions(config) {
       if (!presetNum) return;
       if (Number(objPresetNum) === presetNum) {
         refreshObj();
+        setInputRecalled(true);
         return;
       }
 
