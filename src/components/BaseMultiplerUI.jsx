@@ -158,12 +158,12 @@ export default function BaseMultiplierUI({
                   ref={noteNameRef}
                   defaultValue=""
                   maxLength={4}
-                  className={`tw:w-20 tw:text-[36px] tw:pl-1 ${
+                  className={`tw:w-20 tw:text-[36px] tw:pl-1 tw:placeholder:text-xs tw:placeholder:align-middle ${
                     noteError === "out of range"
                       ? "tw:border-red-500 tw:border"
                       : ""
                   }`}
-                  placeholder="Note"
+                  placeholder="NOTE NAME"
                   onChange={(e) => {
                     const raw = e.target.value;
                     const formatted =
