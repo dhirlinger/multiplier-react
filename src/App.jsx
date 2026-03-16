@@ -117,13 +117,20 @@ export default function App() {
 
   const [cursorInTextBox, setCursorInTextBox] = useState(false);
 
+  const [spaceBarToggle, setSpaceBarToggle] = useState("On");
+
   //for midi CRUD w MidiContext & MidiOverlay -> MidiPresetUI
   const [loggedIn, setLoggedIn] = useState(false);
 
   // responsive layout breakpoint
   const [isXl, setIsXl] = useState(window.innerWidth >= 1280);
+  const [isSm, setIsSm] = useState(window.innerWidth <= 640);
   useEffect(() => {
-    const handler = () => setIsXl(window.innerWidth >= 1280);
+    const handler = () => {
+      setIsXl(window.innerWidth >= 1280);
+      setIsSm(window.innerWidth <= 640);
+    };
+    console.log(`xl ${isXl} sm ${isSm}`);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
@@ -596,7 +603,7 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!cursorInTextBox && e.key === " ") {
+      if (spaceBarToggle === "On" && !cursorInTextBox && e.key === " ") {
         e.preventDefault(); // stops page scroll
         toggleSequencer();
       }
@@ -607,7 +614,7 @@ export default function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [toggleSequencer, cursorInTextBox]);
+  }, [toggleSequencer, cursorInTextBox, spaceBarToggle]);
 
   const { midiActions } = useMidiActions({
     toggleSequencer,
@@ -885,6 +892,20 @@ export default function App() {
                 handleMidiSelect={handleMidiSelect}
               />
             </div>
+
+            {isSm && (
+              <>
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+                  <Toggle
+                    handleChange={setSpaceBarToggle}
+                    paramMode={spaceBarToggle}
+                    id="spaceBarToggle"
+                    param1={"On"}
+                    param2={"Off"}
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           {/* CELL 6: empty */}

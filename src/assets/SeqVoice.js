@@ -11,7 +11,7 @@ export default class SeqVoice {
     this.intervalID = null;
     this.beatsPerBar = 0;
     this.freq = 440;
-    this.array = [];
+    this.array = []; //aka the index array (there is no actual freq array!)
     this.arrayHold = [];
     this.shape = "square";
     this.onBeatCallback = null;
@@ -112,7 +112,17 @@ export default class SeqVoice {
       } else {
         osc.frequency.value = 0;
       }
-    } else {
+    } else if (this.array[beatNumber] != 1 && this.multiplier != 1) {
+      if (
+        this.multiplier * this.array[beatNumber] * this.base > -22050 &&
+        this.multiplier * this.array[beatNumber] * this.base < 22050
+      ) {
+        osc.frequency.value =
+          this.multiplier * (this.array[beatNumber] - 1) * this.base;
+      } else {
+        osc.frequency.value = 0;
+      }
+    } else if (this.array[beatNumber] != 1 && this.multiplier == 1) {
       if (
         this.multiplier * this.array[beatNumber] * this.base > -22050 &&
         this.multiplier * this.array[beatNumber] * this.base < 22050
@@ -143,7 +153,9 @@ export default class SeqVoice {
     env.gain.exponentialRampToValueAtTime(0.001, time + this.noteLength);
 
     stereo.pan.value = this.panning;
-
+    console.log(
+      `beat ${beatNumber} arr[beatNumber] ${this.array[beatNumber]} freq ${osc.frequency.value}`,
+    );
     osc
       .connect(lowpass)
       .connect(env)
