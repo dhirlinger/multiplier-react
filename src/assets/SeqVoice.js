@@ -153,9 +153,7 @@ export default class SeqVoice {
     env.gain.exponentialRampToValueAtTime(0.001, time + this.noteLength);
 
     stereo.pan.value = this.panning;
-    console.log(
-      `beat ${beatNumber} arr[beatNumber] ${this.array[beatNumber]} freq ${osc.frequency.value}`,
-    );
+
     osc
       .connect(lowpass)
       .connect(env)
