@@ -603,9 +603,11 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (spaceBarToggle === "On" && !cursorInTextBox && e.key === " ") {
-        e.preventDefault(); // stops page scroll
-        toggleSequencer();
+      if (e.key === " " && !cursorInTextBox) {
+        e.preventDefault();
+        if (spaceBarToggle === "On") {
+          toggleSequencer();
+        }
       }
     };
 
@@ -666,7 +668,7 @@ export default function App() {
       loginStatusRef={loginStatusRef}
       loggedIn={loggedIn}
     >
-      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:md:max-w-none tw:md:w-194 tw:xl:w-[1160px] tw:items-center tw:md:items-stretch tw:justify-center tw:md:justify-normal tw:m-auto tw:min-h-96 tw:p-2 tw:pb-16">
+      <div className="tw:flex tw:flex-col tw:max-w-sm tw:min-w-xs tw:md:max-w-none tw:md:w-194 tw:xl:w-[1160px] tw:items-center tw:md:items-stretch tw:justify-center tw:md:justify-normal tw:m-auto tw:min-h-96 tw:p-2 tw:pb-26">
         <h1 className="tw:m-1.5 tw:text-4xl tw:mb-4 tw:w-full tw:text-center">
           <span className="tw:bg-maxbg tw:px-24 tw:w-full tw:pb-1">
             Multiplier<span className="tw:text-sm">v1</span>
@@ -895,7 +897,7 @@ export default function App() {
 
             {isSm && (
               <>
-                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-pink-500/90 tw:bg-maxbg">
+                <div className="tw:max-w-sm tw:min-w-xs tw:flex tw:gap-0.5 tw:text-sm tw:mt-1 tw:mb-1 tw:pt-1 tw:pb-1 tw:border-[0.5px] tw:border-[#E6A60D] tw:bg-maxbg">
                   <Toggle
                     handleChange={setSpaceBarToggle}
                     paramMode={spaceBarToggle}
