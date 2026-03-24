@@ -60,14 +60,14 @@ export default function FreqArray({
       </div> */}
       <div>
         <div className="tw:w-1/2 tw:h-[.5px] tw:bg-cyan-400"></div>
-        <div className="tw:h-[72.5px]">
+        <div className="tw:h-[72.5px] tw:min-w-[359px]">
           <span style={{ fontWeight: "bold" }}>In Hertz: </span>
           {base && multiplier
             ? createFreqArray().join(", ")
             : "set base and multiplier"}
         </div>
         <div className="tw:w-1/2 tw:h-[.5px] tw:bg-cyan-400"></div>
-        <div className="tw:h-[48.5px]">
+        <div className="tw:h-[48.5px] tw:min-w-[359px]">
           {base && multiplier ? (
             <>
               <span style={{ fontWeight: "bold" }}>Nearest Note: </span>
