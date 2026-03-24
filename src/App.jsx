@@ -124,13 +124,13 @@ export default function App() {
 
   // responsive layout breakpoint
   const [isXl, setIsXl] = useState(window.innerWidth >= 1280);
-  const [isSm, setIsSm] = useState(window.innerWidth <= 640);
+  const [isSm, setIsSm] = useState(window.innerWidth <= 768);
   useEffect(() => {
     const handler = () => {
       setIsXl(window.innerWidth >= 1280);
-      setIsSm(window.innerWidth <= 640);
+      setIsSm(window.innerWidth <= 768);
     };
-    console.log(`xl ${isXl} sm ${isSm}`);
+
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
@@ -875,8 +875,8 @@ export default function App() {
           </div>
 
           {/* CELL 5: Tempo + VolumePanning */}
-          <div className="tw:md:flex tw:md:flex-col tw:md:items-center tw:md:h-full tw:md:w-full tw:bg-maxbg">
-            <div className="tw:w-sm">
+          <div className="tw:md:flex tw:md:flex-col tw:md:items-center tw:md:h-full tw:md:w-full">
+            <div className="tw:w-full tw:bg-maxbg">
               <Tempo
                 bpm={bpm}
                 setBpm={setBpm}
@@ -940,6 +940,9 @@ export default function App() {
           getStatus={getStatus}
           handleMidiSelect={handleMidiSelect}
           playMode={playMode}
+          isSm={isSm}
+          setSpaceBarToggle={setSpaceBarToggle}
+          spaceBarToggle={spaceBarToggle}
         />
       </div>
     </MidiProvider>
