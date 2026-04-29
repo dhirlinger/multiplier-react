@@ -204,9 +204,9 @@ export default function BaseMultiplierUI({
           type="text"
           value={min}
           style={{ width: "50px", fontSize: "14px" }}
-          className={
-            noteError === "below min" ? "tw:border-red-500 tw:border" : ""
-          }
+          className={`tw:mr-1
+            ${noteError === "below min" ? "tw:border-red-500 tw:border" : ""}
+          `}
           onChange={(e) => {
             setMin(e.target.value);
             setNoteError(null);
@@ -218,9 +218,9 @@ export default function BaseMultiplierUI({
           type="text"
           value={max}
           style={{ width: "50px", fontSize: "14px" }}
-          className={
-            noteError === "above max" ? "tw:border-red-500 tw:border" : ""
-          }
+          className={`tw:mr-1
+            ${noteError === "below min" ? "tw:border-red-500 tw:border" : ""}
+          `}
           onChange={(e) => {
             setMax(e.target.value);
             setNoteError(null);
