@@ -58,7 +58,7 @@ export default function FreqArray({
           {multiplier}
         </div>
       </div> */}
-      <div>
+      <div className="tw:text-base">
         <div className="tw:w-1/2 tw:h-[.5px] tw:bg-cyan-400"></div>
         <div className="tw:h-[72.5px] tw:min-w-[359px]">
           <span style={{ fontWeight: "bold" }}>In Hertz: </span>

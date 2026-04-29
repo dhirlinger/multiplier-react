@@ -9,7 +9,7 @@ export default function LowPassFilter({ value, qValue, setAudioParam }) {
 
   return (
     <div id="lfo-container" className="tw:w-full tw:ml-2 tw:mb-2">
-      <p className="tw:block tw:font-bold">LFO</p>
+      <p className="tw:block tw:font-bold">Low Pass Filter</p>
       <div className="tw:flex tw:items-center tw:justify-start tw:gap-2">
         <input
           type="range"
