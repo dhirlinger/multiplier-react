@@ -35,12 +35,12 @@ export default function useFetch(baseUrl = "", nonce = "") {
         setLoading(false);
       }
     },
-    [baseUrl, nonce]
+    [baseUrl, nonce],
   );
 
   const get = useCallback(
     (endpoint) => fetchData(endpoint, { method: "GET" }),
-    [fetchData]
+    [fetchData],
   );
 
   const post = useCallback(
@@ -49,12 +49,12 @@ export default function useFetch(baseUrl = "", nonce = "") {
         method: "POST",
         body: JSON.stringify(body),
       }),
-    [fetchData]
+    [fetchData],
   );
 
   const del = useCallback(
     (endpoint) => fetchData(endpoint, { method: "DELETE" }),
-    [fetchData]
+    [fetchData],
   );
 
   return { get, post, del, loading, error };
